@@ -1,0 +1,21 @@
+- Faldgruber
+	Ikke lave et for stort system
+	Lav en iterationsplan så vi har noget, selvom vi ikke har det hele
+	Lav MOSOW analyse til at prioritere
+- User stories
+	User stories er fast i struktur, så det burde være nemt at starte med
+	Fordele
+		Tage ikke så lang tid at skrive, detaljerne kommer først når man laver koden
+		Man venter til design fasen til at tage design beslutninger
+		Spare tid ved at arbejde parallelt
+ 	Man er færdig med en US når den opfylder accepttesten, som man trækker ud af US
+	
+- Iterationsplan
+	Hvilke US's vil vi lave til hver sprint?
+	Nedbryde US i trin efter "fag eller område"
+	Sæt point på de små delopgaver
+- Fast møde tid
+	Torsdag kl 1215
+	Hvis vi ønsker kommentarer til noget er deadline Mandag
+- GUI i forhold til webapplikation
+	Ligger sidst i kurset, så vi skal lave selvstudie
