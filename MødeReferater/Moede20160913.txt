@@ -1,0 +1,30 @@
+Review af kravsspecifikation:
+
+Generelt:
+Blanding af dansk og engelsk
+Meget normalt at man slår over til engelsk i kode
+Gør klar i læsevejledning at valget mellem engelsk diagram og dansk sprog er bevidst
+
+System oversigt:
+Uklarhed på system oversigt i forhold til web applikation og desktop applikation (hvor de hører til)
+Der burde være en ekstra "kasse" der viser at vi tilgår databasen igennem en WEB API
+
+Spørgsmål:
+
+-Vi må godt forbedre produktet efter at vi afleverer rapporten. Vi skal bare gøre opmærksom på ændringer. Vi bliver bedømt på det vi har den 20.
+
+-Vi sender til gruppe 2 (de skal review os)
+-Vi skal review (modtage) dokumenter fra gruppe 4
+Der skal være vejleder når vi skal reviewes af gruppe 2.
+Gruppe 2 medlemmer:
+-Jeppe, morten, Simon, Lars, Simon...
+For vejleder passer det: Fredag (ledig efter kl 12), onsdag (hele dagen)
+
+-Krav til formatet er ikke-funktionelt krav (dvs. filtyper og størrelse af dimensioner)
+-FIlstørrelser ville også være ikke-funktionelt
+
+-Vi skal dokumentere alle vigtige brugerscenarier
+
+Det er vigtigere at vi har originale skitser i kravsspecifikationen (vi skal ikke ændre de originale selvom implementeringen måske bliver anderledes, for det er godt dokumentation)
+
+Det er en fin arbejdsmåde kun at have user stories i kravsspec, hvor vi så definerer arbejdsopgaver på baggrund af. Dokumentationen til dette skrives løbende ind. Formålet er at den dokumentation vi ender med kun er for det vi faktisk har lavet.
