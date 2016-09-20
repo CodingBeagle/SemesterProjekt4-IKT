@@ -1,0 +1,49 @@
+Læsevejledning:
+Måske unødvændigt med at nævne at der bruges engelsk/dansk
+Termer skal måske defineres (plantegning, sektion, osv)
+
+Introduktion:
+Udspicifer bedre om der er meget fokus på at lave en ordentlig API til brug af servicen (hvis man ikke vælger præfabrikede app)
+
+Beskriv bedre at kort = plantegning (det er forvirrende lige nu)
+
+Mere konsekvent med brug af vare og varegupper (varegrupper er ikke beskrevet).
+Vær opmærksom på placering vs sektion (hvad betyder en placering helt præcist?)
+
+Epics
+Vær opmærksom på placering vs sektioner
+
+Hvad indebærer "Manage Account". Hvad dækker det?
+
+User Stories
+
+Kunde
+
+Opmærksom på varer og varergrupper.
+
+Butik Administrator
+
+Hvad er en plantegning?
+
+Vær opmærksom på at overføre gamle sektinoer til nye plantegninger.
+
+Redigere varer information skal måske omformuleres for denne user story.
+
+Ikke-funktionelle Krav
+
+Handlingerne for tidstagning er ikke godt nok specificeret. Beskriv i mere detalje hvad handlingen indeholder.
+Vær måske opmærksom på hardware i forhold til max tid.
+
+Brug af order "Billedet" burde være "Plantegning"
+
+Skitster
+
+Måske misvisende med "Google Maps" billede for "indsæt varer".
+
+Hvad betyder sektioner og varegrupper? Det skal defineres ordenligt.
+
+Projektafgrænsning
+
+Måske skal rækkefølgen af MosCow og user stories ændres? (Man bliver ledt til at tro at produktet kan en masse i user stories, for så at finde ud af at den ikke kan det.
+
+Hele systemet er beskrevet i intro og system beskrivelse.
