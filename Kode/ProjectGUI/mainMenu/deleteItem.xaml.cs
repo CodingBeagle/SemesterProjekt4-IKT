@@ -30,5 +30,15 @@ namespace mainMenu
             adminitems.Show();
             Close();
         }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Button Event added. Implement functionality later");
+        }
+
+        private void searchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Button Event added. Implement functionality later");
+        }
     }
 }
