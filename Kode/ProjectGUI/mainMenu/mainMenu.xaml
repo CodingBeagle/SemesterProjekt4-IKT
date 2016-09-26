@@ -6,11 +6,16 @@
         xmlns:local="clr-namespace:mainMenu"
         mc:Ignorable="d"
         Title="HovedMenu Mockup" Height="720" Width="1280" ResizeMode="NoResize" BorderBrush="Black" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Image x:Key="Locatiles" Source="images/Locatiles.png"/>
+    </Window.Resources>
     <Grid>
         <Button x:Name="addItemBtn" Content="Administrer Varer" HorizontalAlignment="Left" Margin="523,165,0,0" VerticalAlignment="Top" Width="238" Height="80" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click"/>
         <Button x:Name="logOutBtn" Content="Log Ud" HorizontalAlignment="Left" Margin="1082,599,0,0" VerticalAlignment="Top" Width="180" Height="80" FontSize="28" Click="logOutBtn_Click"/>
         <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="283,10,0,0" VerticalAlignment="Top" FontSize="48"/>
-        <Image x:Name="Logo" HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Loaded="Logo_OnLoaded"/>
+        <Image x:Name="Logo" Source="images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="10,0,0,0"/>
+        
+
 
     </Grid>
 </Window>
