@@ -1,0 +1,5 @@
+Vi valgte ikke at bruge én samlet klasse med brug af dbFactories, fordi at det ikke er trivielt at generalisere SQL sætninger op imod forskellige databasetyper. Da vi valgte ikke at fokusere på at løse sådan et problem til størrelsen af vores projekt, synes vi at en simpel måde at komme ud over problemet var at kunne lave helt konkrete implementeringer af hver dbType du gerne ville supporterer.
+
+Vi valgte at opdele klasser efter entity typer for at opretholde Interface Segregation Principle.
+
+-vi bruger ikke entity frameworket fordi dens workflow ikke ville passe ind i vores projekt. Da vi ikke bruger code first. Scaffoldtíng¨
