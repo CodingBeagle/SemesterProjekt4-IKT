@@ -1,0 +1,19 @@
+Vores udpenslede user stories er faktisk accepttestene, de kan placeres sammen med deres relaterede accepttests, eller i bunden af kravspec som en detaljeret sektion.
+
+I forhold til detaljegraden af accepttests, skal vi selv bestemme hvor konkrete vi vil være. Der er ingen "rigtig" og "forkert" metode.
+
+Til ikke-funktionelle krav kan man belyse:
+-Platform
+-Database teknologi
+-Antal samtidige brugere til serveren/databasen
+-Responstid fra man trykker på en knap til at man får et svar
+
+Man skal specificere minimumsantagelser for hvor kravende skal opholdes på.
+
+TIl design af GUI kan man specificere hvilke controller man bruger (såsom grid views, etc...). Det skal KUN være de overordnede strukturer af WPF applikationen man skal dokumentere.
+
+TIl projektstyring, skal vi dokumentere vores process (har vi brugt Scrum? Hvem har været scrum masters? Hvordan har vi implementeret scrum? Hvordan er hvert sprint gået?)
+
+Rapporten skal være ca. 30 normalsider.
+
+Arbejdsfordeling skal dokumenteres på en side i rapporten (såsom en tabel). Det er fint nok med overordnede arbejdsopgavefordeling uden at gå i detaljer (med primær og sekundær).
