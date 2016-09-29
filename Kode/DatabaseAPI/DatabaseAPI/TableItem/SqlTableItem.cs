@@ -7,80 +7,79 @@ namespace DatabaseAPI.TableItem
 {
     public class SqlTableItem : ITableItem
     {
-        private SqlConnection conn;
-        public static string sqlconnectionString { get; private set; }
+        private SqlConnection _conn;
+        private SqlDataReader _reader;
+        private SqlCommand _cmd;
+
+        public SqlTableItem()
+        {
+            _conn = new SqlConnection("<InsertConnectionString>");
+        }
 
         public void CreateItem(string name, int itemGroup)
         {
-            sqlconnectionString = "herpkasdker/localDB/stuff";
-            conn = new SqlConnection(sqlconnectionString);
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
                                           $"VALUES  ({name}, {itemGroup})";
 
-                SqlCommand cmd = new SqlCommand(sqlInsertCommand) {Connection = conn};
+                _cmd = new SqlCommand(sqlInsertCommand) {Connection = _conn};
 
-                cmd.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
             }
             finally
             {
-                if (conn != null) conn.Close();
+                if (_conn != null) _conn.Close();
             }
 
         }
 
         public void DeleteItem(int ID)
         {
-            sqlconnectionString = "herpkasdker/localDB/stuff";
-            conn = new SqlConnection(sqlconnectionString);
             try
             {
-                conn.Open();
+                _conn.Open();
                 string sqlDeleteCommand = $"DELETE FROM Item" +
                                           $"WHERE ItemId = '{ID}";
 
-                SqlCommand cmd = new SqlCommand(sqlDeleteCommand) {Connection = conn};
+                _cmd = new SqlCommand(sqlDeleteCommand) {Connection = _conn};
 
-                cmd.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
             }
             finally
             {
-                if (conn != null) conn.Close();
+                if (_conn != null) _conn.Close();
             }
 
         }
 
         public List<Item> SearchItems(string itemName)
         {
-            sqlconnectionString = "herpkasdker/localDB/stuff";
-            conn = new SqlConnection(sqlconnectionString);
             List<Item> listOfItems = new List<Item>();
-            SqlDataReader reader = null;
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string cmdText = $"SELECT * FROM Item" +
                                  $"WHERE Name LIKE '{itemName}'";
 
-                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                _cmd = new SqlCommand(cmdText, _conn);
 
-                reader = cmd.ExecuteReader();
+                _reader = _cmd.ExecuteReader();
 
-                while (reader.Read())
+                while (_reader.Read())
                 {
-                    var localItem = new Item((int)reader["ItemID"], (string)reader["Name"], (int)reader["ItemGroupID"]);
+                    var localItem = new Item((int)_reader["ItemID"], (string)_reader["Name"], (int)_reader["ItemGroupID"]);
                     listOfItems.Add(localItem);
                 }
                 return listOfItems;
             }
             finally
             {
-                reader?.Close();
-                conn?.Close();
+                _reader?.Close();
+                _conn?.Close();
             }
         }
     }

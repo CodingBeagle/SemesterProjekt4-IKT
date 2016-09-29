@@ -55,6 +55,12 @@ namespace DatabaseAPI.TableItemGroup
 
         public ItemGroup GetItemGroup(int itemGroupID)
         {
+            throw new NotImplementedException();
+        }
+
+        /*
+        public ItemGroup GetItemGroup(int itemGroupID)
+        { 
             ItemGroup ItemGroupResult;
             string itemGroupName;
             string itemGroupParentID;
@@ -88,5 +94,6 @@ namespace DatabaseAPI.TableItemGroup
 
             return ItemGroupResult;
         }
+    }*/
     }
 }
