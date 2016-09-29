@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[StoreSection] (
-    [StoreSectionID] BIGINT NOT NULL,
+    [StoreSectionID] BIGINT NOT NULL IDENTITY(1,1),
     [Name]           TEXT   NOT NULL,
     [CoordinateX]    BIGINT NOT NULL,
     [CoordinateY]    BIGINT NOT NULL,
