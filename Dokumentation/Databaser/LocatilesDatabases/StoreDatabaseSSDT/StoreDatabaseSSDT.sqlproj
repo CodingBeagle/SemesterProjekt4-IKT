@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{f45f04b3-6523-4c68-b0a7-dd5626182795}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -128,5 +128,8 @@
     <Build Include="dbo\Tables\StoreSection.sql" />
     <Build Include="dbo\Tables\Item.sql" />
     <Build Include="dbo\Tables\ItemSectionPlacement.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testQuery.sql" />
   </ItemGroup>
 </Project>

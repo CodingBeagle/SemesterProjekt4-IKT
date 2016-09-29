@@ -7,12 +7,12 @@ namespace DatabaseAPI.Factories
     {
         public ITableItem CreateTableItem()
         {
-            throw new System.NotImplementedException();
+            return new SqlTableItem();
         }
 
         public ITableItemGroup CreateTableItemGroup()
         {
-            throw new System.NotImplementedException();
+            return new SqlTableItemGroup();
         }
     }
 }

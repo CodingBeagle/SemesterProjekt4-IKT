@@ -1,0 +1,5 @@
+databasename: StoreDatabase
+server: storedatabase.database.windows.net
+username: Rieder
+password: Poelse$69
+ado.net connection string: https://portal.azure.com/?nocdn=true&redirectTo=5.0.302.5032018.160928-1335#
