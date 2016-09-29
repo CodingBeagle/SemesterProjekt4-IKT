@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="HovedMenu Mockup" Height="720" Width="1280" ResizeMode="NoResize" BorderBrush="Black" WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Image x:Key="Locatiles" Source="images/Locatiles.png"/>
+        <!--<Image x:Key="Locatiles" Source="images/Locatiles.png"/>-->
     </Window.Resources>
     <Grid>
         <Button x:Name="addItemBtn" Content="Administrer Varer" HorizontalAlignment="Left" Margin="523,165,0,0" VerticalAlignment="Top" Width="238" Height="80" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click"/>
