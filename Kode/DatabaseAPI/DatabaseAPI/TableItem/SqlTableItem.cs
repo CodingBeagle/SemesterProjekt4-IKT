@@ -57,6 +57,7 @@ namespace DatabaseAPI.TableItem
         {
             sqlconnectionString = "herpkasdker/localDB/stuff";
             conn = new SqlConnection(sqlconnectionString);
+            List<Item> listOfItems = new List<Item>();
             SqlDataReader reader = null;
             try
             {
@@ -66,9 +67,19 @@ namespace DatabaseAPI.TableItem
                                  $"WHERE Name LIKE '{itemName}'";
 
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var localItem = new Item((int)reader["ItemID"], (string)reader["Name"], (int)reader["ItemGroupID"]);
+                    listOfItems.Add(localItem);
+                }
+                return listOfItems;
             }
             finally
             {
+                reader?.Close();
                 conn?.Close();
             }
         }
