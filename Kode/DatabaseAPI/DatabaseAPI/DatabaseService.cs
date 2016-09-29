@@ -6,13 +6,14 @@ namespace DatabaseAPI
 {
     public class DatabaseService
     {
-        private ITableItem _tableItem;
-        private ITableItemGroup _tableItemGroup;
+        public ITableItem TableItem { get; private set; }
+
+        public ITableItemGroup TableItemGroup { get; private set; }
 
         public DatabaseService(IDatabaseFactory databaseFactory)
         {
-            _tableItem = databaseFactory.CreateTableItem();
-            _tableItemGroup = databaseFactory.CreateTableItemGroup();
+            TableItem = databaseFactory.CreateTableItem();
+            TableItemGroup = databaseFactory.CreateTableItemGroup();
         }
     }
 }
