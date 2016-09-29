@@ -1,23 +1,76 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using DatabaseAPI.DatabaseModel;
 
 namespace DatabaseAPI.TableItem
 {
     public class SqlTableItem : ITableItem
     {
+        private SqlConnection conn;
+        public static string sqlconnectionString { get; private set; }
+
         public void CreateItem(string name, int itemGroup)
         {
-            string SQLInsertCommand = $"INSERT INTO Item";
+            sqlconnectionString = "herpkasdker/localDB/stuff";
+            conn = new SqlConnection(sqlconnectionString);
+            try
+            {
+                conn.Open();
+
+                string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
+                                          $"VALUES  ({name}, {itemGroup})";
+
+                SqlCommand cmd = new SqlCommand(sqlInsertCommand) {Connection = conn};
+
+                cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
+
         }
 
         public void DeleteItem(int ID)
         {
-            throw new System.NotImplementedException();
+            sqlconnectionString = "herpkasdker/localDB/stuff";
+            conn = new SqlConnection(sqlconnectionString);
+            try
+            {
+                conn.Open();
+                string sqlDeleteCommand = $"DELETE FROM Item" +
+                                          $"WHERE ItemId = '{ID}";
+
+                SqlCommand cmd = new SqlCommand(sqlDeleteCommand) {Connection = conn};
+
+                cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
+
         }
 
         public List<Item> SearchItems(string itemName)
         {
-            throw new System.NotImplementedException();
+            sqlconnectionString = "herpkasdker/localDB/stuff";
+            conn = new SqlConnection(sqlconnectionString);
+            SqlDataReader reader = null;
+            try
+            {
+                conn.Open();
+
+                string cmdText = $"SELECT * FROM Item" +
+                                 $"WHERE Name LIKE '{itemName}'";
+
+                SqlCommand cmd = new SqlCommand(cmdText, conn);
+            }
+            finally
+            {
+                conn?.Close();
+            }
         }
     }
 }
