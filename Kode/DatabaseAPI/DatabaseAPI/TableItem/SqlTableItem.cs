@@ -13,7 +13,11 @@ namespace DatabaseAPI.TableItem
 
         public SqlTableItem()
         {
+<<<<<<< HEAD
             _conn = new SqlConnection("Server=tcp:storedatabase.database.windows.net,1433;Initial Catalog=StoreDatabase;Persist Security Info=False;User ID=Rieder;Password=Poelse$69;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+=======
+            _conn = new SqlConnection("Server=tcp:storedatabase.database.windows.net,1433;Initial Catalog=StoreDatabase;Persist Security Info=False;User ID={Rieder};Password={Poelse$69};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+>>>>>>> 223254e327670ccdc93b4d419eedb638f032b799
         }
 
         public void CreateItem(string name, int itemGroupId)
