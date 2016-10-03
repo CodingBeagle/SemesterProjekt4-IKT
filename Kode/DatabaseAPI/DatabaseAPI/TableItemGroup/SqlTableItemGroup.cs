@@ -24,7 +24,8 @@ namespace DatabaseAPI.TableItemGroup
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ({itemGroupName},{itemGroupParentID}",
+                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ('" + itemGroupName + "', '" +
+                        itemGroupParentID + "'",
                         _connection);
 
                 _command.ExecuteNonQuery();
@@ -41,7 +42,8 @@ namespace DatabaseAPI.TableItemGroup
             {
                 _connection.Open();
 
-                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = {itemGroupID}", _connection);
+                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = '" + itemGroupID + "'",
+                    _connection);
 
                 _command.ExecuteNonQuery();
 

@@ -23,7 +23,7 @@ namespace DatabaseAPI.TableItem
                 _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
-                                          $"VALUES  ({name}, {itemGroup})";
+                                          $"VALUES  ('" + name + "', '" + itemGroup + "')";
 
                 _cmd = new SqlCommand(sqlInsertCommand) {Connection = _conn};
 
@@ -42,7 +42,7 @@ namespace DatabaseAPI.TableItem
             {
                 _conn.Open();
                 string sqlDeleteCommand = $"DELETE FROM Item" +
-                                          $"WHERE ItemId = '{ID}";
+                                          $"WHERE ItemId = '" + ID + "'";
 
                 _cmd = new SqlCommand(sqlDeleteCommand) {Connection = _conn};
 
@@ -63,7 +63,7 @@ namespace DatabaseAPI.TableItem
                 _conn.Open();
 
                 string cmdText = $"SELECT * FROM Item" +
-                                 $"WHERE Name LIKE '{itemName}'";
+                                 $"WHERE Name LIKE '" + itemName + "'";
 
                 _cmd = new SqlCommand(cmdText, _conn);
 
