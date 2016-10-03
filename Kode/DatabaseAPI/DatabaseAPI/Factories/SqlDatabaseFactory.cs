@@ -7,12 +7,12 @@ namespace DatabaseAPI.Factories
     {
         public ITableItem CreateTableItem()
         {
-            return new SqlTableItem(new SqlConnectionStringFactory());
+            return new SqlTableItem(new SqlConnectionStringFactory().CreateConnectionString());
         }
 
         public ITableItemGroup CreateTableItemGroup()
         {
-            return new SqlTableItemGroup(new SqlConnectionStringFactory());
+            return new SqlTableItemGroup(new SqlConnectionStringFactory().CreateConnectionString());
         }
     }
 }

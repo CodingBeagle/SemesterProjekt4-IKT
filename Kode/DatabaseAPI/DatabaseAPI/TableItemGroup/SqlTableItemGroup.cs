@@ -12,9 +12,9 @@ namespace DatabaseAPI.TableItemGroup
         private SqlDataReader _dataReader;
 
 
-        public SqlTableItemGroup(IConnectionStringFactory factory)
+        public SqlTableItemGroup(string connectionString)
         {
-            _connection = new SqlConnection(factory.CreateConnectionString());
+            _connection = new SqlConnection(connectionString);
         }
 
         public void CreateItemGroup(string itemGroupName, int itemGroupParentID)

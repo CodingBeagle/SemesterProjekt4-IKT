@@ -13,9 +13,9 @@ namespace DatabaseAPI.TableItem
         private SqlDataReader _reader;
         private SqlCommand _cmd;
 
-        public SqlTableItem(IConnectionStringFactory factory)
+        public SqlTableItem(string connectionString)
         {
-            _conn = new SqlConnection(factory.CreateConnectionString());
+            _conn = new SqlConnection(connectionString);
         }
 
         public void CreateItem(string name, int itemGroupId)
