@@ -13,17 +13,17 @@ namespace DatabaseAPI.TableItem
 
         public SqlTableItem()
         {
-            _conn = new SqlConnection("<InsertConnectionString>");
+            _conn = new SqlConnection("Server=tcp:storedatabase.database.windows.net,1433;Initial Catalog=StoreDatabase;Persist Security Info=False;User ID=Rieder;Password=Poelse$69;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
-        public void CreateItem(string name, int itemGroup)
+        public void CreateItem(string name, int itemGroupId)
         {
             try
             {
                 _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
-                                          $"VALUES  ('" + name + "', '" + itemGroup + "')";
+                                          $"VALUES ('"+ name +"', "+ itemGroupId+")";
 
                 _cmd = new SqlCommand(sqlInsertCommand) {Connection = _conn};
 
@@ -63,7 +63,7 @@ namespace DatabaseAPI.TableItem
                 _conn.Open();
 
                 string cmdText = $"SELECT * FROM Item" +
-                                 $"WHERE Name LIKE '" + itemName + "'";
+                                 $"WHERE Name LIKE '{itemName}'";
 
                 _cmd = new SqlCommand(cmdText, _conn);
 
