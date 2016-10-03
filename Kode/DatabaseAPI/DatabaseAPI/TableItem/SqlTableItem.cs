@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using DatabaseAPI.DatabaseModel;
+using DatabaseAPI.Factories;
 
 namespace DatabaseAPI.TableItem
 {
@@ -11,9 +13,9 @@ namespace DatabaseAPI.TableItem
         private SqlDataReader _reader;
         private SqlCommand _cmd;
 
-        public SqlTableItem()
+        public SqlTableItem(IConnectionStringFactory factory)
         {
-            _conn = new SqlConnection("Server=tcp:storedatabase.database.windows.net,1433;Initial Catalog=StoreDatabase;Persist Security Info=False;User ID=Rieder;Password=Poelse$69;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            _conn = new SqlConnection(factory.CreateConnectionString());
         }
 
         public void CreateItem(string name, int itemGroupId)
@@ -41,7 +43,7 @@ namespace DatabaseAPI.TableItem
             try
             {
                 _conn.Open();
-                string sqlDeleteCommand = $"DELETE FROM Item" +
+                string sqlDeleteCommand = $"DELETE FROM Item " +
                                           $"WHERE ItemId = '" + ID + "'";
 
                 _cmd = new SqlCommand(sqlDeleteCommand) {Connection = _conn};
@@ -62,16 +64,31 @@ namespace DatabaseAPI.TableItem
             {
                 _conn.Open();
 
-                string cmdText = $"SELECT * FROM Item" +
-                                 $"WHERE Name LIKE '{itemName}'";
+                string cmdText = $"SELECT * FROM Item " +
+                                 $"WHERE Name LIKE '%{itemName}%'";
+
+                Debug.WriteLine(cmdText);
 
                 _cmd = new SqlCommand(cmdText, _conn);
 
                 _reader = _cmd.ExecuteReader();
 
+                long itemID = 0;
+                string theName = "";
+                long itemGroupID = 0;
+
                 while (_reader.Read())
                 {
-                    var localItem = new Item((int)_reader["ItemID"], (string)_reader["Name"], (int)_reader["ItemGroupID"]);
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
+                        itemID = (long) _reader["ItemID"];
+
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        theName = (string) _reader["Name"];
+
+                    if (_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
+                        itemGroupID = (long) _reader["ItemGroupID"];
+
+                    var localItem = new Item(itemID, theName, itemGroupID);
                     listOfItems.Add(localItem);
                 }
                 return listOfItems;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using DatabaseAPI.DatabaseModel;
+using DatabaseAPI.Factories;
 
 namespace DatabaseAPI.TableItemGroup
 {
@@ -11,9 +12,9 @@ namespace DatabaseAPI.TableItemGroup
         private SqlDataReader _dataReader;
 
 
-        public SqlTableItemGroup()
+        public SqlTableItemGroup(IConnectionStringFactory factory)
         {
-            _connection = new SqlConnection("Server=tcp:storedatabase.database.windows.net,1433;Initial Catalog=StoreDatabase;Persist Security Info=False;User ID=Rieder;Password=Poelse$69;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            _connection = new SqlConnection(factory.CreateConnectionString());
         }
 
         public void CreateItemGroup(string itemGroupName, int itemGroupParentID)

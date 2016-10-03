@@ -16,15 +16,16 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            SqlTableItem test = new SqlTableItem();
+            DatabaseService test = new DatabaseService(new SqlDatabaseFactory());
             
-            test.CreateItem("Rieder Pølse", 2);
-            List<Item> searchList = test.SearchItems("Rieder");
-
+            test.TableItem.DeleteItem(1);
+            List<Item> searchList = test.TableItem.SearchItems("Rieder");
+            
             foreach (var item in searchList)
             {
                 Console.WriteLine(item.Name);
             }
+
 
             DatabaseService databaseService = new DatabaseService(new SqlDatabaseFactory());
 
