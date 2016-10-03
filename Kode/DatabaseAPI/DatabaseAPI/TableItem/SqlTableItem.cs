@@ -1,86 +1,102 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using DatabaseAPI.DatabaseModel;
+using DatabaseAPI.Factories;
 
 namespace DatabaseAPI.TableItem
 {
     public class SqlTableItem : ITableItem
     {
-        private SqlConnection conn;
-        public static string sqlconnectionString { get; private set; }
+        private SqlConnection _conn;
+        private SqlDataReader _reader;
+        private SqlCommand _cmd;
 
-        public void CreateItem(string name, int itemGroup)
+        public SqlTableItem(string connectionString)
         {
-            sqlconnectionString = "herpkasdker/localDB/stuff";
-            conn = new SqlConnection(sqlconnectionString);
+            _conn = new SqlConnection(connectionString);
+        }
+
+        public void CreateItem(string name, int itemGroupId)
+        {
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
-                                          $"VALUES  ({name}, {itemGroup})";
+                                          $"VALUES ('"+ name +"', "+ itemGroupId+")";
 
-                SqlCommand cmd = new SqlCommand(sqlInsertCommand) {Connection = conn};
+                _cmd = new SqlCommand(sqlInsertCommand) {Connection = _conn};
 
-                cmd.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
             }
             finally
             {
-                if (conn != null) conn.Close();
+                if (_conn != null) _conn.Close();
             }
 
         }
 
         public void DeleteItem(int ID)
         {
-            sqlconnectionString = "herpkasdker/localDB/stuff";
-            conn = new SqlConnection(sqlconnectionString);
             try
             {
-                conn.Open();
-                string sqlDeleteCommand = $"DELETE FROM Item" +
-                                          $"WHERE ItemId = '{ID}";
+                _conn.Open();
+                string sqlDeleteCommand = $"DELETE FROM Item " +
+                                          $"WHERE ItemId = '" + ID + "'";
 
-                SqlCommand cmd = new SqlCommand(sqlDeleteCommand) {Connection = conn};
+                _cmd = new SqlCommand(sqlDeleteCommand) {Connection = _conn};
 
-                cmd.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
             }
             finally
             {
-                if (conn != null) conn.Close();
+                if (_conn != null) _conn.Close();
             }
 
         }
 
         public List<Item> SearchItems(string itemName)
         {
-            sqlconnectionString = "herpkasdker/localDB/stuff";
-            conn = new SqlConnection(sqlconnectionString);
             List<Item> listOfItems = new List<Item>();
-            SqlDataReader reader = null;
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                string cmdText = $"SELECT * FROM Item" +
-                                 $"WHERE Name LIKE '{itemName}'";
+                string cmdText = $"SELECT * FROM Item " +
+                                 $"WHERE Name LIKE '%{itemName}%'";
 
-                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                Debug.WriteLine(cmdText);
 
-                reader = cmd.ExecuteReader();
+                _cmd = new SqlCommand(cmdText, _conn);
 
-                while (reader.Read())
+                _reader = _cmd.ExecuteReader();
+
+                long itemID = 0;
+                string theName = "";
+                long itemGroupID = 0;
+
+                while (_reader.Read())
                 {
-                    var localItem = new Item((int)reader["ItemID"], (string)reader["Name"], (int)reader["ItemGroupID"]);
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
+                        itemID = (long) _reader["ItemID"];
+
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        theName = (string) _reader["Name"];
+
+                    if (_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
+                        itemGroupID = (long) _reader["ItemGroupID"];
+
+                    var localItem = new Item(itemID, theName, itemGroupID);
                     listOfItems.Add(localItem);
                 }
                 return listOfItems;
             }
             finally
             {
-                reader?.Close();
-                conn?.Close();
+                _reader?.Close();
+                _conn?.Close();
             }
         }
     }

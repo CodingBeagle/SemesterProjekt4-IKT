@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using DatabaseAPI.DatabaseModel;
+using DatabaseAPI.Factories;
 
 namespace DatabaseAPI.TableItemGroup
 {
@@ -11,9 +12,9 @@ namespace DatabaseAPI.TableItemGroup
         private SqlDataReader _dataReader;
 
 
-        public SqlTableItemGroup()
+        public SqlTableItemGroup(string connectionString)
         {
-            _connection = new SqlConnection("Poops and things");
+            _connection = new SqlConnection(connectionString);
         }
 
         public void CreateItemGroup(string itemGroupName, int itemGroupParentID)
@@ -24,7 +25,8 @@ namespace DatabaseAPI.TableItemGroup
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ({itemGroupName},{itemGroupParentID}",
+                        $"INSERT INTO ItemGroup (Name, rItemGroupID) VALUES ('" + itemGroupName + "', '" +
+                        itemGroupParentID + "')",
                         _connection);
 
                 _command.ExecuteNonQuery();
@@ -41,7 +43,8 @@ namespace DatabaseAPI.TableItemGroup
             {
                 _connection.Open();
 
-                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = {itemGroupID}", _connection);
+                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = '" + itemGroupID + "'",
+                    _connection);
 
                 _command.ExecuteNonQuery();
 
@@ -53,17 +56,18 @@ namespace DatabaseAPI.TableItemGroup
             }
         }
 
+       
         public ItemGroup GetItemGroup(int itemGroupID)
-        {
-            ItemGroup ItemGroupResult;
+        { 
+            ItemGroup ItemGroupResult = null;
             string itemGroupName;
-            string itemGroupParentID;
+            long itemGroupParentID = 0;
 
             try
             {
                 _connection.Open();
 
-                _command = new SqlCommand($"SELECT FROM ItemGroup WHERE ItemGroupID = {itemGroupID}",_connection);
+                _command = new SqlCommand($"SELECT  * FROM ItemGroup WHERE ItemGroupID = {itemGroupID}",_connection);
 
                 _dataReader = _command.ExecuteReader();
 
@@ -72,12 +76,15 @@ namespace DatabaseAPI.TableItemGroup
                     while (_dataReader.Read())
                     {
                         itemGroupName = (string) _dataReader["Name"];
-                        itemGroupParentID = (string) _dataReader["ParentItemGroupID"];
 
-
+                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("rItemGroupID")))
+                        {
+                            itemGroupParentID = (long) _dataReader["rItemGroupID"];
+                        }
+                        ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
                     }
                 }
-                ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
+                
             }
             finally 
             {
@@ -88,5 +95,6 @@ namespace DatabaseAPI.TableItemGroup
 
             return ItemGroupResult;
         }
+    
     }
 }
