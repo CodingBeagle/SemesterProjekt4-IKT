@@ -13,7 +13,7 @@ namespace DatabaseAPI.TableItemGroup
 
         public SqlTableItemGroup()
         {
-            _connection = new SqlConnection("Poops and things");
+            _connection = new SqlConnection("Server=tcp:storedatabase.database.windows.net,1433;Initial Catalog=StoreDatabase;Persist Security Info=False;User ID=Rieder;Password=Poelse$69;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         public void CreateItemGroup(string itemGroupName, int itemGroupParentID)
@@ -24,8 +24,8 @@ namespace DatabaseAPI.TableItemGroup
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ('" + itemGroupName + "', '" +
-                        itemGroupParentID + "'",
+                        $"INSERT INTO ItemGroup (Name, rItemGroupID) VALUES ('" + itemGroupName + "', '" +
+                        itemGroupParentID + "')",
                         _connection);
 
                 _command.ExecuteNonQuery();
@@ -55,23 +55,18 @@ namespace DatabaseAPI.TableItemGroup
             }
         }
 
-        public ItemGroup GetItemGroup(int itemGroupID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /*
+       
         public ItemGroup GetItemGroup(int itemGroupID)
         { 
-            ItemGroup ItemGroupResult;
+            ItemGroup ItemGroupResult = null;
             string itemGroupName;
-            string itemGroupParentID;
+            long itemGroupParentID = 0;
 
             try
             {
                 _connection.Open();
 
-                _command = new SqlCommand($"SELECT FROM ItemGroup WHERE ItemGroupID = {itemGroupID}",_connection);
+                _command = new SqlCommand($"SELECT  * FROM ItemGroup WHERE ItemGroupID = {itemGroupID}",_connection);
 
                 _dataReader = _command.ExecuteReader();
 
@@ -80,12 +75,15 @@ namespace DatabaseAPI.TableItemGroup
                     while (_dataReader.Read())
                     {
                         itemGroupName = (string) _dataReader["Name"];
-                        itemGroupParentID = (string) _dataReader["ParentItemGroupID"];
 
-
+                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("rItemGroupID")))
+                        {
+                            itemGroupParentID = (long) _dataReader["rItemGroupID"];
+                        }
+                        ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
                     }
                 }
-                ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
+                
             }
             finally 
             {
@@ -96,6 +94,6 @@ namespace DatabaseAPI.TableItemGroup
 
             return ItemGroupResult;
         }
-    }*/
+    
     }
 }
