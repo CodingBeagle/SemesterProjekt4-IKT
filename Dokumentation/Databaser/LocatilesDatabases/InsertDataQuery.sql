@@ -46,7 +46,7 @@ insert into Item(Name, ItemGroupID) values (ItemD4, 5);
 
 /*
 /* Floorplan*/
-insert into Floorplan(Name,Image,imageHeight,imageWidth) values (Floorplan1,??????????,1000,1000);
+insert into Floorplan(Name, imageHeight, imageWidth, Image) select 'Floorplan1', 1000, 1000, BulkColumn from Openrowset( Bulk 'image_path_here', Single_Blob) as Image;
 
 /* StoreSection*/
 insert into StoreSection(Name,CoordinateX,CoordinateY,FloorPlanID) values (StoreSectionA,100,100,1);
