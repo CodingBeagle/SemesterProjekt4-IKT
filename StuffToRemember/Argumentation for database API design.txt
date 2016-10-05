@@ -3,3 +3,7 @@ Vi valgte ikke at bruge én samlet klasse med brug af dbFactories, fordi at det i
 Vi valgte at opdele klasser efter entity typer for at opretholde Interface Segregation Principle.
 
 -vi bruger ikke entity frameworket fordi dens workflow ikke ville passe ind i vores projekt. Da vi ikke bruger code first. Scaffoldtíng¨
+
+-Problemet med Database API designet er at det antager én bestemt type database (store database). Når systemet skal udvides med bruger databasen, skal der altså laves en helt ny API til denne database.
+
+-I stedet for at se på Database API'en som én samlet API for alle systemets databaser, kan man i stedet dele API'erne op i en "Store Database API" og en "User Database API"
