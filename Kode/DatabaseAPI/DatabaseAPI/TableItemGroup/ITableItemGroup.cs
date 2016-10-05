@@ -1,11 +1,16 @@
-﻿using DatabaseAPI.DatabaseModel;
+﻿using System.Collections.Generic;
+using DatabaseAPI.DatabaseModel;
 
 namespace DatabaseAPI.TableItemGroup
 {
     public interface ITableItemGroup
     {
-        void CreateItemGroup(string itemGroupItem, int itemGroupParentID);
-        void DeleteItemGroup(int itemGroupID);
-        ItemGroup GetItemGroup(int itemGroupID);
+        void CreateItemGroup(string itemGroupItem, long itemGroupParentID);
+        void CreateItemGroup(string itemGroupItemName);
+        void DeleteItemGroup(long itemGroupID);
+        ItemGroup GetItemGroup(long itemGroupID);
+        
+
+        List<ItemGroup> GetAllItemGroups();
     }
 }

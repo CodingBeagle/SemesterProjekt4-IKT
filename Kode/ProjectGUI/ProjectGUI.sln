@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mainMenu", "mainMenu\mainMenu.csproj", "{3D158870-6781-4107-9394-8ABBF9D6F31B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAPI", "..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj", "{3FD12E40-227D-404D-8738-BB9266ADBBED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3D158870-6781-4107-9394-8ABBF9D6F31B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D158870-6781-4107-9394-8ABBF9D6F31B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D158870-6781-4107-9394-8ABBF9D6F31B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

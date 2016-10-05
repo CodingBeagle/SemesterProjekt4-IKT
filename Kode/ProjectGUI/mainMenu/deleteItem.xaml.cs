@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DatabaseAPI;
+using DatabaseAPI.DatabaseModel;
+using DatabaseAPI.Factories;
 
 namespace mainMenu
 {
@@ -19,6 +22,8 @@ namespace mainMenu
     /// </summary>
     public partial class deleteItem : Window
     {
+        private List<Item> searchList;
+        DatabaseService db = new DatabaseService(new SqlDatabaseFactory());
         public deleteItem()
         {
             InitializeComponent();
@@ -33,12 +38,15 @@ namespace mainMenu
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Button Event added. Implement functionality later");
+            Item selectedItem = (Item)searchResults.SelectedItem;
+            db.TableItem.DeleteItem((long)selectedItem.ItemID);
+            MessageBox.Show($"Deleted {selectedItem.Name} from the database");
         }
 
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Button Event added. Implement functionality later");
+            searchList = db.TableItem.SearchItems(searchBox.Text);
+            searchResults.ItemsSource = searchList;
         }
     }
 }

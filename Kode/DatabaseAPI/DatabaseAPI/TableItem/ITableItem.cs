@@ -5,8 +5,8 @@ namespace DatabaseAPI.TableItem
 {
     public interface ITableItem
     {
-        void CreateItem(string name, int itemGroup);
-        void DeleteItem(int ID);
+        void CreateItem(string name, long itemGroup);
+        void DeleteItem(long ID);
         List<Item> SearchItems(string itemName);
     }
 }
