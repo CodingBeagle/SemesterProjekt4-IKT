@@ -18,7 +18,7 @@ namespace DatabaseAPI.TableItem
             _conn = new SqlConnection(connectionString);
         }
 
-        public void CreateItem(string name, int itemGroupId)
+        public void CreateItem(string name, long itemGroupId)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace DatabaseAPI.TableItem
 
         }
 
-        public void DeleteItem(int ID)
+        public void DeleteItem(long ID)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace DatabaseAPI.TableItem
                     if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
                         theName = (string) _reader["Name"];
 
-                    if (_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
                         itemGroupID = (long) _reader["ItemGroupID"];
 
                     var localItem = new Item(itemID, theName, itemGroupID);

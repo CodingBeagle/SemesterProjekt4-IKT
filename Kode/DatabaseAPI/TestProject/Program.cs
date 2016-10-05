@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DatabaseAPI.DatabaseModel;
-using DatabaseAPI.TableItem;
 using DatabaseAPI;
-using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
 
 
@@ -29,11 +24,17 @@ namespace TestProject
 
             DatabaseService databaseService = new DatabaseService(new SqlDatabaseFactory());
 
-            //databaseService.TableItemGroup.CreateItemGroup("MejeriAss", 2);
+            databaseService.TableItemGroup.CreateItemGroup("Kød");
 
             //databaseService.TableItemGroup.DeleteItemGroup(4);
 
             ItemGroup itemgroup = databaseService.TableItemGroup.GetItemGroup(2);
+
+            var stupidList = databaseService.TableItemGroup.GetAllItemGroups();
+            foreach (var item in stupidList)
+            {
+                Console.WriteLine(item.ItemGroupName);
+            }
 
             Console.ReadKey();
         }
