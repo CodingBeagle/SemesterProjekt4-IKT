@@ -97,9 +97,9 @@ namespace DatabaseAPI.TableItemGroup
                     {
                         itemGroupName = (string) _dataReader["Name"];
 
-                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("rItemGroupID")))
+                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ParentItemGroupID")))
                         {
-                            itemGroupParentID = (long) _dataReader["rItemGroupID"];
+                            itemGroupParentID = (long) _dataReader["ParentItemGroupID"];
                         }
                         ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
                     }
@@ -139,9 +139,9 @@ namespace DatabaseAPI.TableItemGroup
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ItemGroupID")))
                         itemGroupID = (long) _dataReader["ItemGroupID"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("rItemGroupID")))
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ParentItemGroupID")))
                     {
-                        var rItemGroupID = _dataReader["rItemGroupID"];
+                        var rItemGroupID = _dataReader["ParentItemGroupID"];
                         if (rItemGroupID != null)
                             parentItemGroupId = (long)rItemGroupID;
                     }
