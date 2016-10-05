@@ -8,8 +8,8 @@
         Title="deleteItem Mockup" Height="720" Width="1280" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Button x:Name="exitBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="1082,619,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="exitBtn_Click"/>
-        <ListBox x:Name="searchResults" DisplayMemberPath="Name" HorizontalAlignment="Left" Height="100" Margin="112,208,0,0" VerticalAlignment="Top" Width="252"/>
-        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="32" Margin="112,151,0,0" TextWrapping="Wrap" Text="Rieder's Pølse" VerticalAlignment="Top" Width="252" FontSize="20"/>
+        <DataGrid x:Name="searchResults" DisplayMemberPath="Name" HorizontalAlignment="Left" Height="100" Margin="112,208,0,0" VerticalAlignment="Top" Width="252"/>
+            <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="32" Margin="112,151,0,0" TextWrapping="Wrap" Text="Rieders Pølse" VerticalAlignment="Top" Width="252" FontSize="20"/>
         <Button x:Name="deleteBtn" Content="Slet Vare" HorizontalAlignment="Left" Margin="112,376,0,0" VerticalAlignment="Top" Width="252" Height="30" FontSize="20" Click="deleteBtn_Click"/>
         <Button x:Name="searchBtn" Content="Søg På Vare" HorizontalAlignment="Left" Margin="112,313,0,0" VerticalAlignment="Top" Width="252" Height="30" FontSize="20" Click="searchBtn_Click"/>
         <Label x:Name="windowTitle" Content="Slet Vare" HorizontalAlignment="Left" Margin="510,10,0,0" VerticalAlignment="Top" Height="76" Width="408" FontSize="48"/>

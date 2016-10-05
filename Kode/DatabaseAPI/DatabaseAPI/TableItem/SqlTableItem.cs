@@ -85,7 +85,7 @@ namespace DatabaseAPI.TableItem
                     if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
                         theName = (string) _reader["Name"];
 
-                    if (_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
                         itemGroupID = (long) _reader["ItemGroupID"];
 
                     var localItem = new Item(itemID, theName, itemGroupID);
