@@ -3,7 +3,7 @@ using DatabaseAPI.TableItemGroup;
 
 namespace DatabaseAPI.Factories
 {
-    public interface IDatabaseFactory
+    public interface IStoreDatabaseFactory
     {
         ITableItem CreateTableItem();
         ITableItemGroup CreateTableItemGroup();

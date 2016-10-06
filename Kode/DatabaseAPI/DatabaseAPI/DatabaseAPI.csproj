@@ -42,14 +42,14 @@
   <ItemGroup>
     <Compile Include="DatabaseService.cs" />
     <Compile Include="Factories\IConnectionStringFactory.cs" />
-    <Compile Include="Factories\IDatabaseFactory.cs" />
+    <Compile Include="Factories\IStoreDatabaseFactory.cs" />
     <Compile Include="Factories\SqlConnectionStringFactory.cs" />
     <Compile Include="TableItem\ITableItem.cs" />
     <Compile Include="TableItemGroup\ITableItemGroup.cs" />
     <Compile Include="DatabaseModel\Item.cs" />
     <Compile Include="DatabaseModel\ItemGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Factories\SqlDatabaseFactory.cs" />
+    <Compile Include="Factories\SqlStoreDatabaseFactory.cs" />
     <Compile Include="TableItem\SqlTableItem.cs" />
     <Compile Include="TableItemGroup\SqlTableItemGroup.cs" />
   </ItemGroup>
