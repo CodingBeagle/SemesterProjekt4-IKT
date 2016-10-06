@@ -11,7 +11,7 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            DatabaseService test = new DatabaseService(new SqlDatabaseFactory());
+            DatabaseService test = new DatabaseService(new SqlStoreDatabaseFactory());
             
             test.TableItem.DeleteItem(1);
             List<Item> searchList = test.TableItem.SearchItems("Rieder");
@@ -22,7 +22,7 @@ namespace TestProject
             }
 
 
-            DatabaseService databaseService = new DatabaseService(new SqlDatabaseFactory());
+            DatabaseService databaseService = new DatabaseService(new SqlStoreDatabaseFactory());
 
             databaseService.TableItemGroup.CreateItemGroup("Kød");
 
