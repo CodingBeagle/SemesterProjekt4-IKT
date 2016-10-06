@@ -31,7 +31,7 @@ namespace mainMenu
 
             try
             {
-                db = new DatabaseService(new SqlDatabaseFactory());
+                db = new DatabaseService(new SqlStoreDatabaseFactory());
                 
             }
             catch (Exception e)

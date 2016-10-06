@@ -20,7 +20,7 @@ namespace mainMenu
             InitializeComponent();
             try
             {
-                db = new DatabaseService(new SqlDatabaseFactory());
+                db = new DatabaseService(new SqlStoreDatabaseFactory());
                 wareGroups = db.TableItemGroup.GetAllItemGroups();
                 groupBox.ItemsSource = wareGroups;
 
