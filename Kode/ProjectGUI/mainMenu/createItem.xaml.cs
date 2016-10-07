@@ -20,7 +20,7 @@ namespace mainMenu
             InitializeComponent();
             try
             {
-                db = new DatabaseService(new SqlDatabaseFactory());
+                db = new DatabaseService(new SqlStoreDatabaseFactory());
                 wareGroups = db.TableItemGroup.GetAllItemGroups();
                 groupBox.ItemsSource = wareGroups;
 
@@ -47,7 +47,7 @@ namespace mainMenu
                 ItemGroup group = (ItemGroup) groupBox.SelectedItem;
                 db.TableItem.CreateItem(itemName, (long) @group.ItemGroupID);
 
-                MessageBox.Show($"{itemName} er blevet tilføjet til databsen til varegruppen {group.ItemGroupName}");
+                MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
                 groupBox.SelectedIndex = 0;
                 itemNameBox.Text = "";
             }

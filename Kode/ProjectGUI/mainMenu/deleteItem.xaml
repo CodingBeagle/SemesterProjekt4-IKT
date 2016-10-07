@@ -8,11 +8,12 @@
         Title="deleteItem Mockup" Height="720" Width="1280" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Button x:Name="exitBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="1082,619,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="exitBtn_Click"/>
-        <DataGrid x:Name="searchResults" DisplayMemberPath="Name" HorizontalAlignment="Left" Height="100" Margin="112,208,0,0" VerticalAlignment="Top" Width="252"/>
-            <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="32" Margin="112,151,0,0" TextWrapping="Wrap" Text="Rieders Pølse" VerticalAlignment="Top" Width="252" FontSize="20"/>
-        <Button x:Name="deleteBtn" Content="Slet Vare" HorizontalAlignment="Left" Margin="112,376,0,0" VerticalAlignment="Top" Width="252" Height="30" FontSize="20" Click="deleteBtn_Click"/>
-        <Button x:Name="searchBtn" Content="Søg På Vare" HorizontalAlignment="Left" Margin="112,313,0,0" VerticalAlignment="Top" Width="252" Height="30" FontSize="20" Click="searchBtn_Click"/>
+        <DataGrid x:Name="searchResults" DisplayMemberPath="Name" HorizontalAlignment="Left" Height="256" Margin="607,152,0,0" VerticalAlignment="Top" Width="509"/>
+        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="32" Margin="217,152,0,0" TextWrapping="Wrap" Text="Rieders Pølse" VerticalAlignment="Top" Width="252" FontSize="20"/>
+        <Button x:Name="deleteBtn" Content="Slet Vare" HorizontalAlignment="Left" Margin="217,280,0,0" VerticalAlignment="Top" Width="252" Height="30" FontSize="20" Click="deleteBtn_Click"/>
+        <Button x:Name="searchBtn" Content="Søg På Vare" HorizontalAlignment="Left" Margin="217,216,0,0" VerticalAlignment="Top" Width="252" Height="30" FontSize="20" Click="searchBtn_Click"/>
         <Label x:Name="windowTitle" Content="Slet Vare" HorizontalAlignment="Left" Margin="510,10,0,0" VerticalAlignment="Top" Height="76" Width="408" FontSize="48"/>
+        <Label x:Name="searchLabel" Content="Søgefelt:" FontSize="18" HorizontalAlignment="Left" Margin="130,150,0,0" VerticalAlignment="Top" RenderTransformOrigin="-7.263,-2.615" Height="32" Width="82"/>
 
     </Grid>
 </Window>

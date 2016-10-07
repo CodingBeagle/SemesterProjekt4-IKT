@@ -10,10 +10,10 @@ namespace DatabaseAPI
 
         public ITableItemGroup TableItemGroup { get; private set; }
 
-        public DatabaseService(IDatabaseFactory databaseFactory)
+        public DatabaseService(IStoreDatabaseFactory storeDatabaseFactory)
         {
-            TableItem = databaseFactory.CreateTableItem();
-            TableItemGroup = databaseFactory.CreateTableItemGroup();
+            TableItem = storeDatabaseFactory.CreateTableItem();
+            TableItemGroup = storeDatabaseFactory.CreateTableItemGroup();
         }
     }
 }
