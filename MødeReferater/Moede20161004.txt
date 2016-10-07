@@ -1,0 +1,25 @@
+Feedback:
+- Figur 10
+	Ikke UML klasse diagram, så det skal ændres
+- Forside
+	Overskrift skal være dokumentation
+
+Hvordan dokumenteres brugen af Azure?
+Der skal beskrives
+	Hvad vi har valgt, 
+	hvilke services og hvorfor
+	Hvordan vi deployer
+I rapport skal vi sætte vægt på hvorfor vi har taget de valg
+
+4+1 modellen
+	Bruges mest i uni sammenhæng
+	Et diagram for hver delsystem
+	Logisk view: klassediagrammer
+	Deployment: Hvilke processer kører på hvilke systemer
+	Data view: DDS klasse diagram
+	+1 er use case viewet
+	Vi kan blive inpireret af den men vi behøver ikke følge den til fulde
+
+
+	
+	
