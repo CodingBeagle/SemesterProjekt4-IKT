@@ -7,11 +7,37 @@
         mc:Ignorable="d"
         Title="adminItems Mockup" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        <Button x:Name="addItemBtn" Content="Opret Vare" HorizontalAlignment="Left" Margin="146,141,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="addItemBtn_Click"/>
-        <Button x:Name="editItemBtn" Content="Rediger Vare" HorizontalAlignment="Left" Margin="560,141,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="editItemBtn_Click"/>
-        <Button x:Name="deleteItemBtn" Content="Slet Vare" HorizontalAlignment="Left" Margin="980,141,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="deleteItemBtn_Click"/>
-        <Button x:Name="exitBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="1082,619,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="exitBtn_Click"/>
-        <Label x:Name="windowTitle" Content="Administrer Varer" HorizontalAlignment="Left" Margin="458,10,0,0" VerticalAlignment="Top" Height="76" Width="408" FontSize="48"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="158*"/>
+            <RowDefinition Height="48*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="52*"/>
+            <RowDefinition Height="57*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="53*"/>
+            <RowDefinition Height="55*"/>
+            <RowDefinition Height="111*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="119*"/>
+            <ColumnDefinition Width="254*"/>
+            <ColumnDefinition Width="180*"/>
+            <ColumnDefinition Width="123*"/>
+            <ColumnDefinition Width="475*"/>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="58*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="AddItems" Content="Opret Vare" FontSize="26" Grid.Column="1" Grid.Row="1" Click="AddItems_Click"/>
+        <Button x:Name="EditItems" Content="Rediger Vare" FontSize="26" Grid.Column="1" Grid.Row="3"></Button>
+        <Button x:Name="DeleteItems" Content="Slet Vare" FontSize="26" Grid.Column="1" Grid.Row="5" Click="DeleteItems_Click"></Button>
+        <Label x:Name="SearchLabel" Content="Søg vare:" Grid.Column="3" Grid.Row="1" FontSize="26"></Label>
+        <TextBox x:Name="SearchBox" FontSize="26" Grid.Column="4" Grid.Row="1"></TextBox>
+        <Button x:Name="SearchButton" Content="Søg" FontSize="26" Grid.Column="5" Grid.Row="1" Click="SearchButton_Click"></Button>
+        <Button x:Name="exitBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="406,39,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="exitBtn_Click" Grid.Column="4" Grid.Row="9" Grid.ColumnSpan="3"/>
+        <Label x:Name="windowTitle" Content="Administrer Varer" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Height="76" Width="408" FontSize="48" Grid.Column="2" Grid.ColumnSpan="3"/>
 
+        
+        <DataGrid x:Name="SearchResultGrid" Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="6"></DataGrid>
     </Grid>
 </Window>

@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DatabaseAPI;
+using DatabaseAPI.DatabaseModel;
+using DatabaseAPI.Factories;
 
 namespace mainMenu
 {
@@ -19,9 +22,24 @@ namespace mainMenu
     /// </summary>
     public partial class adminItems : Window
     {
+        private List<Item> searchList;
+        private List<deleteItem.DisplayItems> displayItemses = new List<deleteItem.DisplayItems>();
+        private DatabaseService db;
+
         public adminItems()
         {
             InitializeComponent();
+            SearchResultGrid.ItemsSource = searchList;
+
+            try
+            {
+                db = new DatabaseService(new SqlStoreDatabaseFactory());
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Something went horribly wrong: {e.Message}");
+            }
         }
 
         private void exitBtn_Click(object sender, RoutedEventArgs e)
@@ -33,26 +51,53 @@ namespace mainMenu
             
         }
 
-        private void addItemBtn_Click(object sender, RoutedEventArgs e)
+        private void AddItems_Click(object sender, RoutedEventArgs e)
         {
-            var createItem = new createItem();
-            createItem.Show();
-            Close();
-
+            AddItemDialog newAddItemDialog = new AddItemDialog();
+            newAddItemDialog.ShowDialog();
         }
 
-        private void editItemBtn_Click(object sender, RoutedEventArgs e)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            var editItem = new editItem();
-            editItem.Show();
-            Close();
+            try
+            {
+                searchList = db.TableItem.SearchItems(SearchBox.Text);
+                SearchResultGrid.ItemsSource = searchList;
+                //foreach (var item in searchList)
+                //{
+                //    var displayItem = new DisplayItems(item);
+                //    displayItemses.Add(displayItem);
+                //}
+                //searchResults.ItemsSource = null;
+                //searchResults.ItemsSource = displayItemses;
+
+                if (searchList.Count == 0)
+                    MessageBox.Show($"Fandt ingen varer med navnet {SearchBox.Text}");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+            }
         }
 
-        private void deleteItemBtn_Click(object sender, RoutedEventArgs e)
+        private void DeleteItems_Click(object sender, RoutedEventArgs e)
         {
-            var deleteItem = new deleteItem();
-            deleteItem.Show();
-            Close();
+            try
+            {
+                Item selectedItem = (Item)SearchResultGrid.SelectedItem;
+                db.TableItem.DeleteItem((long)selectedItem.ItemID);
+
+                //DisplayItems selectedItem = (DisplayItems) searchResults.SelectedItem;
+                //db.TableItem.DeleteItem((long) selectedItem.ID);
+
+                MessageBox.Show($"Deleted {selectedItem.Name} from the database");
+                searchList = db.TableItem.SearchItems(SearchBox.Text);
+                SearchResultGrid.ItemsSource = searchList;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+            }
         }
     }
 }
