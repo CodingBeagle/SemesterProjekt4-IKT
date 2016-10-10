@@ -8,7 +8,7 @@ namespace DatabaseAPI.Factories
     {
         ITableItem CreateTableItem();
         ITableItemGroup CreateTableItemGroup();
-
+        ITableStoreSection CreateTableStoreSection();
         ITableFloorplan CreateTableFloorplan();
     }
 }

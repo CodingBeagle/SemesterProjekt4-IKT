@@ -27,7 +27,7 @@ namespace mainMenu
         
         public MainWindow()
         {
-                        InitializeComponent();
+            InitializeComponent();
         }
         
         private void addItemBtn_Click(object sender, RoutedEventArgs e)
