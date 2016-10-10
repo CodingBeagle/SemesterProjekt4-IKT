@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,13 +25,14 @@ namespace mainMenu
     public partial class adminItems : Window
     {
         private List<Item> searchList;
-        private List<deleteItem.DisplayItems> displayItemses = new List<deleteItem.DisplayItems>();
+        private List<DisplayItems> displayItemses = new List<DisplayItems>();
         private DatabaseService db;
 
         public adminItems()
         {
             InitializeComponent();
-            SearchResultGrid.ItemsSource = searchList;
+            //SearchResultGrid.ItemsSource = searchList;
+            SearchResultGrid.ItemsSource = displayItemses;
 
             try
             {
@@ -62,14 +65,15 @@ namespace mainMenu
             try
             {
                 searchList = db.TableItem.SearchItems(SearchBox.Text);
-                SearchResultGrid.ItemsSource = searchList;
-                //foreach (var item in searchList)
-                //{
-                //    var displayItem = new DisplayItems(item);
-                //    displayItemses.Add(displayItem);
-                //}
-                //searchResults.ItemsSource = null;
-                //searchResults.ItemsSource = displayItemses;
+                displayItemses.Clear();
+                //SearchResultGrid.ItemsSource = searchList;
+                foreach (var item in searchList)
+                {
+                    DisplayItems displayItem = new DisplayItems(item);
+                    displayItemses.Add(displayItem);
+                }
+                SearchResultGrid.ItemsSource = null;
+                SearchResultGrid.ItemsSource = displayItemses;
 
                 if (searchList.Count == 0)
                     MessageBox.Show($"Fandt ingen varer med navnet {SearchBox.Text}");
@@ -84,20 +88,76 @@ namespace mainMenu
         {
             try
             {
-                Item selectedItem = (Item)SearchResultGrid.SelectedItem;
-                db.TableItem.DeleteItem((long)selectedItem.ItemID);
+                //Item selectedItem = (Item)SearchResultGrid.SelectedItem;
+                //db.TableItem.DeleteItem((long)selectedItem.ItemID);
 
-                //DisplayItems selectedItem = (DisplayItems) searchResults.SelectedItem;
-                //db.TableItem.DeleteItem((long) selectedItem.ID);
+                DisplayItems selectedItem = (DisplayItems)SearchResultGrid.SelectedItem;
+                db.TableItem.DeleteItem((long)selectedItem.ID);
+                displayItemses.RemoveAt(SearchResultGrid.SelectedIndex);
 
                 MessageBox.Show($"Deleted {selectedItem.Name} from the database");
                 searchList = db.TableItem.SearchItems(SearchBox.Text);
-                SearchResultGrid.ItemsSource = searchList;
+                //SearchResultGrid.ItemsSource = searchList;
+                SearchResultGrid.ItemsSource = null;
+                SearchResultGrid.ItemsSource = displayItemses;
             }
             catch (Exception exception)
             {
                 MessageBox.Show($"Something went horribly wrong: {exception.Message}");
             }
+        }
+    }
+
+    public class DisplayItems : INotifyPropertyChanged
+    {
+
+        // INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private Item _item;
+        DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
+
+        public DisplayItems(Item item)
+        {
+
+            _item = new Item(item.ItemID, item.Name, item.ItemGroupID);
+
+        }
+        public long ID
+        {
+            get { return _item.ItemID; }
+            private set { _item.ItemID = value; NotifyPropertyChanged(); }
+        }
+
+        public string Name
+        {
+            get { return _item.Name; }
+            private set { _item.Name = value; NotifyPropertyChanged(); }
+        }
+
+        public long ItemGroupID
+        {
+            get { return _item.ItemGroupID; }
+            private set { _item.ItemGroupID = value; NotifyPropertyChanged(); }
+        }
+
+        public string ItemGroupName
+        {
+            get
+            {
+                ItemGroup itemGroup = db.TableItemGroup.GetItemGroup(ItemGroupID);
+                return itemGroup.ItemGroupName;
+            }
+            private set { }
+
         }
     }
 }

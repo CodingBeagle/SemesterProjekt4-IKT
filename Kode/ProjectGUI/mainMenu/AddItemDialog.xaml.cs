@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,13 +47,19 @@ namespace mainMenu
             try
             {
                 string itemName = ItemNameTextBox.Text;
-                ItemGroup group = (ItemGroup)ItemGroupComboBox.SelectedItem;
-                db.TableItem.CreateItem(itemName, (long)@group.ItemGroupID);
+                if (Regex.IsMatch(itemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
+                {
+                    ItemGroup group = (ItemGroup)ItemGroupComboBox.SelectedItem;
+                    db.TableItem.CreateItem(itemName, (long)@group.ItemGroupID);
 
-                MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
-                ItemGroupComboBox.SelectedIndex = 0;
-                ItemNameTextBox.Text = "";
-                Close();
+                    MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
+                }
+                
             }
             catch (Exception exception)
             {
