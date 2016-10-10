@@ -40,11 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseModel\StoreSection.cs" />
     <Compile Include="DatabaseService.cs" />
     <Compile Include="Factories\IConnectionStringFactory.cs" />
     <Compile Include="Factories\IStoreDatabaseFactory.cs" />
-    <Compile Include="Factories\ITableStoreSection.cs" />
     <Compile Include="Factories\SqlConnectionStringFactory.cs" />
     <Compile Include="TableFloorplan\ITableFloorplan.cs" />
     <Compile Include="TableFloorplan\SqlTableFloorplan.cs" />
@@ -56,7 +54,6 @@
     <Compile Include="Factories\SqlStoreDatabaseFactory.cs" />
     <Compile Include="TableItem\SqlTableItem.cs" />
     <Compile Include="TableItemGroup\SqlTableItemGroup.cs" />
-    <Compile Include="TableStoreSection\SqlTableStoreSection.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
