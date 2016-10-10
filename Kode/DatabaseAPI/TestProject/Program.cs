@@ -13,6 +13,7 @@ namespace TestProject
         {
             DatabaseService test = new DatabaseService(new SqlStoreDatabaseFactory());
             
+            /*
             test.TableItem.DeleteItem(1);
             List<Item> searchList = test.TableItem.SearchItems("Rieder");
             
@@ -35,6 +36,10 @@ namespace TestProject
             {
                 Console.WriteLine(item.ItemGroupName);
             }
+
+            */
+
+            test.TableFloorplan.UploadFloorplan("TestFloorplan", 1, 1, "beagle.jpg");
 
             Console.ReadKey();
         }
