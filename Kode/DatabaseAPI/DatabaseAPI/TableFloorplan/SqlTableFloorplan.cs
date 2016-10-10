@@ -59,12 +59,34 @@ namespace DatabaseAPI.TableFloorplan
             {
                 _conn.Open();
 
-                string query = @"SELECT * FROM Floorplan WHERE FloorPlanID = @id";
+                string query = @"SELECT Image FROM Floorplan WHERE FloorPlanID = @id";
                 
                 SqlCommand sqlCmd = new SqlCommand(query, _conn);
                 sqlCmd.Parameters.AddWithValue("@id", id);
 
                 SqlDataReader reader = sqlCmd.ExecuteReader(CommandBehavior.SequentialAccess);
+
+                // Setup
+                FileStream stream;
+                BinaryWriter br;
+                long startIndex = 0;
+                long retval = 0;
+                byte[] outbyte = new byte[100];
+
+                while (reader.Read())
+                {
+                    stream = new FileStream("DownloadTests/Test.jpg", FileMode.OpenOrCreate, FileAccess.Write);
+                    br = new BinaryWriter(stream);
+
+                    startIndex = 0;
+
+                    retval = reader.GetBytes(1, startIndex, outbyte, 0, 100);
+
+                    while (retval == 100)
+                    {
+                        
+                    }
+                }
             }
             catch (Exception e)
             {
