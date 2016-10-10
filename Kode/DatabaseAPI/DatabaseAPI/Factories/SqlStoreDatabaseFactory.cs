@@ -1,5 +1,6 @@
 ﻿using DatabaseAPI.TableItem;
 using DatabaseAPI.TableItemGroup;
+using DatabaseAPI.TableStoreSection;
 
 namespace DatabaseAPI.Factories
 {
@@ -13,6 +14,11 @@ namespace DatabaseAPI.Factories
         public ITableItemGroup CreateTableItemGroup()
         {
             return new SqlTableItemGroup(new SqlConnectionStringFactory().CreateConnectionString());
+        }
+
+        public ITableStoreSection CreateTableStoreSection()
+        {
+            return new SqlTableStoreSection(new SqlConnectionStringFactory().CreateConnectionString());
         }
     }
 }
