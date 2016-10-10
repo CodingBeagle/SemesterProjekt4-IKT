@@ -80,6 +80,7 @@ namespace DatabaseAPI.TableStoreSection
 
         public StoreSection GetStoreSection(long storeSectionID)
         {
+            return null;
         }
 
     }
