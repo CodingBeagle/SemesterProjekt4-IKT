@@ -1,4 +1,5 @@
-﻿using DatabaseAPI.TableItem;
+﻿using DatabaseAPI.TableFloorplan;
+using DatabaseAPI.TableItem;
 using DatabaseAPI.TableItemGroup;
 
 namespace DatabaseAPI.Factories
@@ -7,5 +8,7 @@ namespace DatabaseAPI.Factories
     {
         ITableItem CreateTableItem();
         ITableItemGroup CreateTableItemGroup();
+        ITableStoreSection CreateTableStoreSection();
+        ITableFloorplan CreateTableFloorplan();
     }
 }

@@ -40,10 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseModel\StoreSection.cs" />   
+    <Compile Include="TableStoreSection\ITableStoreSection.cs" />   
+    <Compile Include="TableStoreSection\SqlTableStoreSection.cs" />  
+    <Compile Include="DatabaseModel\Floorplan.cs" />
     <Compile Include="DatabaseService.cs" />
     <Compile Include="Factories\IConnectionStringFactory.cs" />
     <Compile Include="Factories\IStoreDatabaseFactory.cs" />
     <Compile Include="Factories\SqlConnectionStringFactory.cs" />
+    <Compile Include="TableFloorplan\ITableFloorplan.cs" />
+    <Compile Include="TableFloorplan\SqlTableFloorplan.cs" />
     <Compile Include="TableItem\ITableItem.cs" />
     <Compile Include="TableItemGroup\ITableItemGroup.cs" />
     <Compile Include="DatabaseModel\Item.cs" />
