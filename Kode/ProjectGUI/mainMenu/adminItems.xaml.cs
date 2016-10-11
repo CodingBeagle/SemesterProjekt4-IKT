@@ -95,7 +95,7 @@ namespace mainMenu
                 db.TableItem.DeleteItem((long)selectedItem.ID);
                 displayItemses.RemoveAt(SearchResultGrid.SelectedIndex);
 
-                MessageBox.Show($"Deleted {selectedItem.Name} from the database");
+                MessageBox.Show($"{selectedItem.VareNavn} Blev slettet fra databasen");
                 searchList = db.TableItem.SearchItems(SearchBox.Text);
                 //SearchResultGrid.ItemsSource = searchList;
                 SearchResultGrid.ItemsSource = null;
@@ -137,23 +137,23 @@ namespace mainMenu
             private set { _item.ItemID = value; NotifyPropertyChanged(); }
         }
 
-        public string Name
+        public string VareNavn //Name
         {
             get { return _item.Name; }
             private set { _item.Name = value; NotifyPropertyChanged(); }
         }
 
-        public long ItemGroupID
+        public long VareGruppeID //ItemGroupID
         {
             get { return _item.ItemGroupID; }
             private set { _item.ItemGroupID = value; NotifyPropertyChanged(); }
         }
 
-        public string ItemGroupName
+        public string VareGruppeNavn //ItemGroupName
         {
             get
             {
-                ItemGroup itemGroup = db.TableItemGroup.GetItemGroup(ItemGroupID);
+                ItemGroup itemGroup = db.TableItemGroup.GetItemGroup(VareGruppeID);
                 return itemGroup.ItemGroupName;
             }
             private set { }

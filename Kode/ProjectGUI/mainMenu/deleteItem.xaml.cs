@@ -54,11 +54,11 @@ namespace mainMenu
 
 
                 searchResults.Items.Refresh();
-                MessageBox.Show($"Deleted {selectedItem.Name} from the database");
+                MessageBox.Show($"{selectedItem.Name} er blevet slettet fra databasen");
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show($"Der gik noget galt: {exception.Message}");
             }
         }
 

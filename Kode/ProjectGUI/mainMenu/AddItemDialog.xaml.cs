@@ -38,7 +38,7 @@ namespace mainMenu
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Something went horribly wrong: {e.Message}");
+                MessageBox.Show($"Der er noget der gik galt: {e.Message}");
             }
         }
 
