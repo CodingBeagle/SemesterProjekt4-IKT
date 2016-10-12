@@ -42,5 +42,12 @@ namespace mainMenu
         {
             Close();
         }
+
+        private void addSectionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            adminSections adminSectionssWindow = new adminSections();
+            adminSectionssWindow.Show();
+            Close();
+        }
     }
 }

@@ -45,14 +45,6 @@ namespace mainMenu
             }
         }
 
-        private void exitBtn_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            Close();
-            
-            
-        }
 
         private void AddItems_Click(object sender, RoutedEventArgs e)
         {
@@ -105,6 +97,14 @@ namespace mainMenu
             {
                 MessageBox.Show($"Something went horribly wrong: {exception.Message}");
             }
+        }
+
+
+        private void BackBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            Close();
         }
     }
 
