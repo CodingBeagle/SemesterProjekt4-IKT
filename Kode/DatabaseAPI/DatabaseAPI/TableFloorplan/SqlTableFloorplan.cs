@@ -59,7 +59,7 @@ namespace DatabaseAPI.TableFloorplan
             {
                 _conn.Open();
 
-                string query = @"SELECT Image FROM Floorplan WHERE FloorPlanID = @id";
+                string query = @"SELECT Name, Image FROM Floorplan WHERE FloorPlanID = @id";
                 
                 SqlCommand sqlCmd = new SqlCommand(query, _conn);
                 sqlCmd.Parameters.AddWithValue("@id", id);
@@ -69,28 +69,51 @@ namespace DatabaseAPI.TableFloorplan
                 // Setup
                 FileStream stream;
                 BinaryWriter br;
+                int bufferSize = 100;
                 long startIndex = 0;
                 long retval = 0;
-                byte[] outbyte = new byte[100];
+                byte[] outbyte = new byte[bufferSize];
+                string floorplanName = "";
 
                 while (reader.Read())
                 {
-                    stream = new FileStream("DownloadTests/Test.jpg", FileMode.OpenOrCreate, FileAccess.Write);
+                    floorplanName = reader.GetString(0);
+
+                    // Create a filestream used to save the floorplan as a local image
+                    stream = new FileStream("Floorplan/" + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
+
+                    // The binary writer writes primitive types in binary to a stream
                     br = new BinaryWriter(stream);
 
                     startIndex = 0;
 
-                    retval = reader.GetBytes(1, startIndex, outbyte, 0, 100);
+                    // GetBytes reads a stream of bytes from the specified column into the buffer
+                    retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
 
-                    while (retval == 100)
+                    // As long as we can download in chunks of bufferSize, we do that
+                    while (retval == bufferSize)
                     {
-                        
+                        // Write the retrieved chunk of bytes to the image file
+                        br.Write(outbyte);
+
+                        // Clear all buffers for the writer, so that we are ready for the next chunk of bytes
+                        br.Flush();
+
+                        startIndex += bufferSize;
+                        retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
                     }
+
+                    // Write the remaining bytes to the image
+                    br.Write(outbyte, 0, (int)retval);
+                    br.Flush();
+
+                    br.Close();
+                    stream.Close();
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Something went wrong: " + e.Message);
+                Console.WriteLine("Something went wrong: " + e.Message);
             }
             finally
             {

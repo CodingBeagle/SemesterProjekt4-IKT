@@ -39,7 +39,9 @@ namespace TestProject
 
             */
 
-            test.TableFloorplan.UploadFloorplan("TestFloorplan", 1, 1, "beagle.jpg");
+            //test.TableFloorplan.UploadFloorplan("TestFloorplan", 1, 1, "beagle.jpg");
+
+            test.TableFloorplan.GetFloorplan(1);
 
             Console.ReadKey();
         }
