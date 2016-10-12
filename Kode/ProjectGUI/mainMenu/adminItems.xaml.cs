@@ -25,14 +25,15 @@ namespace mainMenu
     public partial class adminItems : Window
     {
         private List<Item> searchList;
-        private List<DisplayItems> displayItemses = new List<DisplayItems>();
+        public DisplayItems displayItemses = new DisplayItems();
         private DatabaseService db;
 
         public adminItems()
         {
             InitializeComponent();
             //SearchResultGrid.ItemsSource = searchList;
-            SearchResultGrid.ItemsSource = displayItemses;
+            SearchResultGrid.DataContext = displayItemses;
+            DeleteItems.DataContext = displayItemses;
 
             try
             {
@@ -50,13 +51,13 @@ namespace mainMenu
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             Close();
-            
-            
+
+
         }
 
         private void AddItems_Click(object sender, RoutedEventArgs e)
         {
-            AddItemDialog newAddItemDialog = new AddItemDialog();
+            AddItemDialog newAddItemDialog = new AddItemDialog(displayItemses);
             newAddItemDialog.ShowDialog();
         }
 
@@ -69,7 +70,7 @@ namespace mainMenu
                 //SearchResultGrid.ItemsSource = searchList;
                 foreach (var item in searchList)
                 {
-                    DisplayItems displayItem = new DisplayItems(item);
+                    DisplayItem displayItem = new DisplayItem(item);
                     displayItemses.Add(displayItem);
                 }
                 SearchResultGrid.ItemsSource = null;
@@ -82,82 +83,6 @@ namespace mainMenu
             {
                 MessageBox.Show($"Something went horribly wrong: {exception.Message}");
             }
-        }
-
-        private void DeleteItems_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Item selectedItem = (Item)SearchResultGrid.SelectedItem;
-                //db.TableItem.DeleteItem((long)selectedItem.ItemID);
-
-                DisplayItems selectedItem = (DisplayItems)SearchResultGrid.SelectedItem;
-                db.TableItem.DeleteItem((long)selectedItem.ID);
-                displayItemses.RemoveAt(SearchResultGrid.SelectedIndex);
-
-                MessageBox.Show($"{selectedItem.VareNavn} Blev slettet fra databasen");
-                searchList = db.TableItem.SearchItems(SearchBox.Text);
-                //SearchResultGrid.ItemsSource = searchList;
-                SearchResultGrid.ItemsSource = null;
-                SearchResultGrid.ItemsSource = displayItemses;
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
-            }
-        }
-    }
-
-    public class DisplayItems : INotifyPropertyChanged
-    {
-
-        // INotifyPropertyChanged Members
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        private Item _item;
-        DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
-
-        public DisplayItems(Item item)
-        {
-
-            _item = new Item(item.ItemID, item.Name, item.ItemGroupID);
-
-        }
-        public long ID
-        {
-            get { return _item.ItemID; }
-            private set { _item.ItemID = value; NotifyPropertyChanged(); }
-        }
-
-        public string VareNavn //Name
-        {
-            get { return _item.Name; }
-            private set { _item.Name = value; NotifyPropertyChanged(); }
-        }
-
-        public long VareGruppeID //ItemGroupID
-        {
-            get { return _item.ItemGroupID; }
-            private set { _item.ItemGroupID = value; NotifyPropertyChanged(); }
-        }
-
-        public string VareGruppeNavn //ItemGroupName
-        {
-            get
-            {
-                ItemGroup itemGroup = db.TableItemGroup.GetItemGroup(VareGruppeID);
-                return itemGroup.ItemGroupName;
-            }
-            private set { }
-
         }
     }
 }

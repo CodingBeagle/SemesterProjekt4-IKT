@@ -25,7 +25,8 @@ namespace mainMenu
     {
         public List<ItemGroup> wareGroups;
         private DatabaseService db;
-        public AddItemDialog()
+        private DisplayItems _displayItemses;
+        public AddItemDialog(DisplayItems displayItemses)
         {
             InitializeComponent();
             try
@@ -34,7 +35,7 @@ namespace mainMenu
                 wareGroups = db.TableItemGroup.GetAllItemGroups();
                 ItemGroupComboBox.ItemsSource = wareGroups;
                 ItemGroupComboBox.DisplayMemberPath = "ItemGroupName";
-
+                _displayItemses = displayItemses;
             }
             catch (Exception e)
             {
