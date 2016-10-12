@@ -10,11 +10,29 @@
         <!--<Image x:Key="Locatiles" Source="images/Locatiles.png"/>-->
     </Window.Resources>
     <Grid>
-        <Button x:Name="addItemBtn" Content="Administrer Varer" HorizontalAlignment="Left" Margin="523,165,0,0" VerticalAlignment="Top" Width="238" Height="80" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click"/>
-        <Button x:Name="logOutBtn" Content="Log Ud" HorizontalAlignment="Left" Margin="1082,599,0,0" VerticalAlignment="Top" Width="180" Height="80" FontSize="28" Click="logOutBtn_Click"/>
-        <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="283,10,0,0" VerticalAlignment="Top" FontSize="48"/>
-        <Image x:Name="Logo" Source="images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="10,0,0,0"/>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="253*"/>
+            <ColumnDefinition Width="146*"/>
+            <ColumnDefinition Width="31*"/>
+            <ColumnDefinition Width="129*"/>
+            <ColumnDefinition Width="74*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="175*"/>
+            <RowDefinition Height="81*"/>
+            <RowDefinition Height="80*"/>
+            <RowDefinition Height="81*"/>
+            <RowDefinition Height="184*"/>
+            <RowDefinition Height="83*"/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="addItemBtn" Content="Administrer Varer" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click" Grid.Column="3" Grid.Row="1"/>
+        <Button x:Name="logOutBtn" Content="Log Ud"  FontSize="28" Click="logOutBtn_Click" Grid.Row="5" Grid.Column="4"/>
+        <Button x:Name="addSectionBtn" Content="Administrer Sektioner" FontSize="28" Grid.Row="1" Grid.Column="1" Click="addSectionBtn_Click"></Button>
+        <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="283,10,0,0" VerticalAlignment="Top" FontSize="48" Height="74" Width="693" Grid.ColumnSpan="4"/>
+        <Image x:Name="Logo" Source="images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="10,0,0,0" Grid.RowSpan="2"/>
+
 
 
     </Grid>

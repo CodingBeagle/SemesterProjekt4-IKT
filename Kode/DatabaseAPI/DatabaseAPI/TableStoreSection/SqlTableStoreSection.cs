@@ -78,10 +78,91 @@ namespace DatabaseAPI.TableStoreSection
             }
         }
 
-        public StoreSection GetStoreSection(long storeSectionID)
+        public List<StoreSection> GetAllStoreSections(long floorPlanID)
         {
-            return null;
+            List<StoreSection> allStoreSections = new List<StoreSection>();
+            try
+            {
+                _connection.Open();
+                _command = new SqlCommand("SELECT * FROM StoreSection WHERE FloorPlanID = '" + floorPlanID + "'", _connection);
+
+                _dataReader = _command.ExecuteReader();
+
+
+                while (_dataReader.Read())
+                {
+                    long storeSectionID = 0;
+                    string storeSectionName = "";
+                    long coordinateX = 0;
+                    long coordinateY = 0;
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
+                        storeSectionName = (string)_dataReader["Name"];
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("StoreSectionID")))
+                        storeSectionID = (long)_dataReader["StoreSectionID"];
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateX")))
+                        coordinateX = (long)_dataReader["CoordinateX"];
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateY")))
+                        coordinateY = (long)_dataReader["CoordinateY"];
+
+                    var newSection = new StoreSection(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
+                    allStoreSections.Add(newSection);
+                }
+            }
+            finally
+            {
+                _connection?.Close();
+                _dataReader?.Close();
+            }
+            return allStoreSections;
         }
 
+
+        public StoreSection GetStoreSection(long storeSectionID)
+        {
+            StoreSection storeSectionReturnValue = null;
+            try
+            {
+                _connection.Open();
+                _command = new SqlCommand("SELECT * FROM StoreSection WHERE StoreSectionID = '" + storeSectionID + "'", _connection);
+
+                _dataReader = _command.ExecuteReader();
+
+
+                while (_dataReader.Read())
+                {
+                    long floorPlanID = 0;
+                    string storeSectionName = "";
+                    long coordinateX = 0;
+                    long coordinateY = 0;
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
+                        storeSectionName = (string)_dataReader["Name"];
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateX")))
+                        coordinateX = (long)_dataReader["CoordinateX"];
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateY")))
+                        coordinateY = (long)_dataReader["CoordinateY"];
+
+                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("FloorPlanID")))
+                        floorPlanID = (long)_dataReader["FloorPlanID"];
+
+                    storeSectionReturnValue = new StoreSection(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
+                    
+                }
+            }
+            finally
+            {
+                _connection?.Close();
+                _dataReader?.Close();
+            }
+            return storeSectionReturnValue;
+        }
     }
+
 }
+
