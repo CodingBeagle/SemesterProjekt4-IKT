@@ -46,7 +46,7 @@ namespace mainMenu
             }
         }
 
-        private void exitBtn_Click(object sender, RoutedEventArgs e)
+        private void BackBtn_OnClick(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
