@@ -23,6 +23,7 @@
             <ColumnDefinition Width="171*"/>
             <ColumnDefinition Width="14*"/>
         </Grid.ColumnDefinitions>
+        <Canvas x:Name="canvas" Background="AntiqueWhite" MouseDown="Canvas_OnMouseDown"></Canvas>
         <Button x:Name="backBtn" Grid.Row="1" Grid.Column="1" Content="Tilbage" Click="logoutBtn_Click"></Button>
     </Grid>
 </Window>
