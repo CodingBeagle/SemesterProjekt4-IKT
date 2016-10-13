@@ -26,12 +26,12 @@ namespace DatabaseAPI.TableItem
                 _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
-                                          $"VALUES ('"+ name +"', "+ itemGroupId+");" +
+                                          $"VALUES ('" + name + "', " + itemGroupId + ");" +
                                           "SELECT CAST(scope_identity() AS BIGINT)";
 
                 _cmd = new SqlCommand(sqlInsertCommand) {Connection = _conn};
 
-                createdID = (long)_cmd.ExecuteScalar();
+                createdID = (long) _cmd.ExecuteScalar();
             }
             finally
             {
@@ -95,6 +95,43 @@ namespace DatabaseAPI.TableItem
                     listOfItems.Add(localItem);
                 }
                 return listOfItems;
+            }
+            finally
+            {
+                _reader?.Close();
+                _conn?.Close();
+            }
+        }
+
+        public Item GetItem(long itemID)
+        {
+            long itemIDtoItem = 0;
+            string theName = "";
+            long itemGroupID = 0;
+            try
+            {
+                _conn.Open();
+                var localItem = new Item(itemIDtoItem, theName, itemGroupID);
+                string cmdText = $"SELECT * FROM Item " +
+                                 $"WHERE ItemID = {itemID}";
+                _cmd = new SqlCommand(cmdText, _conn);
+
+                _reader = _cmd.ExecuteReader();
+
+                while (_reader.Read())
+                {
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
+                        itemIDtoItem = (long)_reader["ItemID"];
+
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        theName = (string)_reader["Name"];
+
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
+                        itemGroupID = (long)_reader["ItemGroupID"];
+
+                    localItem = new Item(itemIDtoItem, theName, itemGroupID);
+                }
+                return localItem;
             }
             finally
             {
