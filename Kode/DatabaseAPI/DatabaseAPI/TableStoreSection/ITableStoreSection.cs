@@ -5,7 +5,7 @@ namespace DatabaseAPI.Factories
 {
     public interface ITableStoreSection
     {
-        void CreateStoreSection(string storeSectionName, long coordinateX, long coordinateY, long floorPlanID);
+        long CreateStoreSection(string storeSectionName, long coordinateX, long coordinateY, long floorPlanID);
         void DeleteStoreSection(long storeSectionID);
         void DeleteAllStoreSections(long floorPlanID);
 

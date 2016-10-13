@@ -21,23 +21,27 @@ namespace DatabaseAPI.TableStoreSection
             _connection = new SqlConnection(connectionString);
         }
 
-        public void CreateStoreSection(string storeSectionName, long coordinateX, long coordinateY, long floorPlanID)
+        public long CreateStoreSection(string storeSectionName, long coordinateX, long coordinateY, long floorPlanID)
         {
+            long createdID;
             try
             {
                 _connection.Open();
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO StoreSection (Name, CoordinateX, CoordinateY, FloorPlanID) VALUES ('" + storeSectionName + "', '" + coordinateX + "', '" + coordinateY + "', '" + floorPlanID + "')",
+                        $"INSERT INTO StoreSection (Name, CoordinateX, CoordinateY, FloorPlanID) " +
+                        $"VALUES ('" + storeSectionName + "', '" + coordinateX + "', '" + coordinateY + "', '" + floorPlanID + "');" +
+                        "SELECT CAST(scope_identity() AS BIGINT)",
                         _connection);
 
-                _command.ExecuteNonQuery();
+                createdID = (long)_command.ExecuteScalar();
             }
             finally
             {
                 _connection?.Close();
             }
+            return createdID;
         }
 
         public void DeleteStoreSection(long storeSectionID)
