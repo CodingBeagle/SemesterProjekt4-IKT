@@ -11,7 +11,9 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="253*"/>
+            <ColumnDefinition Width="91*"/>
+            <ColumnDefinition Width="128*"/>
+            <ColumnDefinition Width="34*"/>
             <ColumnDefinition Width="146*"/>
             <ColumnDefinition Width="31*"/>
             <ColumnDefinition Width="129*"/>
@@ -27,11 +29,12 @@
             <RowDefinition Height="83*"/>
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="addItemBtn" Content="Administrer Varer" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click" Grid.Column="3" Grid.Row="1"/>
-        <Button x:Name="logOutBtn" Content="Log Ud"  FontSize="28" Click="logOutBtn_Click" Grid.Row="5" Grid.Column="4"/>
-        <Button x:Name="addSectionBtn" Content="Administrer Sektioner" FontSize="28" Grid.Row="1" Grid.Column="1" Click="addSectionBtn_Click"></Button>
-        <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="283,10,0,0" VerticalAlignment="Top" FontSize="48" Height="74" Width="693" Grid.ColumnSpan="4"/>
-        <Image x:Name="Logo" Source="images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="10,0,0,0" Grid.RowSpan="2"/>
+        <Button x:Name="addItemBtn" Content="Administrer Varer" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click" Grid.Column="5" Grid.Row="1"/>
+        <Button x:Name="logOutBtn" Content="Log Ud"  FontSize="28" Click="logOutBtn_Click" Grid.Row="5" Grid.Column="6"/>
+        <Button x:Name="addSectionBtn" Content="Administrer Sektioner" FontSize="28" Grid.Row="1" Grid.Column="3" Click="addSectionBtn_Click"></Button>
+        <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="101.02,10,0,0" VerticalAlignment="Top" FontSize="48" Height="74" Width="693" Grid.ColumnSpan="5" Grid.Column="1"/>
+        <Image x:Name="Logo" Source="images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="10,0,0,0" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Button x:Name="button" Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="116,42,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
 
 
