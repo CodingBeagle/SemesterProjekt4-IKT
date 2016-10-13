@@ -8,11 +8,13 @@ namespace DatabaseAPI.DatabaseModel
 {
     public class Floorplan
     {
-        public byte[] ImageData { get; set; }
+        public long FloorplanID { get; private set; }
 
-        public Floorplan(byte[] imageData)
+        public string FloorplanName { get; private set; }
+
+        public Floorplan(long ID, string floorplanName)
         {
-            ImageData = imageData;
+            FloorplanName = floorplanName;
         }
     }
 }

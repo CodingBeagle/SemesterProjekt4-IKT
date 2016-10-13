@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,18 @@ using System.Windows.Shapes;
 namespace mainMenu
 {
     /// <summary>
-    /// Interaction logic for Floorplan.xaml
+    /// Interaction logic for AdminFloorplan.xaml
     /// </summary>
-    public partial class Floorplan : Window
+    public partial class AdminFloorplan : Window
     {
-        public Floorplan()
+        public AdminFloorplan()
         {
             InitializeComponent();
+        }
+
+        private void LoadFloorplanImage()
+        {
+
         }
     }
 }

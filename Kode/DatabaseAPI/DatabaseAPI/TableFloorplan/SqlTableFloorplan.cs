@@ -29,18 +29,56 @@ namespace DatabaseAPI.TableFloorplan
 
                 _conn.Open();
 
-                string sqlStatement = @"INSERT INTO Floorplan
-                                        (Name, Image, imageWidth, imageHeight)
-                                        VALUES (@name, @image, @width, @height)";
+                string checkFloorplanExistanceSql = "SELECT FloorPlanID FROM Floorplan";
 
-                using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+                bool isEmpty = false;
+                using (SqlCommand sqlCmd = new SqlCommand(checkFloorplanExistanceSql, _conn))
                 {
-                    sqlCmd.Parameters.AddWithValue("@name", name);
-                    sqlCmd.Parameters.AddWithValue("@width", width);
-                    sqlCmd.Parameters.AddWithValue("@height", height);
-                    sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+                    SqlDataReader reader = sqlCmd.ExecuteReader();
 
-                    sqlCmd.ExecuteNonQuery();
+                    if (!reader.HasRows)
+                    {
+                        isEmpty = true;
+                    }
+
+                    reader.Close();
+                }
+
+                string sqlStatement = "";
+
+                Debug.WriteLine("The count is: " + isEmpty);
+
+                if (isEmpty)
+                {
+                    sqlStatement = @"INSERT INTO Floorplan
+                                        (FloorPlanID, Name, Image, imageWidth, imageHeight)
+                                        VALUES (@id, @name, @image, @width, @height);";
+
+                    using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+                    {
+                        sqlCmd.Parameters.AddWithValue("@id", 1);
+                        sqlCmd.Parameters.AddWithValue("@name", name);
+                        sqlCmd.Parameters.AddWithValue("@width", width);
+                        sqlCmd.Parameters.AddWithValue("@height", height);
+                        sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    sqlStatement = @"UPDATE Floorplan SET Name=@name, Image=@image, imageWidth=@width, imageHeight=@height
+                                     WHERE Floorplan.FloorPlanID = 1";
+
+                    using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+                    {
+                        sqlCmd.Parameters.AddWithValue("@name", name);
+                        sqlCmd.Parameters.AddWithValue("@width", width);
+                        sqlCmd.Parameters.AddWithValue("@height", height);
+                        sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+
+                        sqlCmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception e)
@@ -53,74 +91,49 @@ namespace DatabaseAPI.TableFloorplan
             }
         }
 
-        public Floorplan GetFloorplan(int id)
+        
+
+        private Byte[] ReadImageData(string floorplanName, SqlDataReader reader)
         {
-            try
+            FileStream stream;
+            BinaryWriter br;
+            int bufferSize = 100;
+            long startIndex = 0;
+            long retval = 0;
+            byte[] outbyte = new byte[bufferSize];
+
+            // Create a filestream used to save the floorplan as a local image
+            stream = new FileStream("Floorplan/" + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
+
+            // The binary writer writes primitive types in binary to a stream
+            br = new BinaryWriter(stream);
+
+            startIndex = 0;
+
+            // GetBytes reads a stream of bytes from the specified column into the buffer
+            retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
+
+            // As long as we can download in chunks of bufferSize, we do that
+            while (retval == bufferSize)
             {
-                _conn.Open();
+                // Write the retrieved chunk of bytes to the image file
+                br.Write(outbyte);
 
-                string query = @"SELECT Name, Image FROM Floorplan WHERE FloorPlanID = @id";
-                
-                SqlCommand sqlCmd = new SqlCommand(query, _conn);
-                sqlCmd.Parameters.AddWithValue("@id", id);
+                // Clear all buffers for the writer, so that we are ready for the next chunk of bytes
+                br.Flush();
 
-                SqlDataReader reader = sqlCmd.ExecuteReader(CommandBehavior.SequentialAccess);
-
-                // Setup
-                FileStream stream;
-                BinaryWriter br;
-                int bufferSize = 100;
-                long startIndex = 0;
-                long retval = 0;
-                byte[] outbyte = new byte[bufferSize];
-                string floorplanName = "";
-
-                while (reader.Read())
-                {
-                    floorplanName = reader.GetString(0);
-
-                    // Create a filestream used to save the floorplan as a local image
-                    stream = new FileStream("Floorplan/" + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
-
-                    // The binary writer writes primitive types in binary to a stream
-                    br = new BinaryWriter(stream);
-
-                    startIndex = 0;
-
-                    // GetBytes reads a stream of bytes from the specified column into the buffer
-                    retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
-
-                    // As long as we can download in chunks of bufferSize, we do that
-                    while (retval == bufferSize)
-                    {
-                        // Write the retrieved chunk of bytes to the image file
-                        br.Write(outbyte);
-
-                        // Clear all buffers for the writer, so that we are ready for the next chunk of bytes
-                        br.Flush();
-
-                        startIndex += bufferSize;
-                        retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
-                    }
-
-                    // Write the remaining bytes to the image
-                    br.Write(outbyte, 0, (int)retval);
-                    br.Flush();
-
-                    br.Close();
-                    stream.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Something went wrong: " + e.Message);
-            }
-            finally
-            {
-                _conn.Close();
+                startIndex += bufferSize;
+                retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
             }
 
-            return null;
+            // Write the remaining bytes to the image
+            br.Write(outbyte, 0, (int)retval);
+            br.Flush();
+
+            br.Close();
+            stream.Close();
+
+            return outbyte;
         }
     }
 }

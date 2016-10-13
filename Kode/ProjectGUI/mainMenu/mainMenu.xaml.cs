@@ -49,5 +49,12 @@ namespace mainMenu
             adminSectionssWindow.Show();
             Close();
         }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            AdminFloorplan adminFloorplan = new AdminFloorplan();
+            adminFloorplan.Show();
+            Close();
+        }
     }
 }
