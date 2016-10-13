@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DatabaseAPI;
+using DatabaseAPI.Factories;
 using mainMenu.FloorplanLogic;
 
 namespace mainMenu
@@ -21,10 +23,20 @@ namespace mainMenu
     /// </summary>
     public partial class adminSections : Window
     {
+        private DatabaseService db;
+        private bool _isOKPressed = false;
         private PointCollection SectionPoints = new PointCollection();
         public adminSections()
         {
             InitializeComponent();
+            try
+            {
+                db = new DatabaseService(new SqlStoreDatabaseFactory());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Something went wrong" + e.Message);
+            }
         }
 
         private void logoutBtn_Click(object sender, RoutedEventArgs e)
@@ -41,11 +53,24 @@ namespace mainMenu
         {
             Point retrievedPoint = e.GetPosition(canvas);
             Shape newSectionShape = ShapeCreator.CreateShape(retrievedPoint);
-
             canvas.Children.Add(newSectionShape);
 
-            // New dialog with bool to check if okay was pressed or not
-            SectionPoints.Add(retrievedPoint);
+            AddSectionDialog newSectionDialog = new AddSectionDialog();
+            newSectionDialog.ShowDialog();
+
+            if (newSectionDialog.IsOKPressed)
+            {
+                
+                SectionPoints.Add(retrievedPoint);
+                // Create section on database
+              
+            }
+            else
+            {
+                canvas.Children.Remove(newSectionShape);
+            }
+            
+            
 
         }
     }

@@ -14,16 +14,18 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="604*"/>
+            <RowDefinition Height="556*"/>
+            <RowDefinition Height="48*"/>
             <RowDefinition Height="70*"/>
             <RowDefinition Height="17*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1089*"/>
+            <ColumnDefinition Width="973*"/>
+            <ColumnDefinition Width="116*"/>
             <ColumnDefinition Width="171*"/>
             <ColumnDefinition Width="14*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="canvas" Background="AntiqueWhite" MouseDown="Canvas_OnMouseDown"></Canvas>
-        <Button x:Name="backBtn" Grid.Row="1" Grid.Column="1" Content="Tilbage" Click="logoutBtn_Click"></Button>
+        <Canvas x:Name="canvas" Background="AntiqueWhite" MouseDown="Canvas_OnMouseDown" Margin="10,10,3,2"/>
+        <Button x:Name="backBtn" Grid.Row="2" Grid.Column="2" Content="Tilbage" Click="logoutBtn_Click"></Button>
     </Grid>
 </Window>
