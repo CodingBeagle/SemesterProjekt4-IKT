@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,9 +30,18 @@ namespace mainMenu
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            IsOKPressed = true;
-            SectionName = SectionNameTextBox.Text;
-            Close();
+            
+            if (Regex.IsMatch(SectionNameTextBox.Text, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
+            {
+                IsOKPressed = true;
+                SectionName = SectionNameTextBox.Text;
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Navnet på en sektion må kun indeholde bogstaver og tal");
+            }
+           
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

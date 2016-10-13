@@ -48,8 +48,15 @@ namespace TestProject
 
             //test.TableFloorplan.UploadFloorplan("TestFloorplan", 1, 1, "beagle.jpg");
 
+<<<<<<< HEAD
+            //test.TableFloorplan.UploadFloorplan("poop", 20, 20, "beagle.jpg");
+=======
             //test.TableFloorplan.GetFloorplan(1);
+>>>>>>> 4fe0fc81e8c0f3cacce3df6cc0f42ad6fae7c969
 
+            test.TableFloorplan.UploadFloorplan("UDPATE SHIZZLE", 20, 20, "beagle.jpg");
+
+            Console.WriteLine("Press any key to terminate...");
             Console.ReadKey();
         }
     }

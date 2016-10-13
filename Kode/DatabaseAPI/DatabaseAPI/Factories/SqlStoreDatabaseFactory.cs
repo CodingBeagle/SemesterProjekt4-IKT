@@ -1,6 +1,7 @@
 ﻿using DatabaseAPI.TableFloorplan;
 using DatabaseAPI.TableItem;
 using DatabaseAPI.TableItemGroup;
+using DatabaseAPI.TableItemSectionPlacement;
 using DatabaseAPI.TableStoreSection;
 
 namespace DatabaseAPI.Factories
@@ -25,6 +26,11 @@ namespace DatabaseAPI.Factories
         public ITableFloorplan CreateTableFloorplan()
         {
             return new SqlTableFloorplan(new SqlConnectionStringFactory().CreateConnectionString());
+        }
+
+        public ITableItemSectionPlacement CreateTableItemSectionPlacement()
+        {
+            return new SqlTableItemSectionPlacement(new SqlConnectionStringFactory().CreateConnectionString());
         }
     }
 }
