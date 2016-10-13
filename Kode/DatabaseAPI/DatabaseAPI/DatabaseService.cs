@@ -13,11 +13,14 @@ namespace DatabaseAPI
 
         public ITableFloorplan TableFloorplan { get; private set; }
 
+        public ITableStoreSection TableStoreSection { get; private set; }
+
         public DatabaseService(IStoreDatabaseFactory storeDatabaseFactory)
         {
             TableItem = storeDatabaseFactory.CreateTableItem();
             TableItemGroup = storeDatabaseFactory.CreateTableItemGroup();
             TableFloorplan = storeDatabaseFactory.CreateTableFloorplan();
+            TableStoreSection = storeDatabaseFactory.CreateTableStoreSection();
         }
     }
 }
