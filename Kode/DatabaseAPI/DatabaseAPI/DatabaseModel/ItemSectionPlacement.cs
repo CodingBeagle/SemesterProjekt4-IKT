@@ -20,7 +20,7 @@ namespace DatabaseAPI.DatabaseModel
         public void UpdateInfo()
         {
             Item = db.TableItem.GetItem(_itemID);
-            //Section = db.
+            Section = db.TableStoreSection.GetStoreSection(_sectionID);
         }
     }
 }

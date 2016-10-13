@@ -12,7 +12,6 @@ namespace DatabaseAPI.TableItemSectionPlacement
         private SqlConnection _conn;
         private SqlDataReader _reader;
         private SqlCommand _cmd;
-        DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
 
 
         public SqlTableItemSectionPlacement(string connectionString)
@@ -22,26 +21,24 @@ namespace DatabaseAPI.TableItemSectionPlacement
 
         //Creates new touple in itemSectionplacement.
         //Returns the ItemSectionPlacementID for that touple
-        public long PlaceItem(long itemID, long sectionID)
+        public void PlaceItem(long itemID, long sectionID)
         {
-            long itemSectionPlacementID;
             try
             {
                 _conn.Open();
 
-                string sqlInsertCommand = $"INSERT INTO ItemSectionPlacement (ItemID, StoreSectionID)" +
-                                          $"VALUES ({itemID}, {sectionID});" +
+                string sqlInsertCommand = $"INSERT INTO ItemSectionPlacement (ItemID, StoreSectionID) " +
+                                          $"VALUES ({itemID}, {sectionID}); " +
                                           $"SELECT CAST(scope_identity() AS BIGINT)";
 
                 _cmd = new SqlCommand(sqlInsertCommand, _conn);
 
-                itemSectionPlacementID = (long) _cmd.ExecuteScalar();
+                _cmd.ExecuteNonQuery();
             }
             finally
             {
                 _conn?.Close();
             }
-            return itemSectionPlacementID;
         }
 
         //Finds all ItemIDs connected to the sectionID
@@ -51,46 +48,79 @@ namespace DatabaseAPI.TableItemSectionPlacement
         {
             List<Item> itemsInSection = new List<Item>();
             List<long> itemIDList = new List<long>();
-            
+
             try
             {
                 _conn.Open();
 
-                string sqlCommandString = $"SELECT * FROM ItemSectionPlacement" +
-                                          $"WHERE StoreSectionID = {sectionID};";
+                string sqlCommandString = $"SELECT * FROM ItemSectionPlacement " +
+                                          $"WHERE StoreSectionID = {sectionID}; ";
 
                 _cmd = new SqlCommand(sqlCommandString, _conn);
                 _reader = _cmd.ExecuteReader();
 
                 while (_reader.Read())
                 {
-                    if(!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
                     {
-                        itemIDList.Add((long)_reader["ItemID"]);
+                        itemIDList.Add((long) _reader["ItemID"]);
                     }
                 }
-
+                _conn?.Close();
+                _reader?.Close();
                 //Get items in the database, using the IDs from the ItemSectionPlacement
+                DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
                 foreach (var ID in itemIDList)
                 {
                     var localItem = db.TableItem.GetItem(ID);
                     itemsInSection.Add(localItem);
                 }
+                return itemsInSection;
+            }
+            catch(Exception e)
+            {
+                
+            }
+            return null;
+        }
+
+        public StoreSection FindPlacementByItem(long ItemID)
+        {
+            long sectionID=0;
+            try
+            {
+                _conn.Open();
+
+                string sqlCommandString = $"SELECT * FROM ItemSectionPlacement " +
+                                          $"WHERE ItemID = {ItemID};";
+
+                _cmd = new SqlCommand(sqlCommandString, _conn);
+
+                _reader = _cmd.ExecuteReader();
+                while (_reader.Read())
+                {
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("StoreSectionID")))
+                    {
+                        sectionID = (long)_reader["StoreSectionID"];
+                    }
+                }
+                DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
+                var itemPlacement = db.TableStoreSection.GetStoreSection(sectionID);
+                return itemPlacement;
             }
             finally 
             {
                 _conn?.Close();
                 _reader?.Close();
             }
-            return itemsInSection;
         }
 
-        public StoreSection FindPlacementByItem(long ItemID)
+        public void DeleteAllPlacementsInSection(long sectionId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void DeletePlacement(long itemSectionPlacementID)
+        public void DeletePlacementByItem(long itemId)
         {
             throw new NotImplementedException();
         }

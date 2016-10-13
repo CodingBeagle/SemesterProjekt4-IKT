@@ -12,7 +12,14 @@ namespace TestProject
         static void Main(string[] args)
         {
             DatabaseService test = new DatabaseService(new SqlStoreDatabaseFactory());
-            
+
+            List<Item> poop = test.TableItemSectionPlacement.ListItemsInSection(2);
+
+            foreach (var item in poop)
+            {
+                Console.WriteLine(item.Name);
+            }
+
             /*
             test.TableItem.DeleteItem(1);
             List<Item> searchList = test.TableItem.SearchItems("Rieder");
@@ -41,7 +48,7 @@ namespace TestProject
 
             //test.TableFloorplan.UploadFloorplan("TestFloorplan", 1, 1, "beagle.jpg");
 
-            test.TableFloorplan.GetFloorplan(1);
+            //test.TableFloorplan.GetFloorplan(1);
 
             Console.ReadKey();
         }

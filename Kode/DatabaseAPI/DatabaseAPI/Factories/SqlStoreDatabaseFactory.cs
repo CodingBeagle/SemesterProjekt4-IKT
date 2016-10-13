@@ -30,7 +30,7 @@ namespace DatabaseAPI.Factories
 
         public ITableItemSectionPlacement CreateTableItemSectionPlacement()
         {
-            throw new System.NotImplementedException();
+            return new SqlTableItemSectionPlacement(new SqlConnectionStringFactory().CreateConnectionString());
         }
     }
 }

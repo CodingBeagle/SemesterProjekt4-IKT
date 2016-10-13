@@ -5,12 +5,14 @@ namespace DatabaseAPI.TableItemSectionPlacement
 {
     public interface ITableItemSectionPlacement
     {
-        long PlaceItem(long itemID, long sectionID);
+        void PlaceItem(long itemID, long sectionID);
 
         List<Item> ListItemsInSection(long sectionID);
 
         StoreSection FindPlacementByItem(long ItemID);
 
-        void DeletePlacement(long itemSectionPlacementID);
+        void DeleteAllPlacementsInSection(long sectionId);
+
+        void DeletePlacementByItem(long itemId);
     }
 }
