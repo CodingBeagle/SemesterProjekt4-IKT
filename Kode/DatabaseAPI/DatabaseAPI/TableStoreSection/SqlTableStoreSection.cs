@@ -162,6 +162,26 @@ namespace DatabaseAPI.TableStoreSection
             }
             return storeSectionReturnValue;
         }
+
+        public void UpdateStoreSection(long storeSectionID, string storeSectionName, long coordinateX, long coordinateY, long floorPlanID)
+        {
+            try
+            {
+                _connection.Open();
+
+                _command =
+                    new SqlCommand(
+                        $"UPDATE StoreSection SET Name = '"+ storeSectionName +"', CoordinateX = '"+ coordinateX + "', CoordinateY = '" + coordinateY + "', FloorPlanID = '" + floorPlanID + "' WHERE StoreSectionID = '"+ storeSectionID +"'",
+                        _connection);
+
+                _command.ExecuteNonQuery();
+            }
+            finally
+            {
+                _connection?.Close();
+            }
+        }
+
     }
 
 }
