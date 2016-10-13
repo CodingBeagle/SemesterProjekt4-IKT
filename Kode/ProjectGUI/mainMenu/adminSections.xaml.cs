@@ -60,9 +60,7 @@ namespace mainMenu
 
             if (newSectionDialog.IsOKPressed)
             {
-                
-                SectionPoints.Add(retrievedPoint);
-                // Create section on database
+                db.TableStoreSection.CreateStoreSection(newSectionDialog.SectionName,(long)retrievedPoint.X,(long)retrievedPoint.Y,1);
               
             }
             else
