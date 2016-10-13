@@ -18,23 +18,26 @@ namespace DatabaseAPI.TableItem
             _conn = new SqlConnection(connectionString);
         }
 
-        public void CreateItem(string name, long itemGroupId)
+        public long CreateItem(string name, long itemGroupId)
         {
+            long createdID;
             try
             {
                 _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO Item (Name, ItemGroupID)" +
-                                          $"VALUES ('"+ name +"', "+ itemGroupId+")";
+                                          $"VALUES ('"+ name +"', "+ itemGroupId+");" +
+                                          "SELECT CAST(scope_identity() AS BIGINT)";
 
                 _cmd = new SqlCommand(sqlInsertCommand) {Connection = _conn};
 
-                _cmd.ExecuteNonQuery();
+                createdID = (long)_cmd.ExecuteScalar();
             }
             finally
             {
                 if (_conn != null) _conn.Close();
             }
+            return createdID;
 
         }
 

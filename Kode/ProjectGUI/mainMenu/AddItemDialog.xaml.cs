@@ -47,12 +47,13 @@ namespace mainMenu
         {
             try
             {
-                string itemName = ItemNameTextBox.Text;
+                var itemName = ItemNameTextBox.Text;
+                var group = (ItemGroup)ItemGroupComboBox.SelectedItem;
                 if (Regex.IsMatch(itemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
                 {
-                    ItemGroup group = (ItemGroup)ItemGroupComboBox.SelectedItem;
-                    db.TableItem.CreateItem(itemName, (long)@group.ItemGroupID);
-
+                    var itemID = db.TableItem.CreateItem(itemName, @group.ItemGroupID);
+                    var createdItem = new Item(itemID, itemName, @group.ItemGroupID);
+                    _displayItemses.Add(new DisplayItem(createdItem));
                     MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
                     Close();
                 }
