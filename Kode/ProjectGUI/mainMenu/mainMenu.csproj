@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddSectionDialog.xaml.cs">
+      <DependentUpon>AddSectionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="adminSections.xaml.cs">
       <DependentUpon>adminSections.xaml</DependentUpon>
     </Compile>
@@ -65,6 +68,10 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ShapeCreator.cs" />
     <Page Include="AddItemDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddSectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

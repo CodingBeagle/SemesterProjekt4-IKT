@@ -31,14 +31,16 @@ namespace mainMenu
         public adminItems()
         {
             InitializeComponent();
-            //SearchResultGrid.ItemsSource = searchList;
+            
             SearchResultGrid.DataContext = displayItemses;
             DeleteItems.DataContext = displayItemses;
+            EditItems.DataContext = displayItemses;
 
             try
             {
                 db = new DatabaseService(new SqlStoreDatabaseFactory());
-
+                searchList = db.TableItem.SearchItems("");
+                displayItemses.Populate(searchList);
             }
             catch (Exception e)
             {
@@ -51,8 +53,6 @@ namespace mainMenu
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             Close();
-
-
         }
 
         private void AddItems_Click(object sender, RoutedEventArgs e)
@@ -67,14 +67,7 @@ namespace mainMenu
             {
                 searchList = db.TableItem.SearchItems(SearchBox.Text);
                 displayItemses.Clear();
-                //SearchResultGrid.ItemsSource = searchList;
-                foreach (var item in searchList)
-                {
-                    DisplayItem displayItem = new DisplayItem(item);
-                    displayItemses.Add(displayItem);
-                }
-                SearchResultGrid.ItemsSource = null;
-                SearchResultGrid.ItemsSource = displayItemses;
+                displayItemses.Populate(searchList);
 
                 if (searchList.Count == 0)
                     MessageBox.Show($"Fandt ingen varer med navnet {SearchBox.Text}");

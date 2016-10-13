@@ -43,7 +43,18 @@ namespace mainMenu
         public DisplayItems() : base()
         {
             CurrentIndex = -1;
+            bool dummybool = false;
             DeleteItemCommand = new RelayCommand(DeleteItem, () => CurrentIndex >= 0);
+            EditItemCommand = new RelayCommand(() => MessageBox.Show("Not Implemented"), () => dummybool == true);
+        }
+
+        public void Populate(List<Item> searchList)
+        {
+            foreach (var item in searchList)
+            {
+                DisplayItem displayItem = new DisplayItem(item);
+                Add(displayItem);
+            }
         }
 
         public void DeleteItem()
