@@ -2,6 +2,7 @@
 using DatabaseAPI.TableFloorplan;
 using DatabaseAPI.TableItem;
 using DatabaseAPI.TableItemGroup;
+using DatabaseAPI.TableItemSectionPlacement;
 
 namespace DatabaseAPI
 {
@@ -14,6 +15,7 @@ namespace DatabaseAPI
         public ITableFloorplan TableFloorplan { get; private set; }
 
         public ITableStoreSection TableStoreSection { get; private set; }
+        public ITableItemSectionPlacement TableItemSectionPlacement { get; private set; }
 
         public DatabaseService(IStoreDatabaseFactory storeDatabaseFactory)
         {
@@ -21,6 +23,7 @@ namespace DatabaseAPI
             TableItemGroup = storeDatabaseFactory.CreateTableItemGroup();
             TableFloorplan = storeDatabaseFactory.CreateTableFloorplan();
             TableStoreSection = storeDatabaseFactory.CreateTableStoreSection();
+            TableItemSectionPlacement = storeDatabaseFactory.CreateTableItemSectionPlacement();
         }
     }
 }

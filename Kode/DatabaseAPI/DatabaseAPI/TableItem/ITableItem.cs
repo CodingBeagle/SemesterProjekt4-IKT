@@ -8,5 +8,6 @@ namespace DatabaseAPI.TableItem
         long CreateItem(string name, long itemGroup);
         void DeleteItem(long ID);
         List<Item> SearchItems(string itemName);
+        Item GetItem(long itemID);
     }
 }
