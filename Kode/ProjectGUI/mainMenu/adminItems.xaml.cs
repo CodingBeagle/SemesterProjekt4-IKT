@@ -59,6 +59,8 @@ namespace mainMenu
         {
             AddItemDialog newAddItemDialog = new AddItemDialog(displayItemses);
             newAddItemDialog.ShowDialog();
+
+            
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)

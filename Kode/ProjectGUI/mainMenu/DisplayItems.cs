@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -21,11 +22,11 @@ namespace mainMenu
 
         public ICommand DeleteItemCommand { get; private set; }
         public ICommand EditItemCommand { get; private set; }
-
         public ICommand AddNewItemCommand { get; private set; }
 
         private int _currentIndex;
-
+        private string _itemName;
+        private ItemGroup _itemGroup;
         public int CurrentIndex
         {
             get { return _currentIndex; }
@@ -40,12 +41,37 @@ namespace mainMenu
             }
         }
 
+        public string ItemName
+        {
+            get { return _itemName;}
+            set { if(_itemName != value) _itemName= value; NotifyPropertyChanged(); }
+        }
+
+
+        private int _currentCBIndex;
+
+        public int CurrentCBIndex
+        {
+            get { return _currentCBIndex;}
+            set
+            {
+                if (_currentCBIndex != value) _currentCBIndex = value; NotifyPropertyChanged();
+            }
+        }
+
+
+        public List<ItemGroup> cbItemGroups
+        {
+            get { return db.TableItemGroup.GetAllItemGroups(); }
+        }
+
         public DisplayItems() : base()
         {
             CurrentIndex = -1;
             bool dummybool = false;
             DeleteItemCommand = new RelayCommand(DeleteItem, () => CurrentIndex >= 0);
             EditItemCommand = new RelayCommand(() => MessageBox.Show("Not Implemented"), () => dummybool == true);
+            AddNewItemCommand = new RelayCommand(AddItem, () => dummybool == false);
         }
 
         public void Populate(List<Item> searchList)
@@ -66,6 +92,29 @@ namespace mainMenu
                 RemoveAt(CurrentIndex);
                 MessageBox.Show($"{selectedItem.VareNavn} blev slettet fra databasen");
                 
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+            }
+        }
+
+        public void AddItem()
+        {
+            try
+            {
+                if (Regex.IsMatch(ItemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
+                {
+                    var itemID = db.TableItem.CreateItem(ItemName, cbItemGroups[CurrentCBIndex].ItemGroupID);
+                    var createdItem = new Item(itemID, ItemName, cbItemGroups[CurrentCBIndex].ItemGroupID);
+                    Add(new DisplayItem(createdItem));
+                    MessageBox.Show($"{ItemName} er blevet tilføjet til databasen");
+                }
+                else
+                {
+                    MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
+                }
+
             }
             catch (Exception exception)
             {

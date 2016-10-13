@@ -23,7 +23,7 @@ namespace mainMenu
     /// </summary>
     public partial class AddItemDialog : Window
     {
-        public List<ItemGroup> wareGroups;
+        public List<ItemGroup> WareGroups;
         private DatabaseService db;
         private DisplayItems _displayItemses;
         public AddItemDialog(DisplayItems displayItemses)
@@ -32,10 +32,12 @@ namespace mainMenu
             try
             {
                 db = new DatabaseService(new SqlStoreDatabaseFactory());
-                wareGroups = db.TableItemGroup.GetAllItemGroups();
-                ItemGroupComboBox.ItemsSource = wareGroups;
+                //WareGroups = db.TableItemGroup.GetAllItemGroups();
+                ItemGroupComboBox.ItemsSource = displayItemses.cbItemGroups;
                 ItemGroupComboBox.DisplayMemberPath = "ItemGroupName";
                 _displayItemses = displayItemses;
+                ItemNameTextBox.DataContext = displayItemses;
+                CreateItemButton.DataContext = displayItemses;
             }
             catch (Exception e)
             {
@@ -45,28 +47,28 @@ namespace mainMenu
 
         private void CreateItemButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var itemName = ItemNameTextBox.Text;
-                var group = (ItemGroup)ItemGroupComboBox.SelectedItem;
-                if (Regex.IsMatch(itemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
-                {
-                    var itemID = db.TableItem.CreateItem(itemName, @group.ItemGroupID);
-                    var createdItem = new Item(itemID, itemName, @group.ItemGroupID);
-                    _displayItemses.Add(new DisplayItem(createdItem));
-                    MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
-                    Close();
-                }
-                else
-                {
-                    MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
-                }
-                
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
-            }
+            //try
+            //{
+            //    var itemName = ItemNameTextBox.Text;
+            //    var group = (ItemGroup)ItemGroupComboBox.SelectedItem;
+            //    if (Regex.IsMatch(itemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
+            //    {
+            //        var itemID = db.TableItem.CreateItem(itemName, @group.ItemGroupID);
+            //        var createdItem = new Item(itemID, itemName, @group.ItemGroupID);
+            //        _displayItemses.Add(new DisplayItem(createdItem));
+            //        MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
+            //        Close();
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
+            //    }
+
+            //}
+            //catch (Exception exception)
+            //{
+            //    MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+            //}
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
