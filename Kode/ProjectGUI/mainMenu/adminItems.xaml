@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mainMenu"
         mc:Ignorable="d"
-        Title="Administrer Varer" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Administrer Varer" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="images/favicon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="158*"/>

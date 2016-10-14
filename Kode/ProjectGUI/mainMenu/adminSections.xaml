@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:mainMenu"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Icon="images/favicon.ico">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="28"></Setter>

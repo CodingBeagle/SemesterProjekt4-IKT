@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -49,7 +50,7 @@ namespace mainMenu
             Button source = (Button) e.Source;
 
             storeSectionMapping.TryGetValue(source.Name, out _currentlySelectedStoreSectionID);
-            //deleteSectionBtn.IsEnabled = true;
+            deleteSectionBtn.IsEnabled = true;
 
             Debug.WriteLine("Button name that was clicked: " + source.Name + " " + _currentlySelectedStoreSectionID);
         }
@@ -116,7 +117,22 @@ namespace mainMenu
 
         private void deleteSectionBtn_Click(object sender, RoutedEventArgs e)
         {
+            Button sectionButtonToDelete = null;
+            string buttonName = "Button" + _currentlySelectedStoreSectionID;
+        
+            foreach (var button in canvas.Children.OfType<Button>())
+            {
+                if (button.Name == buttonName)
+                {
+                    sectionButtonToDelete = button;
+                }
+            }
+
+            if(sectionButtonToDelete!= null)
+            { canvas.Children.Remove(sectionButtonToDelete);}
+           
             _db.TableStoreSection.DeleteStoreSection(_currentlySelectedStoreSectionID);
+            
         }
     }
 }
