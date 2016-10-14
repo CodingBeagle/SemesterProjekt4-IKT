@@ -14,5 +14,7 @@ namespace DatabaseAPI.Factories
 
         void UpdateStoreSection(long storeSectionID, string storeSectionName, long coordinateX, long coordinateY,
             long floorPlanID);
+
+        void UpdateStoreSectionName(long storeSectionID, string storeSectionName);
     }
 }

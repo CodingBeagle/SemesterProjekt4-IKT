@@ -51,6 +51,7 @@ namespace mainMenu
 
             storeSectionMapping.TryGetValue(source.Name, out _currentlySelectedStoreSectionID);
             deleteSectionBtn.IsEnabled = true;
+            editSectionBtn.IsEnabled = true;
 
             Debug.WriteLine("Button name that was clicked: " + source.Name + " " + _currentlySelectedStoreSectionID);
         }
@@ -61,6 +62,7 @@ namespace mainMenu
             if (_currentlySelectedStoreSectionID == 0)
             {
                 deleteSectionBtn.IsEnabled = false;
+                editSectionBtn.IsEnabled = false;
             }
           
 
@@ -133,6 +135,20 @@ namespace mainMenu
            
             _db.TableStoreSection.DeleteStoreSection(_currentlySelectedStoreSectionID);
             
+        }
+
+        private void editSectionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(_currentlySelectedStoreSectionID);
+
+            EditSectionDialog newSectionDialog = new EditSectionDialog(sectionToEdit.Name);
+            newSectionDialog.ShowDialog();
+
+            if (newSectionDialog.IsSectionNameChanged)
+            {
+                
+                _db.TableStoreSection.UpdateStoreSectionName(_currentlySelectedStoreSectionID, newSectionDialog.newSectionName);
+            }
         }
     }
 }

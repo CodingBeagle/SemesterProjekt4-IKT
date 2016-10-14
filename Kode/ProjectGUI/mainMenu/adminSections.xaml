@@ -31,5 +31,6 @@
         <Canvas x:Name="canvas" Background="AntiqueWhite" MouseDown="Canvas_OnMouseDown" Margin="10,0,3,2" Grid.Row="1" Grid.RowSpan="3"/>
         <Button x:Name="backBtn" Grid.Row="5" Grid.Column="2" Content="Tilbage" Click="logoutBtn_Click"></Button>
         <Button x:Name="deleteSectionBtn" Grid.Row="1" Grid.Column="2" Content="_Slet Sektion" Click="deleteSectionBtn_Click"></Button>
+        <Button x:Name="editSectionBtn" Grid.Row="2" Grid.Column="2" FontSize="21" Content="_Rediger Sektion" Click="editSectionBtn_Click"></Button>
     </Grid>
 </Window>

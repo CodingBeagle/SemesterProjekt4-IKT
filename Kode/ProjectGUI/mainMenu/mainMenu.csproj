@@ -65,6 +65,9 @@
     <Compile Include="AdminFloorplan.xaml.cs">
       <DependentUpon>AdminFloorplan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditSectionDialog.xaml.cs">
+      <DependentUpon>EditSectionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ShapeButtonCreator.cs" />
     <Page Include="AddItemDialog.xaml">
@@ -84,6 +87,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AdminFloorplan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditSectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

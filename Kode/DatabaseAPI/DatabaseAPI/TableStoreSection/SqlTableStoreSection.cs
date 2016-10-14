@@ -186,6 +186,21 @@ namespace DatabaseAPI.TableStoreSection
             }
         }
 
+        public void UpdateStoreSectionName(long storeSectionID, string storeSectionName)
+        {
+            string query = @"UPDATE StoreSection SET Name = @newSectionName WHERE StoreSectionID = @storeSectionID";
+
+            using (_command =  new SqlCommand(query,_connection))
+            {
+                _connection.Open();
+                _command.Parameters.AddWithValue("@newSectionName", storeSectionName);
+                _command.Parameters.AddWithValue("@storeSectionID", storeSectionID);
+
+                _command.ExecuteNonQuery();
+                _connection.Close();
+            }
+        }
+
     }
 
 }
