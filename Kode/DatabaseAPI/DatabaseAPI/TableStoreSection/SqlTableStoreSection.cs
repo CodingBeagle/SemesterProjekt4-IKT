@@ -167,7 +167,7 @@ namespace DatabaseAPI.TableStoreSection
             return storeSectionReturnValue;
         }
 
-        public void UpdateStoreSection(long storeSectionID, string storeSectionName, long coordinateX, long coordinateY, long floorPlanID)
+        public void UpdateStoreSectionCoordinate(long storeSectionID, long coordinateX, long coordinateY)
         {
             try
             {
@@ -175,7 +175,7 @@ namespace DatabaseAPI.TableStoreSection
 
                 _command =
                     new SqlCommand(
-                        $"UPDATE StoreSection SET Name = '"+ storeSectionName +"', CoordinateX = '"+ coordinateX + "', CoordinateY = '" + coordinateY + "', FloorPlanID = '" + floorPlanID + "' WHERE StoreSectionID = '"+ storeSectionID +"'",
+                        $"UPDATE StoreSection SET  CoordinateX = '"+ coordinateX + "', CoordinateY = '" + coordinateY + "' WHERE StoreSectionID = '"+ storeSectionID +"'",
                         _connection);
 
                 _command.ExecuteNonQuery();
