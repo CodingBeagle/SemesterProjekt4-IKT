@@ -12,8 +12,7 @@ namespace DatabaseAPI.Factories
         List<StoreSection> GetAllStoreSections(long floorPlanID);
         StoreSection GetStoreSection(long storeSectionID);
 
-        void UpdateStoreSection(long storeSectionID, string storeSectionName, long coordinateX, long coordinateY,
-            long floorPlanID);
+        void UpdateStoreSectionCoordinate(long storeSectionID, long coordinateX, long coordinateY);
 
         void UpdateStoreSectionName(long storeSectionID, string storeSectionName);
     }
