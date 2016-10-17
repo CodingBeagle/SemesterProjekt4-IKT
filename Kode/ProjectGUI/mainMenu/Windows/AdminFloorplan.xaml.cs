@@ -29,5 +29,28 @@ namespace mainMenu
         {
 
         }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            Close();
+
+        }
+
+        private void browseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog browse = new Microsoft.Win32.OpenFileDialog();
+            browse.DefaultExt = ".png";
+
+            Nullable<bool> result = browse.ShowDialog();
+
+
+            if (result.HasValue && result.Value)
+            {
+                string filename = browse.FileName;
+                filepathBox.Text = filename;
+            }
+        }
     }
 }
