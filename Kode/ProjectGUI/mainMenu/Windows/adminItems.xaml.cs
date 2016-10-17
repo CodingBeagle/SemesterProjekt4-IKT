@@ -26,25 +26,12 @@ namespace mainMenu
     /// </summary>
     public partial class adminItems : Window
     {
-        private List<Item> searchList;
         public AdminItemViewModel viewModel = new AdminItemViewModel();
-        private DatabaseService db;
 
         public adminItems()
         {
             InitializeComponent();
             this.DataContext = viewModel;
-
-            try
-            {
-                db = new DatabaseService(new SqlStoreDatabaseFactory());
-                searchList = db.TableItem.SearchItems("");
-                viewModel.ListOfItems.Populate(searchList);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Something went horribly wrong: {e.Message}");
-            }
         }
 
         private void BackBtn_OnClick(object sender, RoutedEventArgs e)
@@ -58,8 +45,6 @@ namespace mainMenu
         {
             AddItemDialog newAddItemDialog = new AddItemDialog(viewModel);
             newAddItemDialog.ShowDialog();
-
-            
         }
     }
 }
