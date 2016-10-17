@@ -40,8 +40,9 @@ namespace DatabaseAPI.TableItemGroup
             return _createdID;
         }
 
-        public void CreateItemGroup(string itemGroupName)
+        public long CreateItemGroup(string itemGroupName)
         {
+            long _createdID;
             try
             {
                 _connection.Open();
@@ -51,12 +52,13 @@ namespace DatabaseAPI.TableItemGroup
                         $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "')",
                         _connection);
 
-                _command.ExecuteNonQuery();
+                _createdID = (long)_command.ExecuteScalar();
             }
             finally
             {
                 _connection?.Close();
             }
+            return _createdID;
         }
 
         public void DeleteItemGroup(long itemGroupID)

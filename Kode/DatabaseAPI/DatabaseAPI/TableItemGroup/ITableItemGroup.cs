@@ -6,7 +6,7 @@ namespace DatabaseAPI.TableItemGroup
     public interface ITableItemGroup
     {
         long CreateItemGroup(string itemGroupItem, long itemGroupParentID);
-        void CreateItemGroup(string itemGroupItemName);
+        long CreateItemGroup(string itemGroupItemName);
         void DeleteItemGroup(long itemGroupID);
         ItemGroup GetItemGroup(long itemGroupID);
         
