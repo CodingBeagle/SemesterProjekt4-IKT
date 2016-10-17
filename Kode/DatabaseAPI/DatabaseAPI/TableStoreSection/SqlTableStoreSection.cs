@@ -82,9 +82,9 @@ namespace DatabaseAPI.TableStoreSection
             }
         }
 
-        public List<StoreSection> GetAllStoreSections(long floorPlanID)
+        public List<StoreSectionModel> GetAllStoreSections(long floorPlanID)
         {
-            List<StoreSection> allStoreSections = new List<StoreSection>();
+            List<StoreSectionModel> allStoreSections = new List<StoreSectionModel>();
             try
             {
                 _connection.Open();
@@ -112,7 +112,7 @@ namespace DatabaseAPI.TableStoreSection
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateY")))
                         coordinateY = (long)_dataReader["CoordinateY"];
 
-                    var newSection = new StoreSection(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
+                    var newSection = new StoreSectionModel(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
                     allStoreSections.Add(newSection);
                 }
             }
@@ -125,9 +125,9 @@ namespace DatabaseAPI.TableStoreSection
         }
 
 
-        public StoreSection GetStoreSection(long storeSectionID)
+        public StoreSectionModel GetStoreSection(long storeSectionID)
         {
-            StoreSection storeSectionReturnValue = null;
+            StoreSectionModel storeSectionReturnValue = null;
             try
             {
                 _connection.Open();
@@ -155,7 +155,7 @@ namespace DatabaseAPI.TableStoreSection
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("FloorPlanID")))
                         floorPlanID = (long)_dataReader["FloorPlanID"];
 
-                    storeSectionReturnValue = new StoreSection(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
+                    storeSectionReturnValue = new StoreSectionModel(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
                     
                 }
             }

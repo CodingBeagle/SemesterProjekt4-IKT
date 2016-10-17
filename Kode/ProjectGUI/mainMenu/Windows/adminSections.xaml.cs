@@ -26,129 +26,20 @@ namespace mainMenu
     public partial class adminSections : Window
     {
         private DatabaseService _db;
-        private List<StoreSection> _storeSectionList;
-        // To be deleted when we have method to get floorplan ID
-        private long _floorplanID = 1;
-        private Dictionary<string, long> storeSectionMapping = new Dictionary<string, long>();
+        
+        
+ 
         private long _currentlySelectedStoreSectionID = 0;
 
         public adminSections()
         {
             InitializeComponent();
-            try
-            {
-                _db = new DatabaseService(new SqlStoreDatabaseFactory());
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Something went wrong" + e.Message);
-            }
-        }
-
-        private void sectionButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button source = (Button) e.Source;
-
-            storeSectionMapping.TryGetValue(source.Name, out _currentlySelectedStoreSectionID);
-            deleteSectionBtn.IsEnabled = true;
-            editSectionBtn.IsEnabled = true;
-
-            Debug.WriteLine("Button name that was clicked: " + source.Name + " " + _currentlySelectedStoreSectionID);
+    
+            DataContext = new StoreSectionViewModel(this);
         }
 
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_currentlySelectedStoreSectionID == 0)
-            {
-                deleteSectionBtn.IsEnabled = false;
-                editSectionBtn.IsEnabled = false;
-            }
-          
 
-            _storeSectionList = _db.TableStoreSection.GetAllStoreSections(_floorplanID);
-            foreach (var section in _storeSectionList)
-            {
-                Button loadedShapeButton = ShapeButtonCreator.CreateShapeButton(section.CoordinateX, section.CoordinateY);
-
-                AddNewButtonToDictionary(section.StoreSectionID, loadedShapeButton);
-
-                canvas.Children.Add(loadedShapeButton);
-            }
-        }
-
-        private void logoutBtn_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-
-            Close();
-
-        }
-
-
-        private void Canvas_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Point retrievedPoint = e.GetPosition(canvas);
-            Button newSectionShapeButton = ShapeButtonCreator.CreateShapeButton(retrievedPoint.X,retrievedPoint.Y);
-            canvas.Children.Add(newSectionShapeButton);
-
-            AddSectionDialog newSectionDialog = new AddSectionDialog();
-            newSectionDialog.ShowDialog();
-
-            if (newSectionDialog.IsOKPressed)
-            {
-                long newStoreSectionID = _db.TableStoreSection.CreateStoreSection(newSectionDialog.SectionName,(long)retrievedPoint.X,(long)retrievedPoint.Y, _floorplanID);
-                AddNewButtonToDictionary(newStoreSectionID, newSectionShapeButton);
-            }
-            else
-            {
-                canvas.Children.Remove(newSectionShapeButton);
-            }
-        }
-
-        private void AddNewButtonToDictionary(long sectionID, Button associatedButton)
-        {
-            string newButtonName = "Button" + sectionID;
-
-            associatedButton.Name = newButtonName;
-            storeSectionMapping.Add(newButtonName, sectionID);
-
-            associatedButton.Click += sectionButton_Click;
-        }
-
-        private void deleteSectionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Button sectionButtonToDelete = null;
-            string buttonName = "Button" + _currentlySelectedStoreSectionID;
-        
-            foreach (var button in canvas.Children.OfType<Button>())
-            {
-                if (button.Name == buttonName)
-                {
-                    sectionButtonToDelete = button;
-                }
-            }
-
-            if(sectionButtonToDelete!= null)
-            { canvas.Children.Remove(sectionButtonToDelete);}
-           
-            _db.TableStoreSection.DeleteStoreSection(_currentlySelectedStoreSectionID);
-            
-        }
-
-        private void editSectionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(_currentlySelectedStoreSectionID);
-
-            EditSectionDialog newSectionDialog = new EditSectionDialog(sectionToEdit.Name);
-            newSectionDialog.ShowDialog();
-
-            if (newSectionDialog.IsSectionNameChanged)
-            {
-                
-                _db.TableStoreSection.UpdateStoreSectionName(_currentlySelectedStoreSectionID, newSectionDialog.newSectionName);
-            }
-        }
+   
     }
 }
