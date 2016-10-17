@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseModel\ItemSectionPlacement.cs" />
-    <Compile Include="DatabaseModel\StoreSectionModel.cs" />
+    <Compile Include="DatabaseModel\StoreSection.cs" />
     <Compile Include="TableItemSectionPlacement\ITableItemSectionPlacement.cs" />
     <Compile Include="TableItemSectionPlacement\SqlTableItemSectionPlacement.cs" />
     <Compile Include="TableStoreSection\ITableStoreSection.cs" />

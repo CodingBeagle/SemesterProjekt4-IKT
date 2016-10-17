@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAPI.DatabaseModel
 {
-    public class StoreSectionModel
+    public class StoreSection
     {
         public long StoreSectionID { get; set; }
         public string Name { get; set; }
@@ -14,7 +14,7 @@ namespace DatabaseAPI.DatabaseModel
         public long CoordinateY { get; set; }
         public long FloorPlanID { get; set; }
 
-        public StoreSectionModel(long storeSectionID, string name, long coordinateX, long coordinateY, long floorPlanID)
+        public StoreSection(long storeSectionID, string name, long coordinateX, long coordinateY, long floorPlanID)
         {
             StoreSectionID = storeSectionID;
             Name = name;

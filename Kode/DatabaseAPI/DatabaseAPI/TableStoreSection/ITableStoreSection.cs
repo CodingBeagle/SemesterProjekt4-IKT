@@ -9,8 +9,8 @@ namespace DatabaseAPI.Factories
         void DeleteStoreSection(long storeSectionID);
         void DeleteAllStoreSections(long floorPlanID);
 
-        List<StoreSectionModel> GetAllStoreSections(long floorPlanID);
-        StoreSectionModel GetStoreSection(long storeSectionID);
+        List<StoreSection> GetAllStoreSections(long floorPlanID);
+        StoreSection GetStoreSection(long storeSectionID);
 
         void UpdateStoreSectionCoordinate(long storeSectionID, long coordinateX, long coordinateY);
 

@@ -83,7 +83,7 @@ namespace DatabaseAPI.TableItemSectionPlacement
             return null;
         }
 
-        public StoreSectionModel FindPlacementByItem(long ItemID)
+        public StoreSection FindPlacementByItem(long ItemID)
         {
             long sectionID = 0;
             try

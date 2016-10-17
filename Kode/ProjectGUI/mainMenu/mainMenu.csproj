@@ -35,9 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Expression.Prototyping.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,6 +61,8 @@
     </ApplicationDefinition>
     <Compile Include="Models\DisplayItem.cs" />
     <Compile Include="ViewModels\AdminItemViewModel.cs" />
+    <Compile Include="ViewModels\FloorplanViewModel.cs" />
+    <Compile Include="ViewModels\StoreSectionViewModel.cs" />
     <Compile Include="Windows\AddSectionDialog.xaml.cs">
       <DependentUpon>AddSectionDialog.xaml</DependentUpon>
     </Compile>

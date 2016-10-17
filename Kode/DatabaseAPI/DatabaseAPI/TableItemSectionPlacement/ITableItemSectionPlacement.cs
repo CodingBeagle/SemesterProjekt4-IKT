@@ -9,7 +9,7 @@ namespace DatabaseAPI.TableItemSectionPlacement
 
         List<Item> ListItemsInSection(long sectionID);
 
-        StoreSectionModel FindPlacementByItem(long ItemID);
+        StoreSection FindPlacementByItem(long ItemID);
 
         void DeleteAllPlacementsInSection(long sectionId);
 

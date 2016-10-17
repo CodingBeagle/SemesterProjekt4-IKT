@@ -5,7 +5,7 @@ namespace DatabaseAPI.DatabaseModel
     public class ItemSectionPlacement
     {
         public Item  Item{ get; set; }
-        public StoreSectionModel Section { get; set; }
+        public StoreSection Section { get; set; }
 
         private DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
         private long _itemID;

@@ -52,7 +52,7 @@ namespace mainMenu
 
         private DatabaseService _db;
         private long _floorplanID = 1;
-        private List<StoreSectionModel> _storeSectionList;
+        private List<StoreSection> _storeSectionList;
 
         public StoreSectionViewModel(Window window)
         {
@@ -155,7 +155,7 @@ namespace mainMenu
 
         private void editStoreSectionHandler()
         {
-            StoreSectionModel sectionToEdit = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
+            StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
 
             NewSectionName = "";
             PreviousSectionName = sectionToEdit.Name;
