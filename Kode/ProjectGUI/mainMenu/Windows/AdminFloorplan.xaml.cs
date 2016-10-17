@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace mainMenu
 {
@@ -40,17 +41,17 @@ namespace mainMenu
 
         private void browseBtn_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog browse = new Microsoft.Win32.OpenFileDialog();
-            browse.DefaultExt = ".png";
+            var browse = new OpenFileDialog();
 
-            Nullable<bool> result = browse.ShowDialog();
+            browse.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
 
 
-            if (result.HasValue && result.Value)
-            {
-                string filename = browse.FileName;
-                filepathBox.Text = filename;
-            }
+            var result = browse.ShowDialog();
+
+
+            if (!result.HasValue || !result.Value) return;
+            var filename = browse.FileName;
+            filepathBox.Text = filename;
         }
     }
 }

@@ -8,23 +8,27 @@
         Title="AdminFloorplan Management" Height="720" Width="1280" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="87*"/>
-            <ColumnDefinition Width="46*"/>
-            <ColumnDefinition Width="26*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="614*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="443*"/>
+            <ColumnDefinition Width="106*"/>
+            <ColumnDefinition Width="102*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="159*"/>
+            <RowDefinition Height="160*"/>
             <RowDefinition Height="40*"/>
-            <RowDefinition Height="490*"/>
+            <RowDefinition Height="478*"/>
+            <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
 
-        <Border Background="BurlyWood" BorderBrush="Black" BorderThickness="2" Margin="10,1,74,10" Grid.Row="1" Grid.RowSpan="2">
-            <Image x:Name="floorplanThumbnail" Margin="8,8,0,0"/>
+        <Border Background="BurlyWood" BorderBrush="Black" BorderThickness="2" Margin="1,1,0,10" Grid.Row="1" Grid.RowSpan="3" Grid.Column="1">
+            <Image x:Name="floorplanThumbnail" Margin="-2"/>
         </Border>
-        <Button x:Name="backBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="18,400,0,0" VerticalAlignment="Top" Width="180" Height="80" FontSize="28" Grid.Row="2" Grid.Column="2" Click="backBtn_Click"/>
-        <Button x:Name="browseBtn" Content="Browse" HorizontalAlignment="Left" Width="107" Grid.Column="2" Grid.Row="1" Margin="0,1,0,0" Click="browseBtn_Click"/>
-        <TextBox x:Name="filepathBox" HorizontalAlignment="Left" Height="39" Margin="0,1,0,0" TextWrapping="Wrap" Text="Indtast filsti" VerticalAlignment="Top" Width="368" Grid.Row="1" Grid.Column="1" FontSize="20"/>
-        <Label x:Name="windowTitle" Content="Administrer Plantegning" HorizontalAlignment="Left" Margin="426,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="66" Width="518" RenderTransformOrigin="0.544,-0.038" FontSize="40"/>
+        <Button x:Name="backBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="18,400,0,0" VerticalAlignment="Top" Width="180" Height="80" FontSize="28" Grid.Row="2" Grid.Column="4" Click="backBtn_Click" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Button x:Name="browseBtn" Content="Browse" HorizontalAlignment="Left" Width="107" Grid.Column="4" Grid.Row="1" Margin="0,1,0,0" Click="browseBtn_Click" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="filepathBox" HorizontalAlignment="Left" Height="39" Margin="0,1,0,0" TextWrapping="Wrap" Text="Indtast filsti" VerticalAlignment="Top" Width="443" Grid.Row="1" Grid.Column="2" FontSize="16" Grid.ColumnSpan="2"/>
+        <Label x:Name="windowTitle" Content="Administrer Plantegning" HorizontalAlignment="Left" Margin="417,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Height="66" Width="518" RenderTransformOrigin="0.544,-0.038" FontSize="40" Grid.Column="1"/>
 
 
     </Grid>
