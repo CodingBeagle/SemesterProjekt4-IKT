@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Floorplan] (
-    [Name]        TEXT   NOT NULL,
+    [Name]        NVARCHAR(450) NOT NULL UNIQUE,
     [FloorPlanID] BIGINT NOT NULL,
     [Image]       IMAGE  NOT NULL,
     [imageWidth]  BIGINT NOT NULL,
