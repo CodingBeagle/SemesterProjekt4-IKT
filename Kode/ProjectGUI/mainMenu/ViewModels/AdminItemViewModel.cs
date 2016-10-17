@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -20,7 +21,7 @@ namespace mainMenu.ViewModels
         public ICommand EditItemCommand { get; set; }
         public ICommand SearchCommand { get; private set; }
         private DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
-        
+
         private int _comboBoxIndex;
         private string _searchString;
         private string _itemName;
@@ -51,6 +52,7 @@ namespace mainMenu.ViewModels
                 }
             }
         }
+
         public string ItemName
         {
             get { return _itemName; }
@@ -70,15 +72,26 @@ namespace mainMenu.ViewModels
         {
             get { return db.TableItemGroup.GetAllItemGroups(); }
         }
+
         public AdminItemViewModel()
         {
-            ListOfItems = new DisplayItems();
-            ComboBoxIndex = -1;
-            bool dummybool = false;
-            DeleteItemCommand = new RelayCommand(DeleteItem, () => ListOfItems.CurrentIndex >= 0);
-            CreateItemCommand = new RelayCommand(AddItem, () => dummybool == false);
-            EditItemCommand = new RelayCommand(() => MessageBox.Show("Not Implemented"), () => dummybool == true);
-            SearchCommand = new RelayCommand(Search, () => dummybool == false);
+            try
+            {
+                ListOfItems = new DisplayItems();
+                ComboBoxIndex = -1;
+                bool dummybool = false;
+                DeleteItemCommand = new RelayCommand(DeleteItem, () => ListOfItems.CurrentIndex >= 0);
+                CreateItemCommand = new RelayCommand(AddItem, () => dummybool == false);
+                EditItemCommand = new RelayCommand(() => MessageBox.Show("Not Implemented"), () => dummybool == true);
+                SearchCommand = new RelayCommand(Search, () => dummybool == false);
+
+                ListOfItems.Populate(db.TableItem.SearchItems(""));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Something went horribly wrong: " + e.Message);
+            }
+            
         }
 
         public void DeleteItem()
