@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
+using System.Linq;
 
 namespace DatabaseAPI.TableItem
 {
@@ -47,7 +48,7 @@ namespace DatabaseAPI.TableItem
             {
                 _conn.Open();
                 string sqlDeleteCommand = $"DELETE FROM Item " +
-                                          $"WHERE ItemId = '" + ID + "'";
+                                          $"WHERE ItemId = " + ID;
 
                 _cmd = new SqlCommand(sqlDeleteCommand) {Connection = _conn};
 
@@ -75,43 +76,38 @@ namespace DatabaseAPI.TableItem
                 _cmd = new SqlCommand(cmdText, _conn);
 
                 _reader = _cmd.ExecuteReader();
-
-                long itemID = 0;
-                string theName = "";
-                long itemGroupID = 0;
-
+                
                 while (_reader.Read())
                 {
+                    Item localItem = new Item(0, "", 0);
+
                     if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
-                        itemID = (long) _reader["ItemID"];
+                        localItem.ItemID = (long)_reader["ItemID"];
 
                     if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
-                        theName = (string) _reader["Name"];
+                        localItem.Name = (string)_reader["Name"];
 
                     if (!_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
-                        itemGroupID = (long) _reader["ItemGroupID"];
+                        localItem.ItemGroupID = (long)_reader["ItemGroupID"];
 
-                    var localItem = new Item(itemID, theName, itemGroupID);
                     listOfItems.Add(localItem);
-                }
-                return listOfItems;
+                }               
             }
             finally
             {
                 _reader?.Close();
                 _conn?.Close();
             }
+            return listOfItems;
         }
 
         public Item GetItem(long itemID)
         {
-            long itemIDtoItem = 0;
-            string theName = "";
-            long itemGroupID = 0;
+            Item localItem = null;
             try
             {
                 _conn.Open();
-                var localItem = new Item(itemIDtoItem, theName, itemGroupID);
+                
                 string cmdText = $"SELECT * FROM Item " +
                                  $"WHERE ItemID = {itemID}";
                 _cmd = new SqlCommand(cmdText, _conn);
@@ -120,24 +116,23 @@ namespace DatabaseAPI.TableItem
 
                 while (_reader.Read())
                 {
+                    localItem = new Item(0,"",0);
                     if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
-                        itemIDtoItem = (long)_reader["ItemID"];
+                        localItem.ItemID = (long)_reader["ItemID"];
 
                     if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
-                        theName = (string)_reader["Name"];
+                        localItem.Name = (string)_reader["Name"];
 
                     if (!_reader.IsDBNull(_reader.GetOrdinal("itemGroupID")))
-                        itemGroupID = (long)_reader["ItemGroupID"];
-
-                    localItem = new Item(itemIDtoItem, theName, itemGroupID);
-                }
-                return localItem;
+                        localItem.ItemGroupID = (long)_reader["ItemGroupID"];
+                }               
             }
             finally
             {
                 _reader?.Close();
                 _conn?.Close();
             }
+            return localItem;
         }
     }
 }
