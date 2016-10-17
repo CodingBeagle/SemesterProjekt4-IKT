@@ -68,7 +68,7 @@ namespace DatabaseAPI.TableItemGroup
             {
                 _connection.Open();
 
-                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = '" + itemGroupID + "'",
+                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = " + itemGroupID,
                     _connection);
 
                 _command.ExecuteNonQuery();

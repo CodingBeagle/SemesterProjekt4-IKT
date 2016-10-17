@@ -32,13 +32,12 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [SetUp]
         public void SetUp()
         {
-            
             floorplan = _storedatabasefactory.CreateTableFloorplan();
             item = _storedatabasefactory.CreateTableItem();
             itemGroup = _storedatabasefactory.CreateTableItemGroup();
             itemSectionPlacement = _storedatabasefactory.CreateTableItemSectionPlacement();
             sqlTableStore = _storedatabasefactory.CreateTableStoreSection();
-            locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("TestItemGroup5")); //opretter ItemGroup på database samt local kopi
+            locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("TestItemGroup4")); //opretter ItemGroup på database samt local kopi
         }
 
         [TearDown]
@@ -50,30 +49,70 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             if(locItemGroup != null)
                 itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID);
             locItemGroup = null;
+        }
+
+//Table - Item Group
+        [Test] // CreateItemGroup() without parentID and GetItemGroup()
+        public void CreateItemGroupGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
+        {
+            
+        }
+
+        [Test] // CreateItemGroup with parentID
+        public void CreateItemGroupWithParentIDGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
+        {
+            
+        }
+
+        [Test] // DeleteItemGroup
+        public void DeleteItemGroup_DeleteItemGroupCalled_GetReturnsNull()
+        {
 
         }
 
-        [Test]
-        public void CreateItem_CreateItemCalled_GetItemReturnsCreatedItem()
+        [Test] // DeleteItemGroup with referenced Item (not possible - throws exception)
+        public void DeleteItemGroup_DeleteReferencedItemGroupCalled_DeleteItemGroupThrowsException()
         {
-            string testString = "TestItem5";
+
+        }
+
+        [Test] // GetAllItemGroups
+        public void GetAllItemGroups_GetAllItemGroupsCalled_GetAllItemGroupsReturnsListOfItemGroups()
+        {
+
+        }
+
+
+
+//Table - Item
+        [Test] //CreateItem() and GetItem() tested
+        public void CreateItemGetItem_CreateItemAndGetItemCalled_GetItemReturnsCreatedItem()
+        {
+            string testString = "TestItem4";
             long CreateID = item.CreateItem(testString, locItemGroup.ItemGroupID);
-            Item locItem = item.GetItem(CreateID);
+            locItem = item.GetItem(CreateID);
             Assert.That(locItem.Name == testString && locItem.ItemGroupID == locItemGroup.ItemGroupID);
         }
 
 
-        [Test]
+        [Test] // DeleteItem()
         public void DeleteItem_DeleteItemCalled_GetReturnsNull()
         {
-            string testString = "TestItem6";
+            string testString = "TestItem4";
             long CreateID = item.CreateItem(testString, locItemGroup.ItemGroupID);
             item.DeleteItem(CreateID);
             locItem = item.GetItem(CreateID);
 
             Assert.That(locItem == null);
-
         }
+
+        [Test] // SearchItems()
+        public void SearchItems_SearchItemSForInsertedItems_ReturnsListWithMatchingItems()
+        {
+               
+        }
+
+
 
 
     }
