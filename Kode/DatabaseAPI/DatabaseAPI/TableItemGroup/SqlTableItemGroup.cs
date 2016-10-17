@@ -18,43 +18,48 @@ namespace DatabaseAPI.TableItemGroup
             _connection = new SqlConnection(connectionString);
         }
 
-        public void CreateItemGroup(string itemGroupName, long itemGroupParentID)
+        public long CreateItemGroup(string itemGroupName, long itemGroupParentID)
         {
+            long _createdID;
             try
             {
                 _connection.Open();
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name, rItemGroupID) VALUES ('" + itemGroupName + "', '" +
-                        itemGroupParentID + "')",
+                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ('" + itemGroupName + "', '" +
+                        itemGroupParentID + "'); SELECT CAST(scope_identity() AS BIGINT)",
                         _connection);
 
-                _command.ExecuteNonQuery();
+                _createdID = (long)_command.ExecuteScalar();
             }
             finally
             {
                 _connection?.Close();
             }
+            return _createdID;
         }
 
-        public void CreateItemGroup(string itemGroupName)
+        public long CreateItemGroup(string itemGroupName)
         {
+            long _createdID;
             try
             {
                 _connection.Open();
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "')",
+                        $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "');" +
+                                          "SELECT CAST(scope_identity() AS BIGINT)",
                         _connection);
 
-                _command.ExecuteNonQuery();
+                _createdID = (long)_command.ExecuteScalar();
             }
             finally
             {
                 _connection?.Close();
             }
+            return _createdID;
         }
 
         public void DeleteItemGroup(long itemGroupID)
