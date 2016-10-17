@@ -56,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DisplayItem.cs" />
+    <Compile Include="ViewModels\AdminItemViewModel.cs" />
     <Compile Include="Windows\AddSectionDialog.xaml.cs">
       <DependentUpon>AddSectionDialog.xaml</DependentUpon>
     </Compile>
@@ -108,7 +110,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DisplayItems.cs" />
+    <Compile Include="Models\DisplayItems.cs" />
     <Compile Include="Windows\mainMenu.xaml.cs">
       <DependentUpon>mainMenu.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -155,7 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ImageLogic\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
