@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mainMenu"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactions"
+        xmlns:core="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:data="clr-namespace:System.Data;assembly=System.Data"
         mc:Ignorable="d"
-        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Name="win">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="28"></Setter>
@@ -28,9 +40,36 @@
             <ColumnDefinition Width="171*"/>
             <ColumnDefinition Width="14*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="canvas" Background="AntiqueWhite" MouseDown="Canvas_OnMouseDown" Margin="10,0,3,2" Grid.Row="1" Grid.RowSpan="3"/>
-        <Button x:Name="backBtn" Grid.Row="5" Grid.Column="2" Content="Tilbage" Click="logoutBtn_Click"></Button>
-        <Button x:Name="deleteSectionBtn" Grid.Row="1" Grid.Column="2" Content="_Slet Sektion" Click="deleteSectionBtn_Click"></Button>
-        <Button x:Name="editSectionBtn" Grid.Row="2" Grid.Column="2" FontSize="21" Content="_Rediger Sektion" Click="editSectionBtn_Click"></Button>
+
+        <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.RowSpan="3">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas x:Name="canvas" Background="AntiqueWhite">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <core:CallMethodAction TargetObject="{Binding}" MethodName="CreateStoreSection"></core:CallMethodAction>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Path=Left}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Top}"></Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:SectionShape}">
+                    <Button Content="{Binding Path=Shape}" Background="Transparent" BorderBrush="Transparent" Command="{Binding ElementName=win, Path=DataContext.SelectCurrentStoreSectionCommand}" CommandParameter="{Binding}"></Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <Button x:Name="backBtn" Grid.Row="5" Grid.Column="2" Content="Tilbage" Command="{Binding BackCommand}"></Button>
+        <Button x:Name="deleteSectionBtn" Grid.Row="1" Grid.Column="2" Content="_Slet Sektion" Command="{Binding DeleteStoreSectionCommand}"></Button>
+        <Button x:Name="editSectionBtn" Grid.Row="2" Grid.Column="2" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}"></Button>
     </Grid>
 </Window>

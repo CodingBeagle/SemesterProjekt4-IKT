@@ -20,17 +20,16 @@ namespace mainMenu
     /// </summary>
     public partial class EditSectionDialog : Window
     {
-        public string newSectionName { get; private set; }
-        public  string previousSectionName { get; set; }
 
         public bool IsSectionNameChanged { get; private set; }
-        public EditSectionDialog(string sectionNameToEdit)
+
+        private StoreSectionViewModel _viewModel;
+        public EditSectionDialog(StoreSectionViewModel viewModel, string sectionNameToEdit)
         {
             InitializeComponent();
 
-            DataContext = this;
-
-            previousSectionName = sectionNameToEdit;
+            _viewModel = viewModel;
+            DataContext = _viewModel;
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -38,7 +37,8 @@ namespace mainMenu
             if (Regex.IsMatch(NewSectionNameTextBox.Text, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
             {
                 IsSectionNameChanged = true;
-                newSectionName = NewSectionNameTextBox.Text;
+                //NewSectionName = NewSectionNameTextBox.Text;
+                
                 Close();
             }
             else

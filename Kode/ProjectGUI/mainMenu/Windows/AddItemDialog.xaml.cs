@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
+using mainMenu.Models;
+using mainMenu.ViewModels;
 
 namespace mainMenu
 {
@@ -23,52 +25,22 @@ namespace mainMenu
     /// </summary>
     public partial class AddItemDialog : Window
     {
-        public List<ItemGroup> WareGroups;
-        private DatabaseService db;
-        private DisplayItems _displayItemses;
-        public AddItemDialog(DisplayItems displayItemses)
+        private AdminItemViewModel viewModel;
+        public AddItemDialog(AdminItemViewModel view)
         {
             InitializeComponent();
+            viewModel = view;
             try
             {
-                db = new DatabaseService(new SqlStoreDatabaseFactory());
-                //WareGroups = db.TableItemGroup.GetAllItemGroups();
-                ItemGroupComboBox.ItemsSource = displayItemses.cbItemGroups;
+                this.DataContext = viewModel;
+                ItemGroupComboBox.ItemsSource = viewModel.ItemGroupComboBoxList;
                 ItemGroupComboBox.DisplayMemberPath = "ItemGroupName";
-                _displayItemses = displayItemses;
-                ItemNameTextBox.DataContext = displayItemses;
-                CreateItemButton.DataContext = displayItemses;
+                
             }
             catch (Exception e)
             {
                 MessageBox.Show($"Der er noget der gik galt: {e.Message}");
             }
-        }
-
-        private void CreateItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            //try
-            //{
-            //    var itemName = ItemNameTextBox.Text;
-            //    var group = (ItemGroup)ItemGroupComboBox.SelectedItem;
-            //    if (Regex.IsMatch(itemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
-            //    {
-            //        var itemID = db.TableItem.CreateItem(itemName, @group.ItemGroupID);
-            //        var createdItem = new Item(itemID, itemName, @group.ItemGroupID);
-            //        _displayItemses.Add(new DisplayItem(createdItem));
-            //        MessageBox.Show($"{itemName} er blevet tilføjet til databasen til varegruppen {group.ItemGroupName}");
-            //        Close();
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
-            //    }
-
-            //}
-            //catch (Exception exception)
-            //{
-            //    MessageBox.Show($"Something went horribly wrong: {exception.Message}");
-            //}
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
