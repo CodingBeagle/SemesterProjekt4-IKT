@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\FloorplanViewModel.cs" />
     <Compile Include="Windows\AddSectionDialog.xaml.cs">
       <DependentUpon>AddSectionDialog.xaml</DependentUpon>
     </Compile>
@@ -155,7 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ImageLogic\" />
-    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\floorplan.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

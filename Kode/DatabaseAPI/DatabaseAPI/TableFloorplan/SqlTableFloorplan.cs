@@ -46,8 +46,6 @@ namespace DatabaseAPI.TableFloorplan
 
                 string sqlStatement = "";
 
-                Debug.WriteLine("The count is: " + isEmpty);
-
                 if (isEmpty)
                 {
                     sqlStatement = @"INSERT INTO Floorplan
@@ -91,7 +89,35 @@ namespace DatabaseAPI.TableFloorplan
             }
         }
 
-        
+        public void DownloadFloorplan()
+        {
+            try
+            {
+                _conn.Open();
+
+                string sqlStatement = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
+
+                using (SqlCommand cmd = new SqlCommand(sqlStatement, _conn))
+                {
+                    SqlDataReader rd = cmd.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        ReadImageData("floorplan", rd);
+                    }
+
+                    rd.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Something went horrible wrong when downloading the floorplan: " + e.Message);
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
 
         private Byte[] ReadImageData(string floorplanName, SqlDataReader reader)
         {
@@ -103,7 +129,7 @@ namespace DatabaseAPI.TableFloorplan
             byte[] outbyte = new byte[bufferSize];
 
             // Create a filestream used to save the floorplan as a local image
-            stream = new FileStream("Floorplan/" + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
+            stream = new FileStream(@"../../images/" + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
 
             // The binary writer writes primitive types in binary to a stream
             br = new BinaryWriter(stream);
@@ -111,7 +137,7 @@ namespace DatabaseAPI.TableFloorplan
             startIndex = 0;
 
             // GetBytes reads a stream of bytes from the specified column into the buffer
-            retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
+            retval = reader.GetBytes(0, startIndex, outbyte, 0, bufferSize);
 
             // As long as we can download in chunks of bufferSize, we do that
             while (retval == bufferSize)
@@ -123,7 +149,7 @@ namespace DatabaseAPI.TableFloorplan
                 br.Flush();
 
                 startIndex += bufferSize;
-                retval = reader.GetBytes(1, startIndex, outbyte, 0, bufferSize);
+                retval = reader.GetBytes(0, startIndex, outbyte, 0, bufferSize);
             }
 
             // Write the remaining bytes to the image
