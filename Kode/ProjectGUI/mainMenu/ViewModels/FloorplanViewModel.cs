@@ -1,38 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using DatabaseAPI;
+using DatabaseAPI.Factories;
 using MvvmFoundation.Wpf;
 
 namespace mainMenu.ViewModels
 {
     public class FloorplanViewModel : INotifyPropertyChanged
     {
-        private string _imagePath;
+        private BitmapImage _imagePath;
 
-        public string ImagePath
+        public BitmapImage ImagePath
         {
             get { return _imagePath; }
             set
             {
-                if (value != _imagePath)
+                if (_imagePath != value)
                 {
                     _imagePath = value;
                     OnPropertyChanged();
                 }
             }
-        }
-
-        private ICommand _backCommand;
-
-        public ICommand BackCommand
-        {
-            get { return _backCommand ?? (_backCommand = new RelayCommand(BackHandler)); }
         }
 
         private ICommand _browseFloorplanCommand;
@@ -55,23 +53,20 @@ namespace mainMenu.ViewModels
             }
         }
 
-        private Window _currentWindow;
-
+        private DatabaseService _databaseService = new DatabaseService(new SqlStoreDatabaseFactory());
+         
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public FloorplanViewModel(Window currentWindow)
+        public FloorplanViewModel()
         {
-            _currentWindow = currentWindow;
+            _databaseService.TableFloorplan.DownloadFloorplan();
+            var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
+            ImagePath = new BitmapImage(uriSource);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void BackHandler()
-        {
-            
         }
 
         private void BrowseFloorplanHandler()
