@@ -111,8 +111,37 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         {
                
         }
+//Table - StoreSection
+        [Test] // CreateStoreSection() and GetStoreSection() Test
+        public void CreateStoreSectionGetStoreSection_CreateStoreSectionAndGetStoreSectionCalled_GetStoreSectionReturnsCreatedStoreSection()
+        {
+            
+        }
 
+        [Test] // DeleteStoreSection() Test
+        public void DeleteStoreSection_DeleteStoreSectionCalled_GetReturnsNull()
+        {
+            
+        }
 
+        [Test] // DeleteAllStoreSection() and GetAllStoreSection Test
+        public void DeleteAllStoreSection_DeleteAllStoreSectionCalled_GetAllStoreSectionsReturnsEmptyList()
+        {
+            
+        }
+
+        [Test] // UpdateStoreSectionName()
+        public void UpdateStoreSectionName_UpdateStoreSectionNameCalled_GetStoreSectionsReturnsWithNewName()
+        {
+            
+        }
+
+        [Test] // UpdateStoreSectionNCoordinate()
+        public void UpdateStoreSectionCoordinate_UpdateStoreSectionCoordinateCalled_GetStoreSectionsReturnsWithNewCoordinate()
+        {
+
+        }
+//Table - ItemSectionPlacement
 
 
     }
