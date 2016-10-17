@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[StoreSection] (
     [StoreSectionID] BIGINT NOT NULL IDENTITY(1,1),
-    [Name]           TEXT   NOT NULL,
+    [Name]           NVARCHAR(450)   NOT NULL UNIQUE,
     [CoordinateX]    BIGINT NOT NULL,
     [CoordinateY]    BIGINT NOT NULL,
     [FloorPlanID]    BIGINT NOT NULL,
