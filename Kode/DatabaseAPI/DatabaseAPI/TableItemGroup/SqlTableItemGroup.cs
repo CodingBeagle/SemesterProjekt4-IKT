@@ -27,7 +27,7 @@ namespace DatabaseAPI.TableItemGroup
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name, rItemGroupID) VALUES ('" + itemGroupName + "', '" +
+                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ('" + itemGroupName + "', '" +
                         itemGroupParentID + "'); SELECT CAST(scope_identity() AS BIGINT)",
                         _connection);
 
@@ -49,7 +49,8 @@ namespace DatabaseAPI.TableItemGroup
 
                 _command =
                     new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "')",
+                        $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "');" +
+                                          "SELECT CAST(scope_identity() AS BIGINT)",
                         _connection);
 
                 _createdID = (long)_command.ExecuteScalar();
