@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
+using mainMenu.Models;
+using mainMenu.ViewModels;
 
 namespace mainMenu
 {
@@ -24,28 +26,12 @@ namespace mainMenu
     /// </summary>
     public partial class adminItems : Window
     {
-        private List<Item> searchList;
-        public DisplayItems displayItemses = new DisplayItems();
-        private DatabaseService db;
+        public AdminItemViewModel viewModel = new AdminItemViewModel();
 
         public adminItems()
         {
             InitializeComponent();
-            
-            SearchResultGrid.DataContext = displayItemses;
-            DeleteItems.DataContext = displayItemses;
-            EditItems.DataContext = displayItemses;
-
-            try
-            {
-                db = new DatabaseService(new SqlStoreDatabaseFactory());
-                searchList = db.TableItem.SearchItems("");
-                displayItemses.Populate(searchList);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Something went horribly wrong: {e.Message}");
-            }
+            this.DataContext = viewModel;
         }
 
         private void BackBtn_OnClick(object sender, RoutedEventArgs e)
@@ -57,27 +43,8 @@ namespace mainMenu
 
         private void AddItems_Click(object sender, RoutedEventArgs e)
         {
-            AddItemDialog newAddItemDialog = new AddItemDialog(displayItemses);
+            AddItemDialog newAddItemDialog = new AddItemDialog(viewModel);
             newAddItemDialog.ShowDialog();
-
-            
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                searchList = db.TableItem.SearchItems(SearchBox.Text);
-                displayItemses.Clear();
-                displayItemses.Populate(searchList);
-
-                if (searchList.Count == 0)
-                    MessageBox.Show($"Fandt ingen varer med navnet {SearchBox.Text}");
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
-            }
         }
     }
 }

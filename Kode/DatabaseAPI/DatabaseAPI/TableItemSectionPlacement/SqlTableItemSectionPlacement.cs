@@ -28,8 +28,7 @@ namespace DatabaseAPI.TableItemSectionPlacement
                 _conn.Open();
 
                 string sqlInsertCommand = $"INSERT INTO ItemSectionPlacement (ItemID, StoreSectionID) " +
-                                          $"VALUES ({itemID}, {sectionID}); " +
-                                          $"SELECT CAST(scope_identity() AS BIGINT)";
+                                          $"VALUES ({itemID}, {sectionID});";
 
                 _cmd = new SqlCommand(sqlInsertCommand, _conn);
 
@@ -77,16 +76,16 @@ namespace DatabaseAPI.TableItemSectionPlacement
                 }
                 return itemsInSection;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                
+
             }
             return null;
         }
 
         public StoreSectionModel FindPlacementByItem(long ItemID)
         {
-            long sectionID=0;
+            long sectionID = 0;
             try
             {
                 _conn.Open();
@@ -101,14 +100,14 @@ namespace DatabaseAPI.TableItemSectionPlacement
                 {
                     if (!_reader.IsDBNull(_reader.GetOrdinal("StoreSectionID")))
                     {
-                        sectionID = (long)_reader["StoreSectionID"];
+                        sectionID = (long) _reader["StoreSectionID"];
                     }
                 }
                 DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
                 var itemPlacement = db.TableStoreSection.GetStoreSection(sectionID);
                 return itemPlacement;
             }
-            finally 
+            finally
             {
                 _conn?.Close();
                 _reader?.Close();
@@ -117,12 +116,38 @@ namespace DatabaseAPI.TableItemSectionPlacement
 
         public void DeleteAllPlacementsInSection(long sectionId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _conn.Open();
+
+                string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
+                                    $"WHERE StoreSectionID = {sectionId};";
+
+                _cmd = new SqlCommand(sqlCommand, _conn);
+                _cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn?.Close();
+            }
         }
 
         public void DeletePlacementByItem(long itemId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _conn.Open();
+
+                string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
+                                    $"WHERE itemId = {itemId};";
+
+                _cmd = new SqlCommand(sqlCommand, _conn);
+                _cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn?.Close();
+            }
         }
     }
 }

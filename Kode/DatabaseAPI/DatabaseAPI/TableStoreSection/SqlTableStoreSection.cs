@@ -82,9 +82,9 @@ namespace DatabaseAPI.TableStoreSection
             }
         }
 
-        public List<StoreSectionModel> GetAllStoreSections(long floorPlanID)
+        public List<StoreSection> GetAllStoreSections(long floorPlanID)
         {
-            List<StoreSectionModel> allStoreSections = new List<StoreSectionModel>();
+            List<StoreSection> allStoreSections = new List<StoreSection>();
             try
             {
                 _connection.Open();
@@ -95,24 +95,20 @@ namespace DatabaseAPI.TableStoreSection
 
                 while (_dataReader.Read())
                 {
-                    long storeSectionID = 0;
-                    string storeSectionName = "";
-                    long coordinateX = 0;
-                    long coordinateY = 0;
+                    StoreSection newSection = new StoreSection(0,"",0,0,0);
 
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
-                        storeSectionName = (string)_dataReader["Name"];
+                        newSection.Name = (string)_dataReader["Name"];
 
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("StoreSectionID")))
-                        storeSectionID = (long)_dataReader["StoreSectionID"];
+                        newSection.StoreSectionID = (long)_dataReader["StoreSectionID"];
 
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateX")))
-                        coordinateX = (long)_dataReader["CoordinateX"];
+                        newSection.CoordinateX = (long)_dataReader["CoordinateX"];
 
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateY")))
-                        coordinateY = (long)_dataReader["CoordinateY"];
+                        newSection.CoordinateY = (long)_dataReader["CoordinateY"];
 
-                    var newSection = new StoreSectionModel(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
                     allStoreSections.Add(newSection);
                 }
             }
@@ -125,9 +121,9 @@ namespace DatabaseAPI.TableStoreSection
         }
 
 
-        public StoreSectionModel GetStoreSection(long storeSectionID)
+        public StoreSection GetStoreSection(long storeSectionID)
         {
-            StoreSectionModel storeSectionReturnValue = null;
+            StoreSection storeSectionReturnValue = null;
             try
             {
                 _connection.Open();
@@ -155,7 +151,7 @@ namespace DatabaseAPI.TableStoreSection
                     if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("FloorPlanID")))
                         floorPlanID = (long)_dataReader["FloorPlanID"];
 
-                    storeSectionReturnValue = new StoreSectionModel(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
+                    storeSectionReturnValue = new StoreSection(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
                     
                 }
             }
