@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
@@ -43,7 +44,10 @@ namespace mainMenu
         public ICommand EditStoreSectionCommand { get; private set; }
         public ICommand SearchItemsCommand { get; private set; }
         public ICommand AddItemToSectionCommand { get; private set; }
-     
+
+        public ICommand RemoveItemFromSectionCommand { get; private set; }
+
+
         public string NewSectionName { get; set; }
 
         public  string PreviousSectionName { get; set; }
@@ -84,16 +88,46 @@ namespace mainMenu
             }
         }
 
+        public Item SelectedSectionItem { get; set; }
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
-        
+
+        private string _selectedStoreSectionName;
+
+        public string SelectedStoreSectionName
+        {
+            get { return _selectedStoreSectionName; }
+            set
+            {
+                if (_selectedStoreSectionName != value)
+                {
+                    _selectedStoreSectionName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private Window currentWindow { get; }
 
         private DatabaseService _db;
         private long _floorplanID = 1;
         private List<StoreSection> _storeSectionList;
+
+        private ImageBrush _floorplanImage;
+
+        public ImageBrush FloorplanImage
+        {
+            get { return _floorplanImage; }
+            set
+            {
+                if (_floorplanImage != value)
+                {
+                    _floorplanImage = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public StoreSectionViewModel(Window window)
         {
@@ -114,7 +148,8 @@ namespace mainMenu
             DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => SelectedStoreSection != 0);
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
-            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
+            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => SelectedStoreSection != 0);
+            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => SelectedStoreSection != 0);
             currentWindow = window;
         }
 
@@ -132,6 +167,25 @@ namespace mainMenu
 
                 ShapeCollection.Add(loadedSectionShape);
             }
+
+            _db.TableFloorplan.DownloadFloorplan();
+
+            FloorplanImage = null;
+            ImageBrush floorplanImgBrush = new ImageBrush();
+
+            BitmapImage result = new BitmapImage();
+            result.BeginInit();
+            result.UriSource = new Uri("../../images/floorplan.jpg", UriKind.Relative);
+            // .OnLoad makes sure WPF prevents keeping a lock on the file
+            result.CacheOption = BitmapCacheOption.OnLoad;
+            // .IgnoreImageCache causes WPF to reread the image every time
+            // Should be used when selected images needs to be refreshed
+            result.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            result.EndInit();
+
+            floorplanImgBrush.ImageSource = result;
+
+            FloorplanImage = floorplanImgBrush;
         }
         private void backHandler()
         {
@@ -174,6 +228,10 @@ namespace mainMenu
             Debug.WriteLine(SelectedStoreSection +" "+ shape.ID);
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+
+            StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
+            SelectedStoreSectionName = selectedStoreSection.Name;
+           
         }
 
    
@@ -238,10 +296,27 @@ namespace mainMenu
             Debug.WriteLine(SelectedItemsList.Count);
             foreach (DisplayItem item in SelectedItemsList)
             {
-                _db.TableItemSectionPlacement.PlaceItem(item.ID,SelectedStoreSection);
+                int findValue = ItemsInSectionList.FindIndex(currentItem => currentItem.ItemID == item.ID);
+
+                if (findValue == -1)
+                {
+                    _db.TableItemSectionPlacement.PlaceItem(item.ID, SelectedStoreSection);
+                }
+                else
+                {
+                    MessageBox.Show("Varen " + item.VareNavn + " findes i sektionen i forvejen");
+                }               
+                
             }
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+        }
+
+        private void removeItemFromSectionHandler()
+        {
+            _db.TableItemSectionPlacement.DeletePlacementByItem(SelectedSectionItem.ItemID);
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -60,7 +60,7 @@ namespace DatabaseAPI.TableFloorplan
                         sqlCmd.Parameters.AddWithValue("@height", height);
                         sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
 
-                        sqlCmd.ExecuteNonQuery();
+                        sqlCmd.ExecuteNonQuery(); 
                     }
                 }
                 else

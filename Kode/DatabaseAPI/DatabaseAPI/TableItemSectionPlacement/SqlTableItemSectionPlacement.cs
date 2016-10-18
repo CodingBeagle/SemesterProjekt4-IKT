@@ -85,9 +85,9 @@ namespace DatabaseAPI.TableItemSectionPlacement
             return itemsInSection;
         }
 
-        public StoreSection FindPlacementByItem(long ItemID)
+        public List<StoreSection> FindPlacementsByItem(long ItemID)
         {
-            long sectionID = 0;
+            List<StoreSection> secList = new List<StoreSection>();
             try
             {
                 _conn.Open();
@@ -101,13 +101,16 @@ namespace DatabaseAPI.TableItemSectionPlacement
                 while (_reader.Read())
                 {
                     if (!_reader.IsDBNull(_reader.GetOrdinal("StoreSectionID")))
-                    {
-                        sectionID = (long) _reader["StoreSectionID"];
+                    {                                                
+                        long sSecID = (long) _reader["StoreSectionID"];
+
+                        DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
+                        StoreSection tStoreSec = db.TableStoreSection.GetStoreSection(sSecID);
+                        secList.Add(tStoreSec);
                     }
                 }
-                DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
-                var itemPlacement = db.TableStoreSection.GetStoreSection(sectionID);
-                return itemPlacement;
+                
+                return secList;
             }
             finally
             {
@@ -142,6 +145,24 @@ namespace DatabaseAPI.TableItemSectionPlacement
 
                 string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
                                     $"WHERE itemId = {itemId};";
+
+                _cmd = new SqlCommand(sqlCommand, _conn);
+                _cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn?.Close();
+            }
+        }
+
+        public void DeletePlacement(long itemId, long sectionId)
+        {
+            try
+            {
+                _conn.Open();
+
+                string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
+                                    $"WHERE ItemID = {itemId} And StoreSectionID = {sectionId};";
 
                 _cmd = new SqlCommand(sqlCommand, _conn);
                 _cmd.ExecuteNonQuery();
