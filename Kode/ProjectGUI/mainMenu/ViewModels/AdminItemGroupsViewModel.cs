@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -197,13 +198,24 @@ namespace mainMenu.ViewModels
 
         public void DeleteItemGroup()
         {
+
+            ItemGroup selectedItem = null;
             try
             {
-                ItemGroup selectedItem = ListOfItemGroups[ListOfItemGroups.CurrentIndex];
-                db.TableItemGroup.DeleteItemGroup((long)selectedItem.ItemGroupID);
+
+                selectedItem = ListOfItemGroups[ListOfItemGroups.CurrentIndex];
+                db.TableItemGroup.DeleteItemGroup((long) selectedItem.ItemGroupID);
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
                 MessageBox.Show($"{selectedItem.ItemGroupName} blev slettet fra databasen");
-
+            }
+            catch (SqlException e)
+            {
+                if (selectedItem != null)
+                {
+                    MessageBox.Show("Varegruppen " + selectedItem.ItemGroupName +
+                                " kan ikke slettes da den indeholder en eller flere undervaregrupper");
+                }
+                
             }
             catch (Exception exception)
             {
