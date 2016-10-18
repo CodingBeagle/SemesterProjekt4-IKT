@@ -99,8 +99,6 @@ namespace mainMenu.ViewModels
                 return;
 
             SelectedFileName = floorplanBrowser.FileName;
-            
-
         }
 
         private void UpdateFloorplanHandler()
@@ -113,6 +111,9 @@ namespace mainMenu.ViewModels
             _databaseService.TableFloorplan.DownloadFloorplan();
             var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
             ImagePath = "../../images/floorplan.jpg";
+
+            // Delete all previously existing sections
+            dbService.TableStoreSection.DeleteAllStoreSections(1);
         }
     }
 }
