@@ -137,7 +137,7 @@ namespace DatabaseAPI.TableItemSectionPlacement
             }
         }
 
-        public void DeletePlacementByItem(long itemId)
+        public void DeletePlacementsByItem(long itemId)
         {
             try
             {
