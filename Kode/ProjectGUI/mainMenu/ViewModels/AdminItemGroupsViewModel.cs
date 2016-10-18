@@ -121,6 +121,7 @@ namespace mainMenu.ViewModels
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
                 ListOfItemGroups.Add(temp);
                 MessageBox.Show($"Varegruppens navn er blevet opdateret til {ItemGroupName}");
+                ItemGroupName = "";
             }
             catch (Exception e)
             {

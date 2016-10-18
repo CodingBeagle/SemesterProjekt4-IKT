@@ -168,6 +168,8 @@ namespace mainMenu
                 ShapeCollection.Add(loadedSectionShape);
             }
 
+            ListOfItems.Populate(_db.TableItem.SearchItems(""));
+
             _db.TableFloorplan.DownloadFloorplan();
 
             FloorplanImage = null;
