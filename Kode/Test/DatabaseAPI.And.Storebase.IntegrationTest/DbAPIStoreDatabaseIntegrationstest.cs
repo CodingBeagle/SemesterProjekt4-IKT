@@ -67,25 +67,24 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             ItemGroup locItemGroup = new ItemGroup(itemGroupTestName,0,itemGroupID); 
             ItemGroup retItemGroup = itemGroup.GetItemGroup(locItemGroup.ItemGroupID);
             Assert.That(locItemGroup.ItemGroupID==retItemGroup.ItemGroupID && locItemGroup.ItemGroupName==retItemGroup.ItemGroupName);
+            itemGroup.DeleteItemGroup(itemGroupID);
         }
 
         [Test] // CreateItemGroup with parentID
         public void CreateItemGroupWithParentIDGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
         {
-            string itemGroupTestName = "ItemGroupTest";
-            long itemGroupID = itemGroup.CreateItemGroup(itemGroupTestName,locItemGroup.ItemGroupID);
-            locItemGroup = new ItemGroup(itemGroupTestName, locItemGroup.ItemGroupID, itemGroupID);
-            ItemGroup retItemGroup = itemGroup.GetItemGroup(locItemGroup.ItemGroupID);
+            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", 0, itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
+            ItemGroup retItemGroup = itemGroup.GetItemGroup(tItemGroup.ItemGroupID);
 
-            Assert.That(locItemGroup.ItemGroupID == retItemGroup.ItemGroupID && locItemGroup.ItemGroupName == retItemGroup.ItemGroupName);
+            Assert.That(tItemGroup.ItemGroupID == retItemGroup.ItemGroupID && tItemGroup.ItemGroupName == retItemGroup.ItemGroupName);
 
-            itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID);
+            itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
 
         [Test] // DeleteItemGroup
         public void DeleteItemGroup_DeleteItemGroupCalled_GetReturnsNull()
         {
-            long itemGroupID = itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID);
+            itemGroup.DeleteItemGroup(locItem.ItemGroupID);
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
 
         }
@@ -93,9 +92,10 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // DeleteItemGroup with referenced Item (not possible - throws exception)
         public void DeleteItemGroup_DeleteReferencedItemGroupCalled_DeleteItemGroupThrowsException()
         {
-            locItemGroup = new ItemGroup("ItemTest",0,itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
-            locItem.ItemID = item.CreateItem(locItemGroup.ItemGroupName, locItemGroup.ItemGroupID);
-            Assert.Throws<SystemException>(() => itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID));
+            ItemGroup tItemGroup = new ItemGroup("ItemTest",0,itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
+            Item tItem = new Item(0,"",0);
+            tItem.ItemID = item.CreateItem(tItemGroup.ItemGroupName, tItemGroup.ItemGroupID);
+            Assert.Throws<SystemException>(() => itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID));
         }
 
         [Test] // GetAllItemGroups
@@ -110,8 +110,9 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             int count = 0;
             foreach (var iGroup in retItemGroups)
             {
-                if (itemGroupIDs.Remove(iGroup.ItemGroupID) == false) //if item not removed
+                if (itemGroupIDs.Contains(iGroup.ItemGroupID)) //if item not removed
                 {
+                    itemGroup.DeleteItemGroup(iGroup.ItemGroupID);
                     count++;
                     if (count == 3)
                         break;
