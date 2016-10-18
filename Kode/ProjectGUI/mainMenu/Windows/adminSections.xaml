@@ -95,6 +95,8 @@
         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=SearchString, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="4"></TextBox>
         <Button Content="_V" Grid.Row="3" Grid.Column="3" Command="{Binding AddItemToSectionCommand}"></Button>
         <Button Content="_Fjern vare fra sektion" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="3" Command="{Binding RemoveItemFromSectionCommand}"></Button>
+        <Label Content="Valgt sektion:" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="7"></Label>
+        <Label Content="{Binding Path=SelectedStoreSectionName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="7"></Label>
         <local:ItemDataGrid x:Name="SearchResultGrid" 
                   Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
                   IsReadOnly="True" IsSynchronizedWithCurrentItem="True" 

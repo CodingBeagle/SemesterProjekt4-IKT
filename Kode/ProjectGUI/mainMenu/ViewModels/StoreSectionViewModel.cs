@@ -92,7 +92,21 @@ namespace mainMenu
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
-        
+
+        private string _selectedStoreSectionName;
+
+        public string SelectedStoreSectionName
+        {
+            get { return _selectedStoreSectionName; }
+            set
+            {
+                if (_selectedStoreSectionName != value)
+                {
+                    _selectedStoreSectionName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private Window currentWindow { get; }
 
@@ -199,6 +213,10 @@ namespace mainMenu
             Debug.WriteLine(SelectedStoreSection +" "+ shape.ID);
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+
+            StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
+            SelectedStoreSectionName = selectedStoreSection.Name;
+           
         }
 
    
