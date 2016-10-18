@@ -13,6 +13,10 @@ namespace TestProject
         {
             DatabaseService test = new DatabaseService(new SqlStoreDatabaseFactory());
 
+            test.TableItemGroup.UpdateItemGroup("Poop", "Wooh");
+            ItemGroup poop = test.TableItemGroup.SearchItemGroup("Wooh");
+            Console.WriteLine(poop?.ItemGroupID);
+
             /*
             test.TableItem.DeleteItem(1);
             List<Item> searchList = test.TableItem.SearchItems("Rieder");

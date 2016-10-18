@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Expression.Prototyping.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -52,7 +53,6 @@
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -60,13 +60,26 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ItemDataGrid.cs" />
+    <Compile Include="ItemUtility.cs" />
+
+    <Compile Include="Windows\EditItemGroupDialog.xaml.cs">
+      <DependentUpon>EditItemGroupDialog.xaml</DependentUpon>
+    </Compile>
+
+
+
     <Compile Include="Models\DisplayItem.cs" />
+    <Compile Include="Models\DisplayItemGroups.cs" />
     <Compile Include="Models\ThumbnailImageConverter.cs" />
+    <Compile Include="ViewModels\AdminItemGroupsViewModel.cs" />
     <Compile Include="ViewModels\AdminItemViewModel.cs" />
     <Compile Include="ViewModels\FloorplanViewModel.cs" />
     <Compile Include="ViewModels\StoreSectionViewModel.cs" />
     <Compile Include="Windows\AddSectionDialog.xaml.cs">
       <DependentUpon>AddSectionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddItemGroupDialog.xaml.cs">
+      <DependentUpon>AddItemGroupDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\adminSections.xaml.cs">
       <DependentUpon>adminSections.xaml</DependentUpon>
@@ -74,16 +87,28 @@
     <Compile Include="Windows\AdminFloorplan.xaml.cs">
       <DependentUpon>AdminFloorplan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AdminItemGroups.xaml.cs">
+      <DependentUpon>AdminItemGroups.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EditSectionDialog.xaml.cs">
       <DependentUpon>EditSectionDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ShapeButtonCreator.cs" />
+
+    <Page Include="Windows\EditItemGroupDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddItemDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddSectionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddItemGroupDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -96,6 +121,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\AdminFloorplan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AdminItemGroups.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

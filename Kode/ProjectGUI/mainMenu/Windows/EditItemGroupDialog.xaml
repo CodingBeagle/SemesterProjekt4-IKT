@@ -1,0 +1,42 @@
+﻿<Window x:Class="mainMenu.EditItemGroupDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mainMenu"
+        mc:Ignorable="d"
+        Title="EditItemGroupDialog" Height="300" Width="300" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="36*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="78*"/>
+            <ColumnDefinition Width="106"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="WindowName" Content="Rediger Varegruppe" FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="71,0,10,0"></Label>
+
+        <Label Content="Gammelt varegruppenavn:"  Grid.Column="1" Grid.Row="2"></Label>
+        <Label Content="{Binding Path=OldItemGroupName, UpdateSourceTrigger=PropertyChanged}"                
+               Grid.Column="2" Grid.Row="2"></Label>
+
+        <Label Content="Nyt varegruppenavn:" Grid.Column="1" Grid.Row="4"></Label>
+        <TextBox x:Name="ItemNameTextBox" Text="{Binding ItemGroupName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="4"></TextBox>
+
+
+
+        <Button x:Name="CreateItemButton" Content="Rediger" Command="{Binding EditItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
+        <Button x:Name="CancelButton" Content="Annuller" Grid.Column="2" Grid.Row="7" Click="CancelButton_Click"/>
+    </Grid>
+</Window>

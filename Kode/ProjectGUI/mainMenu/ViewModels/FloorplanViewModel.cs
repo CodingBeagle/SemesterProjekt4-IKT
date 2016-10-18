@@ -113,6 +113,8 @@ namespace mainMenu.ViewModels
             _databaseService.TableFloorplan.DownloadFloorplan();
             var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
             ImagePath = "../../images/floorplan.jpg";
+
+            dbService.TableStoreSection.DeleteAllStoreSections(1);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace DatabaseAPI.TableItemGroup
         long CreateItemGroup(string itemGroupItemName);
         void DeleteItemGroup(long itemGroupID);
         ItemGroup GetItemGroup(long itemGroupID);
+        List<ItemGroup> SearchItemGroup(string itemGroupName);
+        void UpdateItemGroup(string OldItemGroupName, string itemGroupName);
         
 
         List<ItemGroup> GetAllItemGroups();

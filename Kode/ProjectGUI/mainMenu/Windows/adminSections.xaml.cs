@@ -24,13 +24,7 @@ namespace mainMenu
     /// Interaction logic for adminSections.xaml
     /// </summary>
     public partial class adminSections : Window
-    {
-        private DatabaseService _db;
-        
-        
- 
-        private long _currentlySelectedStoreSectionID = 0;
-
+    { 
         public adminSections()
         {
             InitializeComponent();

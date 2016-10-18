@@ -1,11 +1,11 @@
-﻿<Window x:Class="mainMenu.AddItemDialog"
+﻿<Window x:Class="mainMenu.AddItemGroupDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mainMenu"
         mc:Ignorable="d"
-        Title="Opret Vare" Height="300" Width="300" WindowStartupLocation="CenterScreen" Icon="../images/favicon.ico">
+        Title="AddItemGroupDialog" Height="300" Width="300" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>
@@ -20,22 +20,23 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="14*"/>
-            <ColumnDefinition Width="103*"/>
-            <ColumnDefinition Width="119*"/>
-            <ColumnDefinition Width="56*"/>
+            <ColumnDefinition Width="131*"/>
+            <ColumnDefinition Width="131*"/>
+            <ColumnDefinition Width="16*"/>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="WindowName" Content="Opret Vare" FontSize="16" FontWeight="Bold" Grid.Column="2" Grid.Row="0"></Label>
+        <Label x:Name="WindowName" Content="Opret Varegruppe" FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="81,0,0,0"></Label>
 
-        <Label Content="Varenavn:" FontSize="16" Grid.Column="1" Grid.Row="2"></Label>
-        <TextBox x:Name="ItemNameTextBox" Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="2"></TextBox>
+        <Label Content="Varegruppenavn:" FontSize="16" Grid.Column="1" Grid.Row="2"></Label>
+        <TextBox x:Name="ItemNameTextBox" Text="{Binding ItemGroupName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="2"></TextBox>
 
-        <Label Content="Varegruppe:" FontSize="16" Grid.Column="1" Grid.Row="4"></Label>
+        <Label Content="Over varegruppe:" FontSize="16" Grid.Column="1" Grid.Row="4"></Label>
         <ComboBox x:Name="ItemGroupComboBox"
                   SelectedIndex="{Binding Path=ComboBoxIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                  ItemsSource="{Binding Path=ComboBoxOpetions, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"></ComboBox>
-        
-        <Button x:Name="CreateItemButton" Content="Opret Vare" Command="{Binding CreateItemCommand}" Grid.Column="2" Grid.Row="6"></Button>
-        <Button x:Name="CancelButton" Content="Annuller" Grid.Column="2" Grid.Row="7" Click="CancelButton_Click"></Button>
+
+        <Button x:Name="CreateItemButton" Content="Opret Varegruppe" Command="{Binding CreateItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
+        <Button x:Name="CancelButton" Content="Annuller" Grid.Column="2" Grid.Row="7" Click="CancelButton_Click"/>
     </Grid>
 </Window>

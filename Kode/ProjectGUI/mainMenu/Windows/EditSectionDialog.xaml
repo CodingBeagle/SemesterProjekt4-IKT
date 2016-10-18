@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mainMenu"
         mc:Ignorable="d"
-        Title="EditSectionDialog" Height="300" Width="300">
+        Title="Rediger Sektion" Height="300" Width="300" Icon="../images/favicon.ico">
     <Window.Resources>
         <Style TargetType="{x:Type Label}">
             <Setter Property="FontSize" Value="14"></Setter>
