@@ -86,18 +86,17 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // DeleteItemGroup
         public void DeleteItemGroup_DeleteItemGroupCalled_GetReturnsNull()
         {
-            itemGroup.DeleteItemGroup(locItem.ItemGroupID);
+            itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID);
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
         }
 
         [Test] // DeleteItemGroup with referenced Item (not possible - throws exception)
         public void DeleteItemGroup_DeleteReferencedItemGroupCalled_DeleteItemGroupThrowsException()
         {
-            ItemGroup tItemGroup = new ItemGroup("ItemTest",locItemGroup.ItemGroupID,itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
-            Item tItem = new Item(0,"",0);
-            tItem.ItemID = item.CreateItem(tItemGroup.ItemGroupName, tItemGroup.ItemGroupID);
+            ItemGroup tItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("ItemSubGroupTest", locItemGroup.ItemGroupID));
+            Item tItem = item.GetItem(item.CreateItem("TestItemWithSubGroup", tItemGroup.ItemGroupID));
 
-            Assert.Throws<SystemException>(() => itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID));
+            Assert.Throws<SqlException>(() => itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID));
 
             item.DeleteItem(tItem.ItemID);
             itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
@@ -235,6 +234,28 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             List<Item> itemsInSection = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
            
             Assert.That(insertedItems.Count == itemsInSection.Count);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+        }
+
+        [Test]
+        public void FindPlacementByItem_FindPlacementByItemCalled_ReturnsTheItemsSection()
+        {
+            
+        }
+
+        [Test]
+        public void DeleteAllPlacementsInSection_DeleteAllPlacementsInSectionCalled_ListItemsInSectionReturnsEmptyList()
+        {
+            
+        }
+
+        [Test]
+        public void DeletePlacementByItem_DeletePlacementByItemCalled_ItemPlacementRemoved()
+        {
+            
         }
 
     }
