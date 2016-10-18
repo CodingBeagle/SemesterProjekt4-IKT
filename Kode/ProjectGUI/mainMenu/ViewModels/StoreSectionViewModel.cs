@@ -20,6 +20,7 @@ using DatabaseAPI.Factories;
 using mainMenu.FloorplanLogic;
 using mainMenu.Models;
 using MvvmFoundation.Wpf;
+using mainMenu.RefreshLogic;
 
 namespace mainMenu
 {
@@ -169,23 +170,30 @@ namespace mainMenu
             }
 
             _db.TableFloorplan.DownloadFloorplan();
-
+       
             FloorplanImage = null;
             ImageBrush floorplanImgBrush = new ImageBrush();
+            ImageRefresh refresh = new ImageRefresh();
+            BitmapImage result = refresh.ImgRefresh("../../images/floorplan.jpg");
 
-            BitmapImage result = new BitmapImage();
-            result.BeginInit();
-            result.UriSource = new Uri("../../images/floorplan.jpg", UriKind.Relative);
-            // .OnLoad makes sure WPF prevents keeping a lock on the file
-            result.CacheOption = BitmapCacheOption.OnLoad;
-            // .IgnoreImageCache causes WPF to reread the image every time
-            // Should be used when selected images needs to be refreshed
-            result.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            result.EndInit();
+            #region Outcommented Refreshlogic
+            /*BitmapImage result = new BitmapImage();
+          result.BeginInit();
+          result.UriSource = new Uri("../../images/floorplan.jpg", UriKind.Relative);
+          // .OnLoad makes sure WPF prevents keeping a lock on the file
+          result.CacheOption = BitmapCacheOption.OnLoad;
+          // .IgnoreImageCache causes WPF to reread the image every time
+          // Should be used when selected images needs to be refreshed
+          result.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+          result.EndInit();*/
 
+
+            #endregion
+            
             floorplanImgBrush.ImageSource = result;
 
             FloorplanImage = floorplanImgBrush;
+
         }
         private void backHandler()
         {
@@ -314,7 +322,7 @@ namespace mainMenu
 
         private void removeItemFromSectionHandler()
         {
-            _db.TableItemSectionPlacement.DeletePlacementByItem(SelectedSectionItem.ItemID);
+            _db.TableItemSectionPlacement.DeletePlacement(SelectedSectionItem.ItemID,SelectedStoreSection);
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
 
         }
