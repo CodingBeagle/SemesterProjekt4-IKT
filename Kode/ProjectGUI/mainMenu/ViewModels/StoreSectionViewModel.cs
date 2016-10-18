@@ -281,7 +281,17 @@ namespace mainMenu
             Debug.WriteLine(SelectedItemsList.Count);
             foreach (DisplayItem item in SelectedItemsList)
             {
-                _db.TableItemSectionPlacement.PlaceItem(item.ID,SelectedStoreSection);
+                int findValue = ItemsInSectionList.FindIndex(currentItem => currentItem.ItemID == item.ID);
+
+                if (findValue == -1)
+                {
+                    _db.TableItemSectionPlacement.PlaceItem(item.ID, SelectedStoreSection);
+                }
+                else
+                {
+                    MessageBox.Show("Varen " + item.VareNavn + " findes i sektionen i forvejen");
+                }               
+                
             }
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
