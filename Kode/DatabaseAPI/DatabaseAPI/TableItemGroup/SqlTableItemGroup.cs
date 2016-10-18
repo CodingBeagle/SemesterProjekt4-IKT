@@ -63,7 +63,7 @@ namespace DatabaseAPI.TableItemGroup
             return _createdID;
         }
 
-        public List<ItemGroup> SearchItemGroup(string itemGroupName)
+        public List<ItemGroup> SearchItemGroups(string itemGroupName)
         {
             List<ItemGroup> searchResults = new List<ItemGroup>();
             string name = null;
