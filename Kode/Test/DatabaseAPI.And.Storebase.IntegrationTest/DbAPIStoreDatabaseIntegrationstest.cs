@@ -337,7 +337,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         }
 
         [Test]
-        public void DeletePlacementsByItem_DeletePlacementByItemCalled_FindPlacementByItemReturnsNull()
+        public void DeletePlacementsByItem_DeletePlacementByItemCalled_FindPlacementByItemReturnsEmptyList()
         {
             Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
             itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
@@ -348,6 +348,17 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             item.DeleteItem(item1.ItemID);
         }
 
+        [Test]
+        public void DeletePlacement_ItemPlacedAndDeleted_FindPlacementByItemReturnsEmptyList()
+        {
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.DeletePlacement(item1.ItemID,locStoreSection.StoreSectionID);
+
+            Assert.That(itemSectionPlacement.FindPlacementsByItem(item1.ItemID).Count == 0);
+
+            item.DeleteItem(item1.ItemID);
+        }
     }
 }
 
