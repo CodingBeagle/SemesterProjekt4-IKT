@@ -212,7 +212,25 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             Assert.That(locStoreSection.CoordinateX == newcoordinateX && locStoreSection.CoordinateY == newcoordinateY);
         }
 //Table - ItemSectionPlacement
+        [Test]
+        public void PlaceItem_PlaceItemCalled_ListItemsInSectionReturnsListofItems()
+        {   
 
+            // Creating and placing 3 items in TestStoreSection
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("TestPlaceItem2", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("TestPlaceItem3", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item2.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item3.ItemID, locStoreSection.StoreSectionID);
+            List<Item> insertedItems = new List<Item>();
+            insertedItems.Add(item1);
+            insertedItems.Add(item2);
+            insertedItems.Add(item3);
+            List<Item> itemsInSection = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
+           
+            Assert.That(insertedItems.Count == itemsInSection.Count);
+        }
 
     }
 }
