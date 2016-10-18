@@ -7,35 +7,38 @@
         mc:Ignorable="d"
         Title="HovedMenu Mockup" Height="720" Width="1280" ResizeMode="NoResize" BorderBrush="Black" WindowStartupLocation="CenterScreen" Icon="../images/favicon.ico">
     <Window.Resources>
-        <!--<Image x:Key="Locatiles" Source="images/Locatiles.png"/>-->
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="26"></Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="91*"/>
-            <ColumnDefinition Width="128*"/>
-            <ColumnDefinition Width="34*"/>
-            <ColumnDefinition Width="146*"/>
-            <ColumnDefinition Width="31*"/>
-            <ColumnDefinition Width="129*"/>
-            <ColumnDefinition Width="74*"/>
-            <ColumnDefinition Width="4*"/>
+
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="247*"/>
+            <ColumnDefinition Width="320*"/>
+            <ColumnDefinition Width="82*"/>
+            <ColumnDefinition Width="322*"/>
+            <ColumnDefinition Width="66*"/>
+            <ColumnDefinition Width="220*"/>
+            <ColumnDefinition Width="13*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="188*"/>
-            <RowDefinition Height="80*"/>
-            <RowDefinition Height="67*"/>
-            <RowDefinition Height="81*"/>
-            <RowDefinition Height="184*"/>
+            <RowDefinition Height="234*"/>
+            <RowDefinition Height="91*"/>
+            <RowDefinition Height="64*"/>
+            <RowDefinition Height="91*"/>
+            <RowDefinition Height="120*"/>
             <RowDefinition Height="83*"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
-        <Button x:Name="addItemBtn" Content="Administrer Varer" FontSize="28" RenderTransformOrigin="-0.161,-0.825" Click="addItemBtn_Click" Grid.Column="5" Grid.Row="1"/>
-        <Button x:Name="addItemGrpBtn" Content="Administrer Varegrupper" FontSize="21" RenderTransformOrigin="-0.161,-0.825" Grid.Column="5" Grid.Row="3" Click="addItemGrpBtn_Click" />
-        <Button x:Name="logOutBtn" Content="Log Ud"  FontSize="28" Click="logOutBtn_Click" Grid.Row="5" Grid.Column="6"/>
-        <Button x:Name="addSectionBtn" Content="Administrer Sektioner" FontSize="28" Grid.Row="1" Grid.Column="3" Click="addSectionBtn_Click"></Button>
-        <Button x:Name="button" Content="Administrer Plantegninger" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" FontSize="20" Click="button_Click"/>
-        <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="111,10,0,0" VerticalAlignment="Top" FontSize="48" Height="74" Width="693" Grid.ColumnSpan="5" Grid.Column="1"/>
-        <Image x:Name="Logo" Source="../images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="10,0,0,0" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Button x:Name="addItemBtn" Content="Administrer _Varer" Grid.Row="1" Grid.Column="2" Click="addItemBtn_Click"/>
+        <Button x:Name="addItemGrpBtn" Content="Administrer Vare_grupper" Grid.Row="1" Grid.Column="4" Click="addItemGrpBtn_Click" />
+        <Button x:Name="logOutBtn" Content="_Log Ud" Grid.Row="5" Grid.Column="6" Click="logOutBtn_Click"/>
+        <Button x:Name="addSectionBtn" Content="Administrer _Sektioner" Grid.Row="3"  Grid.Column="2" Click="addSectionBtn_Click"/>
+        <Button x:Name="button" Content="Administrer _Plantegninger" Grid.Row="3" Grid.Column="4" Click="button_Click"/>
+        <Label x:Name="menuTitle" Content="Butiksadministrator Hovedmenu" HorizontalAlignment="Left" Margin="87,10,0,0" VerticalAlignment="Top" FontSize="48" Height="74" Width="693" Grid.ColumnSpan="4" Grid.Column="2"/>
+        <Image x:Name="Logo" Source="../images/Locatiles.png"  HorizontalAlignment="Left" Height="217" VerticalAlignment="Top" Width="283" Margin="6,0,0,0" Grid.ColumnSpan="2" Grid.Column="1"/>
 
 
 
