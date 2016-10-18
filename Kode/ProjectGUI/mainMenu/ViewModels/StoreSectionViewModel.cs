@@ -70,6 +70,20 @@ namespace mainMenu
             set { _selectedItemsList = value; OnPropertyChanged(); }
         }
 
+        private List<Item> _itemsInSectionList = new List<Item>();
+        public List<Item> ItemsInSectionList
+        {
+            get { return _itemsInSectionList; }
+            set
+            {
+                if (value != _itemsInSectionList)
+                {
+                    _itemsInSectionList = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
@@ -158,6 +172,8 @@ namespace mainMenu
         {
             SelectedStoreSection = shape.ID;
             Debug.WriteLine(SelectedStoreSection +" "+ shape.ID);
+
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
         }
 
    
@@ -224,6 +240,8 @@ namespace mainMenu
             {
                 _db.TableItemSectionPlacement.PlaceItem(item.ID,SelectedStoreSection);
             }
+
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
