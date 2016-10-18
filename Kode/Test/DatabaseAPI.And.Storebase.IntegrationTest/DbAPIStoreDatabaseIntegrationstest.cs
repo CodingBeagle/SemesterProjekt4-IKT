@@ -25,9 +25,10 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         private ITableItem item;
         private ITableItemGroup itemGroup;
         private ITableItemSectionPlacement itemSectionPlacement;
-        private ITableStoreSection sqlTableStore;
+        private ITableStoreSection storeSection;
         private Item locItem;
         private ItemGroup locItemGroup;
+        private StoreSection locStoreSection;
 
         [SetUp]
         public void SetUp()
@@ -36,7 +37,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             item = _storedatabasefactory.CreateTableItem();
             itemGroup = _storedatabasefactory.CreateTableItemGroup();
             itemSectionPlacement = _storedatabasefactory.CreateTableItemSectionPlacement();
-            sqlTableStore = _storedatabasefactory.CreateTableStoreSection();
+            storeSection = _storedatabasefactory.CreateTableStoreSection();
             locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("TestItemGroup4")); //opretter ItemGroup på database samt local kopi
         }
 
@@ -49,6 +50,9 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             if(locItemGroup != null)
                 itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID);
             locItemGroup = null;
+            if(locStoreSection!=null)
+                storeSection.DeleteStoreSection(locStoreSection.StoreSectionID);
+            locStoreSection = null;
         }
 
 //Table - Item Group
@@ -115,13 +119,27 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // CreateStoreSection() and GetStoreSection() Test
         public void CreateStoreSectionGetStoreSection_CreateStoreSectionAndGetStoreSectionCalled_GetStoreSectionReturnsCreatedStoreSection()
         {
-            
+            string testString = "TestStoreSection";
+            long coordinateX = 1;
+            long coordinateY = 2;
+            long floodPlanID = 1; // skal erstates med værdi korrekt værdi fra floorplan.
+            long createID = storeSection.CreateStoreSection(testString, coordinateX, coordinateY, floodPlanID);
+            locStoreSection = storeSection.GetStoreSection(createID);
+            Assert.That(locStoreSection.Name == testString && locStoreSection.CoordinateX == coordinateX && locStoreSection.CoordinateY == coordinateY);
         }
 
         [Test] // DeleteStoreSection() Test
         public void DeleteStoreSection_DeleteStoreSectionCalled_GetReturnsNull()
         {
-            
+            string testString = "TestStoreSection";
+            long coordinateX = 1;
+            long coordinateY = 2;
+            long floodPlanID = 1; // skal erstates med værdi korrekt værdi fra floorplan.
+            long createID = storeSection.CreateStoreSection(testString, coordinateX, coordinateY, floodPlanID);
+            storeSection.DeleteStoreSection(createID);
+            locStoreSection = storeSection.GetStoreSection(createID);
+
+            Assert.That(locItem == null);
         }
 
         [Test] // DeleteAllStoreSection() and GetAllStoreSection Test
