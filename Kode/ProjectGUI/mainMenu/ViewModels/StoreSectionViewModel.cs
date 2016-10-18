@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
@@ -99,6 +100,21 @@ namespace mainMenu
         private long _floorplanID = 1;
         private List<StoreSection> _storeSectionList;
 
+        private ImageBrush _floorplanImage;
+
+        public ImageBrush FloorplanImage
+        {
+            get { return _floorplanImage; }
+            set
+            {
+                if (_floorplanImage != value)
+                {
+                    _floorplanImage = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public StoreSectionViewModel(Window window)
         {
             try
@@ -121,6 +137,10 @@ namespace mainMenu
             AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
             RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler);
             currentWindow = window;
+
+            ImageBrush floorplanImgBrush = new ImageBrush();
+            floorplanImgBrush.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg", UriKind.Relative));
+            FloorplanImage = floorplanImgBrush;
         }
 
         private void windowLoadedHandler()
