@@ -36,7 +36,8 @@
             <RowDefinition Height="59"/>
             <RowDefinition Height="200.684"/>
             <RowDefinition Height="62.211"/>
-            <RowDefinition Height="269.789"/>
+            <RowDefinition Height="201"/>
+            <RowDefinition Height="69"/>
             <RowDefinition/>
             <RowDefinition Height="5*"/>
             <RowDefinition/>
@@ -59,7 +60,7 @@
 
         </Grid.ColumnDefinitions>
 
-        <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Column="5" Grid.ColumnSpan="6" Grid.RowSpan="5">
+        <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Column="5" Grid.ColumnSpan="6" Grid.RowSpan="6">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas x:Name="canvas" Background="AntiqueWhite">
@@ -86,9 +87,9 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button x:Name="backBtn" Content="_Tilbage" Command="{Binding BackCommand}" Grid.Column="9" Grid.Row="6"/>
-        <Button x:Name="deleteSectionBtn" Content="_Slet Sektion" Command="{Binding DeleteStoreSectionCommand}" Grid.Column="7" Grid.Row="6"/>
-        <Button x:Name="editSectionBtn" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}" Grid.Column="6" Grid.Row="6"/>
+        <Button x:Name="backBtn" Content="_Tilbage" Command="{Binding BackCommand}" Grid.Column="9" Grid.Row="7"/>
+        <Button x:Name="deleteSectionBtn" Content="_Slet Sektion" Command="{Binding DeleteStoreSectionCommand}" Grid.Column="7" Grid.Row="7"/>
+        <Button x:Name="editSectionBtn" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}" Grid.Column="6" Grid.Row="7"/>
 
         <Button Content="Sø_g" Grid.Column="4" Grid.Row="1" Command="{Binding SearchItemsCommand}"></Button>
         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=SearchString, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"></TextBox>
@@ -99,6 +100,10 @@
                   SelectedIndex="{Binding Path=ListOfItems.CurrentIndex, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding Path=ListOfItems, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItemsList="{Binding Path=SelectedItemsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></local:ItemDataGrid>
+        <DataGrid x:Name="SectionContent"
+                  Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="4"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding ItemsInSectionList}"></DataGrid>
 
 
     </Grid>
