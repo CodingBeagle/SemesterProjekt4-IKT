@@ -63,7 +63,7 @@
         <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Column="5" Grid.ColumnSpan="6" Grid.RowSpan="6">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas x:Name="canvas" Background="AntiqueWhite">
+                    <Canvas x:Name="canvas" Background="{Binding FloorplanImage}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDown">
                                 <core:CallMethodAction TargetObject="{Binding}" MethodName="CreateStoreSection"></core:CallMethodAction>
