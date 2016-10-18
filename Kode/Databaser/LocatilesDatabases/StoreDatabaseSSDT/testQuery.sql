@@ -19,3 +19,6 @@ select * from Item;
 select * from ItemGroup;
 select * from ItemSectionPlacement;
 select * from StoreSection;
+
+insert into ItemGroup (Name) Values ('DummyItemGroup');
+delete from ItemGroup where Name!='DummyItemGroup';
