@@ -134,7 +134,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         }
 
         [Test]
-        public void UpdateItemGroup_ItemGroupInsertedAndEdited_GetItemReturnsTrue()
+        public void UpdateItemGroup_ItemGroupInsertedAndEdited_GetItemGroupReturnsInserted()
         {
             string updatedName = "NewItemGroupname";          
             itemGroup.UpdateItemGroup(locItemGroup.ItemGroupName, updatedName);
@@ -148,7 +148,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         {
             ItemGroup itemGroup1 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("FindMeblabla"));
             ItemGroup itemGroup2 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaFindMeblabla"));
-            ItemGroup itemGroup3 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaFind"));
+            ItemGroup itemGroup3 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaFindMe"));
 
             List<long> insertedItemGroups = new List<long>();
             insertedItemGroups.Add(itemGroup1.ItemGroupID);
