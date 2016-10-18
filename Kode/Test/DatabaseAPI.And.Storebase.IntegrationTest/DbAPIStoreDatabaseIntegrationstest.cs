@@ -29,6 +29,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         private Item locItem;
         private ItemGroup locItemGroup;
         private StoreSection locStoreSection;
+        private List<StoreSection> locAllStoreSections;
 
         [SetUp]
         public void SetUp()
@@ -39,8 +40,10 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             itemSectionPlacement = _storedatabasefactory.CreateTableItemSectionPlacement();
             storeSection = _storedatabasefactory.CreateTableStoreSection();
             locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("TestItemGroup4")); //opretter ItemGroup på database samt local kopi
-        }
+            locStoreSection = storeSection.GetStoreSection(storeSection.CreateStoreSection("TestStoreSection", 1, 2, 1));
 
+        }
+        
         [TearDown]
         public void CleanUp()
         {
@@ -148,7 +151,8 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // CreateStoreSection() and GetStoreSection() Test
         public void CreateStoreSectionGetStoreSection_CreateStoreSectionAndGetStoreSectionCalled_GetStoreSectionReturnsCreatedStoreSection()
         {
-            string testString = "TestStoreSection";
+            storeSection.DeleteStoreSection(locStoreSection.StoreSectionID);
+            string testString = "TestStoreSectionCreate";
             long coordinateX = 1;
             long coordinateY = 2;
             long floodPlanID = 1; // skal erstates med værdi korrekt værdi fra floorplan.
@@ -160,33 +164,51 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // DeleteStoreSection() Test
         public void DeleteStoreSection_DeleteStoreSectionCalled_GetReturnsNull()
         {
-            string testString = "TestStoreSection";
-            long coordinateX = 1;
-            long coordinateY = 2;
-            long floodPlanID = 1; // skal erstates med værdi korrekt værdi fra floorplan.
-            long createID = storeSection.CreateStoreSection(testString, coordinateX, coordinateY, floodPlanID);
-            storeSection.DeleteStoreSection(createID);
-            locStoreSection = storeSection.GetStoreSection(createID);
+            storeSection.DeleteStoreSection(locStoreSection.StoreSectionID);
+            locStoreSection = storeSection.GetStoreSection(locStoreSection.StoreSectionID);
 
-            Assert.That(locItem == null);
+            Assert.That(locStoreSection == null);
         }
 
-        [Test] // DeleteAllStoreSection() and GetAllStoreSection Test
-        public void DeleteAllStoreSection_DeleteAllStoreSectionCalled_GetAllStoreSectionsReturnsEmptyList()
-        {
-            
-        }
+        //[Test] // DeleteAllStoreSection() and GetAllStoreSection Test
+        //public void DeleteAllStoreSection_DeleteAllStoreSectionCalled_GetAllStoreSectionsReturnsEmptyList()
+        //{
+        //    string testString1 = "TestStoreSection1";
+        //    long coordinateX1 = 1;
+        //    long coordinateY1 = 2;
+        //    string testString2 = "TestStoreSection2";
+        //    long coordinateX2 = 2;
+        //    long coordinateY2 = 3;
+        //    long floodPlanID = 1; // skal erstates med værdi korrekt værdi fra floorplan.
+        //    storeSection.CreateStoreSection(testString1, coordinateX1, coordinateY1, floodPlanID);
+        //    storeSection.CreateStoreSection(testString2, coordinateX2, coordinateY2, floodPlanID);
+        //    storeSection.DeleteStoreSection(floodPlanID);
+        //    locAllStoreSections = storeSection.GetAllStoreSections(floodPlanID);
+        //    storeSection.DeleteAllStoreSections(floodPlanID);
+        //    Assert.That(locAllStoreSections == null);
+
+        //}
 
         [Test] // UpdateStoreSectionName()
         public void UpdateStoreSectionName_UpdateStoreSectionNameCalled_GetStoreSectionsReturnsWithNewName()
         {
-            
+            string updatedName = "NewSectionname";
+            storeSection.UpdateStoreSectionName(locStoreSection.StoreSectionID,updatedName);
+            locStoreSection = storeSection.GetStoreSection(locStoreSection.StoreSectionID);
+
+            Assert.That(locStoreSection.Name == updatedName);         
         }
 
-        [Test] // UpdateStoreSectionNCoordinate()
+        [Test] // UpdateStoreSectionCoordinate()
         public void UpdateStoreSectionCoordinate_UpdateStoreSectionCoordinateCalled_GetStoreSectionsReturnsWithNewCoordinate()
         {
 
+            long newcoordinateX = 5;
+            long newcoordinateY = 6;
+            storeSection.UpdateStoreSectionCoordinate(locStoreSection.StoreSectionID, newcoordinateX, newcoordinateY);
+            locStoreSection = storeSection.GetStoreSection(locStoreSection.StoreSectionID);
+
+            Assert.That(locStoreSection.CoordinateX == newcoordinateX && locStoreSection.CoordinateY == newcoordinateY);
         }
 //Table - ItemSectionPlacement
 
