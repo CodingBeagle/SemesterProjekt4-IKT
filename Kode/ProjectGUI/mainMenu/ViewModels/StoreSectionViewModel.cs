@@ -12,7 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
@@ -45,21 +44,9 @@ namespace mainMenu
         public ICommand SearchItemsCommand { get; private set; }
         public ICommand AddItemToSectionCommand { get; private set; }
 
-        private ImageBrush _floorplanImage;
+        public ICommand RemoveItemFromSectionCommand { get; private set; }
 
-        public ImageBrush FloorplanImage
-        {
-            get { return _floorplanImage; }
-            set
-            {
-                if (value != _floorplanImage)
-                {
-                    _floorplanImage = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-     
+
         public string NewSectionName { get; set; }
 
         public  string PreviousSectionName { get; set; }
@@ -100,6 +87,7 @@ namespace mainMenu
             }
         }
 
+        public Item SelectedSectionItem { get; set; }
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
@@ -131,11 +119,8 @@ namespace mainMenu
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
             AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
+            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler);
             currentWindow = window;
-
-            ImageBrush bImage = new ImageBrush();
-            bImage.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg",UriKind.Relative));
-            FloorplanImage = bImage;
         }
 
         private void windowLoadedHandler()
@@ -262,6 +247,13 @@ namespace mainMenu
             }
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+        }
+
+        private void removeItemFromSectionHandler()
+        {
+            _db.TableItemSectionPlacement.DeletePlacementByItem(SelectedSectionItem.ItemID);
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -86,7 +86,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // DeleteItemGroup
         public void DeleteItemGroup_DeleteItemGroupCalled_GetReturnsNull()
         {
-            itemGroup.DeleteItemGroup(locItem.ItemGroupID);
+            itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID);
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
         }
 
@@ -234,6 +234,28 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             List<Item> itemsInSection = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
            
             Assert.That(insertedItems.Count == itemsInSection.Count);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+        }
+
+        [Test]
+        public void FindPlacementByItem_FindPlacementByItemCalled_ReturnsTheItemsSection()
+        {
+            
+        }
+
+        [Test]
+        public void DeleteAllPlacementsInSection_DeleteAllPlacementsInSectionCalled_ListItemsInSectionReturnsEmptyList()
+        {
+            
+        }
+
+        [Test]
+        public void DeletePlacementByItem_DeletePlacementByItemCalled_ItemPlacementRemoved()
+        {
+            
         }
 
     }
