@@ -152,6 +152,8 @@ namespace mainMenu
             RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => SelectedStoreSection != 0);
             currentWindow = window;
 
+            _db.TableFloorplan.DownloadFloorplan();
+
             ImageBrush floorplanImgBrush = new ImageBrush();
             floorplanImgBrush.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg", UriKind.Relative));
             FloorplanImage = floorplanImgBrush;
