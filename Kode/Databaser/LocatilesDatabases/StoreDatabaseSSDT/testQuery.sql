@@ -21,4 +21,8 @@ select * from ItemSectionPlacement;
 select * from StoreSection;
 
 insert into ItemGroup (Name) Values ('DummyItemGroup');
+delete from Item where Name='TestItemWithSubGroup';
 delete from ItemGroup where Name!='DummyItemGroup';
+delete from StoreSection where Name='TestStoreSection';
+
+delete from Item where ItemGroupID=528;

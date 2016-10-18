@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:mainMenu"
         xmlns:models="clr-namespace:mainMenu.Models"
         mc:Ignorable="d"
-        Title="AdminFloorplan Management" Height="720" Width="1280" WindowStartupLocation="CenterScreen"
+        Title="AdminFloorplan Management" Height="720" Width="1280" WindowStartupLocation="CenterScreen" Icon="../images/favicon.ico"
         WindowState="Normal">
     <Window.Resources>
         <models:ThumbnailImageConverter x:Key="imgConverter"></models:ThumbnailImageConverter>
@@ -23,7 +23,7 @@
             <RowDefinition Height="25"></RowDefinition>
         </Grid.RowDefinitions>
         
-        <Image Name="floorplanThumbnail" Source="{Binding Path=ImagePath, Converter={StaticResource imgConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1"></Image>
+        <Image Name="floorplanThumbnail" Stretch="Fill" Source="{Binding Path=ImagePath, Converter={StaticResource imgConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1"></Image>
         <Button Name="btnBack" Content="Tilbage" FontSize="24" Grid.Column="2" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,-36" Click="btnBack_Click"></Button>
 
         <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="1">

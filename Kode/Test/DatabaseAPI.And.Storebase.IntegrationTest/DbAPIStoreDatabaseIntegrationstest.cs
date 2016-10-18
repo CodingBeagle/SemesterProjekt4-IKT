@@ -39,7 +39,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             itemGroup = _storedatabasefactory.CreateTableItemGroup();
             itemSectionPlacement = _storedatabasefactory.CreateTableItemSectionPlacement();
             storeSection = _storedatabasefactory.CreateTableStoreSection();
-            locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("TestItemGroup4")); //opretter ItemGroup på database samt local kopi
+            locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("DbItemGroup")); //opretter ItemGroup på database samt local kopi
             locStoreSection = storeSection.GetStoreSection(storeSection.CreateStoreSection("TestStoreSection", 1, 2, 1));
 
         }
@@ -62,21 +62,23 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // CreateItemGroup() without parentID and GetItemGroup()
         public void CreateItemGroupGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
         {
-            string itemGroupTestName = "ItemGroupTest";
-            long itemGroupID=itemGroup.CreateItemGroup(itemGroupTestName);
-            ItemGroup locItemGroup = new ItemGroup(itemGroupTestName,0,itemGroupID); 
-            ItemGroup retItemGroup = itemGroup.GetItemGroup(locItemGroup.ItemGroupID);
-            Assert.That(locItemGroup.ItemGroupID==retItemGroup.ItemGroupID && locItemGroup.ItemGroupName==retItemGroup.ItemGroupName);
-            itemGroup.DeleteItemGroup(itemGroupID);
+            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", 0, itemGroup.CreateItemGroup("ItemGroupTest")); 
+            ItemGroup retItemGroup = itemGroup.GetItemGroup(tItemGroup.ItemGroupID);
+
+            Assert.That(tItemGroup.ItemGroupID==retItemGroup.ItemGroupID && tItemGroup.ItemGroupName==retItemGroup.ItemGroupName);
+
+            itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
 
         [Test] // CreateItemGroup with parentID
         public void CreateItemGroupWithParentIDGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
         {
-            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", 0, itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
+            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", locItemGroup.ItemGroupID, itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
             ItemGroup retItemGroup = itemGroup.GetItemGroup(tItemGroup.ItemGroupID);
 
-            Assert.That(tItemGroup.ItemGroupID == retItemGroup.ItemGroupID && tItemGroup.ItemGroupName == retItemGroup.ItemGroupName);
+            Assert.That(tItemGroup.ItemGroupID == retItemGroup.ItemGroupID 
+                && tItemGroup.ItemGroupName == retItemGroup.ItemGroupName
+                && tItemGroup.ItemGroupParentID == retItemGroup.ItemGroupParentID);
 
             itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
@@ -84,18 +86,28 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // DeleteItemGroup
         public void DeleteItemGroup_DeleteItemGroupCalled_GetReturnsNull()
         {
-            itemGroup.DeleteItemGroup(locItem.ItemGroupID);
+            itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID);
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
+        }
 
+        [Test] // DeleteItemGroup - Parent group (not possible)
+        public void DeleteItemGroup_DeleteItemGroupParentGroup_DeleteItemGroupThrowsException()
+        {
+            long createID = itemGroup.CreateItemGroup("ChildItemGroup", locItemGroup.ItemGroupID);
+            Assert.Throws<SqlException>(() => itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID));
+            itemGroup.DeleteItemGroup(createID); 
         }
 
         [Test] // DeleteItemGroup with referenced Item (not possible - throws exception)
         public void DeleteItemGroup_DeleteReferencedItemGroupCalled_DeleteItemGroupThrowsException()
         {
-            ItemGroup tItemGroup = new ItemGroup("ItemTest",0,itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
-            Item tItem = new Item(0,"",0);
-            tItem.ItemID = item.CreateItem(tItemGroup.ItemGroupName, tItemGroup.ItemGroupID);
-            Assert.Throws<SystemException>(() => itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID));
+            ItemGroup tItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("ItemSubGroupTest", locItemGroup.ItemGroupID));
+            Item tItem = item.GetItem(item.CreateItem("TestItemWithSubGroup", tItemGroup.ItemGroupID));
+
+            Assert.Throws<SqlException>(() => itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID));
+
+            item.DeleteItem(tItem.ItemID);
+            itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
 
         [Test] // GetAllItemGroups
@@ -146,9 +158,63 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // SearchItems()
         public void SearchItems_SearchItemSForInsertedItems_ReturnsListWithMatchingItems()
         {
-               
+            Item item1 = item.GetItem(item.CreateItem("blablaFindMeblabla", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("blaFindMe", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("FindMeblabla", locItemGroup.ItemGroupID));
+
+            List<long> insertedItems = new List<long>();
+            insertedItems.Add(item1.ItemID);
+            insertedItems.Add(item2.ItemID);
+            insertedItems.Add(item3.ItemID);
+            List<Item> searchResultItems = item.SearchItems("FindMe");
+
+            int matchingSearch = 0;
+            foreach (var searchResult in searchResultItems)
+            {
+                if (insertedItems.Contains(searchResult.ItemID))
+                {
+                    matchingSearch++;
+                }
+            }
+
+            Assert.That(matchingSearch == insertedItems.Count);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+    
         }
-//Table - StoreSection
+
+        [Test] // SearchItems() no items found
+        public void SearchItems_SearchItemSForInsertedItems_ReturnsEmptyList()
+        {
+            Item item1 = item.GetItem(item.CreateItem("blablablabla", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("bla", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("blabla", locItemGroup.ItemGroupID));
+
+            List<long> insertedItems = new List<long>();
+            insertedItems.Add(item1.ItemID);
+            insertedItems.Add(item2.ItemID);
+            insertedItems.Add(item3.ItemID);
+            List<Item> searchResultItems = item.SearchItems("FindMe");
+
+            int matchingSearch = 0;
+            foreach (var searchResult in searchResultItems)
+            {
+                if (insertedItems.Contains(searchResult.ItemID))
+                {
+                    matchingSearch++;
+                }
+            }
+
+            Assert.That(matchingSearch == 0);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+
+        }
+        //Table - StoreSection
         [Test] // CreateStoreSection() and GetStoreSection() Test
         public void CreateStoreSectionGetStoreSection_CreateStoreSectionAndGetStoreSectionCalled_GetStoreSectionReturnsCreatedStoreSection()
         {
@@ -212,7 +278,75 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             Assert.That(locStoreSection.CoordinateX == newcoordinateX && locStoreSection.CoordinateY == newcoordinateY);
         }
 //Table - ItemSectionPlacement
+        [Test]
+        public void PlaceItem_PlaceItemCalled_ListItemsInSectionReturnsListofItems()
+        {   
 
+            // Creating and placing 3 items in TestStoreSection
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("TestPlaceItem2", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("TestPlaceItem3", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item2.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item3.ItemID, locStoreSection.StoreSectionID);
+            List<Item> insertedItems = new List<Item>();
+            insertedItems.Add(item1);
+            insertedItems.Add(item2);
+            insertedItems.Add(item3);
+            List<Item> itemsInSection = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
+           
+            Assert.That(insertedItems.Count == itemsInSection.Count);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+        }
+
+        [Test]
+        public void FindPlacementsByItem_ItemPlacedInTwoSections_ReturnsSectionsOfItem()
+        {
+            StoreSection tStoreSection = storeSection.GetStoreSection(storeSection.CreateStoreSection("A38", 4, 2, 1));
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);            
+            itemSectionPlacement.PlaceItem(item1.ItemID, tStoreSection.StoreSectionID);
+            List<StoreSection> retSecs = itemSectionPlacement.FindPlacementsByItem(item1.ItemID);
+            List<long> retSecsIDs = new List<long>();
+            foreach(var sec in retSecs)
+                retSecsIDs.Add(sec.StoreSectionID);
+            Assert.That(retSecsIDs.Contains(locStoreSection.StoreSectionID) && retSecsIDs.Contains(tStoreSection.StoreSectionID));
+
+            item.DeleteItem(item1.ItemID);
+            storeSection.DeleteStoreSection(tStoreSection.StoreSectionID);
+        }
+
+        [Test]
+        public void DeleteAllPlacementsInSection_DeleteAllPlacementsInSectionCalled_ListItemsInSectionReturnsEmptyList()
+        {
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("TestPlaceItem2", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item2.ItemID, locStoreSection.StoreSectionID);
+
+            itemSectionPlacement.DeleteAllPlacementsInSection(locStoreSection.StoreSectionID);
+
+            List<Item> retItems = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
+            Assert.That(retItems.Count==0);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+        }
+
+        [Test]
+        public void DeletePlacementsByItem_DeletePlacementByItemCalled_FindPlacementByItemReturnsNull()
+        {
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.DeletePlacementsByItem(item1.ItemID);
+
+            Assert.That(itemSectionPlacement.FindPlacementsByItem(item1.ItemID).Count==0);
+
+            item.DeleteItem(item1.ItemID);
+        }
 
     }
 }

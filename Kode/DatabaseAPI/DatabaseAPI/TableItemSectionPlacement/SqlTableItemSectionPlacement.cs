@@ -47,46 +47,47 @@ namespace DatabaseAPI.TableItemSectionPlacement
         public List<Item> ListItemsInSection(long sectionID)
         {
             List<Item> itemsInSection = new List<Item>();
-            List<long> itemIDList = new List<long>();
+          
+            Item newItem;
 
             try
             {
                 _conn.Open();
 
-                string sqlCommandString = $"SELECT * FROM ItemSectionPlacement " +
-                                          $"WHERE StoreSectionID = {sectionID}; ";
+                string sqlCommandString = $"SELECT * FROM ItemSectionPlacement" +
+                                          $" INNER JOIN Item " +
+                                          $" ON Item.ItemID = ItemSectionPlacement.ItemID" +
+                                          $" WHERE StoreSectionID='" + sectionID + "'";
 
                 _cmd = new SqlCommand(sqlCommandString, _conn);
                 _reader = _cmd.ExecuteReader();
 
                 while (_reader.Read())
                 {
-                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemID")))
-                    {
-                        itemIDList.Add((long) _reader["ItemID"]);
-                    }
+                    long _itemID = (long) _reader["ItemID"];
+                    string _itemName = (string) _reader["Name"];
+                    long _itemGroupID = (long) _reader["ItemGroupID"];
+
+                    newItem = new Item(_itemID, _itemName, _itemGroupID);
+                    itemsInSection.Add(newItem);
                 }
-                _conn?.Close();
-                _reader?.Close();
-                //Get items in the database, using the IDs from the ItemSectionPlacement
-                DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
-                foreach (var ID in itemIDList)
-                {
-                    var localItem = db.TableItem.GetItem(ID);
-                    itemsInSection.Add(localItem);
-                }
-                return itemsInSection;
+            
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine("Something went wrong: " + e.Message);
             }
-            return null;
+            finally
+            {
+                _conn?.Close();
+                _reader?.Close();
+            }
+            return itemsInSection;
         }
 
-        public StoreSection FindPlacementByItem(long ItemID)
+        public List<StoreSection> FindPlacementsByItem(long ItemID)
         {
-            long sectionID = 0;
+            List<StoreSection> secList = new List<StoreSection>();
             try
             {
                 _conn.Open();
@@ -100,13 +101,16 @@ namespace DatabaseAPI.TableItemSectionPlacement
                 while (_reader.Read())
                 {
                     if (!_reader.IsDBNull(_reader.GetOrdinal("StoreSectionID")))
-                    {
-                        sectionID = (long) _reader["StoreSectionID"];
+                    {                                                
+                        long sSecID = (long) _reader["StoreSectionID"];
+
+                        DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
+                        StoreSection tStoreSec = db.TableStoreSection.GetStoreSection(sSecID);
+                        secList.Add(tStoreSec);
                     }
                 }
-                DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
-                var itemPlacement = db.TableStoreSection.GetStoreSection(sectionID);
-                return itemPlacement;
+                
+                return secList;
             }
             finally
             {
@@ -133,7 +137,7 @@ namespace DatabaseAPI.TableItemSectionPlacement
             }
         }
 
-        public void DeletePlacementByItem(long itemId)
+        public void DeletePlacementsByItem(long itemId)
         {
             try
             {
@@ -141,6 +145,24 @@ namespace DatabaseAPI.TableItemSectionPlacement
 
                 string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
                                     $"WHERE itemId = {itemId};";
+
+                _cmd = new SqlCommand(sqlCommand, _conn);
+                _cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn?.Close();
+            }
+        }
+
+        public void DeletePlacement(long itemId, long sectionId)
+        {
+            try
+            {
+                _conn.Open();
+
+                string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
+                                    $"WHERE ItemID = {itemId} And StoreSectionID = {sectionId};";
 
                 _cmd = new SqlCommand(sqlCommand, _conn);
                 _cmd.ExecuteNonQuery();
