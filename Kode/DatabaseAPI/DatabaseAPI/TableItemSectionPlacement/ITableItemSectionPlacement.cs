@@ -13,7 +13,8 @@ namespace DatabaseAPI.TableItemSectionPlacement
 
         void DeleteAllPlacementsInSection(long sectionId);
 
-        void DeletePlacementByItem(long itemId);
+        void DeletePlacementsByItem(long itemId);
+
         void DeletePlacement(long itemId, long sectionId);
     }
 }

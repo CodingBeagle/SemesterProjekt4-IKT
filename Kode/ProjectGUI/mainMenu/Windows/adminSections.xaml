@@ -106,17 +106,9 @@
         <DataGrid x:Name="SectionContent"
                   Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4"
                   IsReadOnly="True"
-                  AutoGenerateColumns="False"
                   ItemsSource="{Binding ItemsInSectionList}"
-                  SelectedItem="{Binding Path=SelectedSectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Path=ItemID}"></DataGridTextColumn>
-                <DataGridTextColumn Header="VareNavn" Binding="{Binding Path=Name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="VareGruppeID" Binding="{Binding Path=ItemGroupID}"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                  SelectedItem="{Binding Path=SelectedSectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DataGrid>
 
 
     </Grid>
 </Window>
-
