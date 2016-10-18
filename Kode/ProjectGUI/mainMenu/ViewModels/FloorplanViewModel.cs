@@ -12,15 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DatabaseAPI;
 using DatabaseAPI.Factories;
+using Microsoft.Win32;
 using MvvmFoundation.Wpf;
 
 namespace mainMenu.ViewModels
 {
     public class FloorplanViewModel : INotifyPropertyChanged
     {
-        private BitmapImage _imagePath;
+        private string _imagePath;
 
-        public BitmapImage ImagePath
+        public string ImagePath
         {
             get { return _imagePath; }
             set
@@ -28,6 +29,21 @@ namespace mainMenu.ViewModels
                 if (_imagePath != value)
                 {
                     _imagePath = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _selectedFileName;
+
+        public string SelectedFileName
+        {
+            get { return _selectedFileName;}
+            set
+            {
+                if (_selectedFileName != value)
+                {
+                    _selectedFileName = value;
                     OnPropertyChanged();
                 }
             }
@@ -61,7 +77,7 @@ namespace mainMenu.ViewModels
         {
             _databaseService.TableFloorplan.DownloadFloorplan();
             var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
-            ImagePath = new BitmapImage(uriSource);
+            ImagePath = "../../images/floorplan.jpg";
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -71,12 +87,28 @@ namespace mainMenu.ViewModels
 
         private void BrowseFloorplanHandler()
         {
-            
+            OpenFileDialog floorplanBrowser = new OpenFileDialog();
+
+            floorplanBrowser.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
+
+            bool? browseResult = floorplanBrowser.ShowDialog();
+
+            if (!browseResult.HasValue || !browseResult.Value)
+                return;
+
+            SelectedFileName = floorplanBrowser.FileName;
         }
 
         private void UpdateFloorplanHandler()
         {
-            
+            DatabaseService dbService = new DatabaseService(new SqlStoreDatabaseFactory());
+
+            dbService.TableFloorplan.UploadFloorplan("floorplan", 10, 10, SelectedFileName);
+
+            ImagePath = null;
+            _databaseService.TableFloorplan.DownloadFloorplan();
+            var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
+            ImagePath = "../../images/floorplan.jpg";
         }
     }
 }
