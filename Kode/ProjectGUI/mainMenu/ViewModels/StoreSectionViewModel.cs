@@ -301,7 +301,7 @@ namespace mainMenu
 
         private void removeItemFromSectionHandler()
         {
-            _db.TableItemSectionPlacement.DeletePlacementByItem(SelectedSectionItem.ItemID);
+            _db.TableItemSectionPlacement.DeletePlacement(SelectedSectionItem.ItemID,SelectedStoreSection);
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
 
         }

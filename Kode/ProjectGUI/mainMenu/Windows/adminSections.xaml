@@ -10,7 +10,7 @@
         xmlns:core="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:data="clr-namespace:System.Data;assembly=System.Data"
         mc:Ignorable="d"
-        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="../images/favicon.ico"
         Name="win">
 
     <i:Interaction.Triggers>
