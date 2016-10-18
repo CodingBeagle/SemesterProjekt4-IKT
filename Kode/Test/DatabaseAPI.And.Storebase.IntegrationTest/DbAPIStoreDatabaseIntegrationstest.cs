@@ -39,7 +39,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             itemGroup = _storedatabasefactory.CreateTableItemGroup();
             itemSectionPlacement = _storedatabasefactory.CreateTableItemSectionPlacement();
             storeSection = _storedatabasefactory.CreateTableStoreSection();
-            locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("TestItemGroup4")); //opretter ItemGroup på database samt local kopi
+            locItemGroup = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("DbItemGroup")); //opretter ItemGroup på database samt local kopi
             locStoreSection = storeSection.GetStoreSection(storeSection.CreateStoreSection("TestStoreSection", 1, 2, 1));
 
         }
@@ -62,21 +62,23 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // CreateItemGroup() without parentID and GetItemGroup()
         public void CreateItemGroupGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
         {
-            string itemGroupTestName = "ItemGroupTest";
-            long itemGroupID=itemGroup.CreateItemGroup(itemGroupTestName);
-            ItemGroup locItemGroup = new ItemGroup(itemGroupTestName,0,itemGroupID); 
-            ItemGroup retItemGroup = itemGroup.GetItemGroup(locItemGroup.ItemGroupID);
-            Assert.That(locItemGroup.ItemGroupID==retItemGroup.ItemGroupID && locItemGroup.ItemGroupName==retItemGroup.ItemGroupName);
-            itemGroup.DeleteItemGroup(itemGroupID);
+            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", 0, itemGroup.CreateItemGroup("ItemGroupTest")); 
+            ItemGroup retItemGroup = itemGroup.GetItemGroup(tItemGroup.ItemGroupID);
+
+            Assert.That(tItemGroup.ItemGroupID==retItemGroup.ItemGroupID && tItemGroup.ItemGroupName==retItemGroup.ItemGroupName);
+
+            itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
 
         [Test] // CreateItemGroup with parentID
         public void CreateItemGroupWithParentIDGetItemGroup_CreateItemGroupAndGetItemGroupCalled_GetItemGroupReturnsCreatedItemGroup()
         {
-            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", 0, itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
+            ItemGroup tItemGroup = new ItemGroup("ItemGroupTest", locItemGroup.ItemGroupID, itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
             ItemGroup retItemGroup = itemGroup.GetItemGroup(tItemGroup.ItemGroupID);
 
-            Assert.That(tItemGroup.ItemGroupID == retItemGroup.ItemGroupID && tItemGroup.ItemGroupName == retItemGroup.ItemGroupName);
+            Assert.That(tItemGroup.ItemGroupID == retItemGroup.ItemGroupID 
+                && tItemGroup.ItemGroupName == retItemGroup.ItemGroupName
+                && tItemGroup.ItemGroupParentID == retItemGroup.ItemGroupParentID);
 
             itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
@@ -86,16 +88,19 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         {
             itemGroup.DeleteItemGroup(locItem.ItemGroupID);
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
-
         }
 
         [Test] // DeleteItemGroup with referenced Item (not possible - throws exception)
         public void DeleteItemGroup_DeleteReferencedItemGroupCalled_DeleteItemGroupThrowsException()
         {
-            ItemGroup tItemGroup = new ItemGroup("ItemTest",0,itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
+            ItemGroup tItemGroup = new ItemGroup("ItemTest",locItemGroup.ItemGroupID,itemGroup.CreateItemGroup("ItemGroupTest", locItemGroup.ItemGroupID));
             Item tItem = new Item(0,"",0);
             tItem.ItemID = item.CreateItem(tItemGroup.ItemGroupName, tItemGroup.ItemGroupID);
+
             Assert.Throws<SystemException>(() => itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID));
+
+            item.DeleteItem(tItem.ItemID);
+            itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
         }
 
         [Test] // GetAllItemGroups
@@ -212,7 +217,25 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             Assert.That(locStoreSection.CoordinateX == newcoordinateX && locStoreSection.CoordinateY == newcoordinateY);
         }
 //Table - ItemSectionPlacement
+        [Test]
+        public void PlaceItem_PlaceItemCalled_ListItemsInSectionReturnsListofItems()
+        {   
 
+            // Creating and placing 3 items in TestStoreSection
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("TestPlaceItem2", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("TestPlaceItem3", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item2.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item3.ItemID, locStoreSection.StoreSectionID);
+            List<Item> insertedItems = new List<Item>();
+            insertedItems.Add(item1);
+            insertedItems.Add(item2);
+            insertedItems.Add(item3);
+            List<Item> itemsInSection = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
+           
+            Assert.That(insertedItems.Count == itemsInSection.Count);
+        }
 
     }
 }
