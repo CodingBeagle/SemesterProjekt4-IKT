@@ -37,9 +37,5 @@ namespace mainMenu
     
             DataContext = new StoreSectionViewModel(this);
         }
-
-
-
-   
     }
 }
