@@ -283,20 +283,7 @@ namespace mainMenu
 
         private void searchItemsHandler()
         {
-            try
-            {
-                var searchList = _db.TableItem.SearchItems(SearchString);
-                ListOfItems.Clear();
-                ListOfItems.Populate(searchList);
-
-                if (searchList.Count == 0)
-                    MessageBox.Show($"Fandt ingen varer med navnet {SearchString}");
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
-            }
-
+            ItemUtility.SearchItem(_db, SearchString, ListOfItems);
         }
 
         private void addItemToSectionHandler()
