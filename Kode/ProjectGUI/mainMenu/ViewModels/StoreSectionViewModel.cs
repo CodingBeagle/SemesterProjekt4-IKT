@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
 using mainMenu.FloorplanLogic;
+using mainMenu.Models;
 using MvvmFoundation.Wpf;
 
 namespace mainMenu
@@ -32,21 +34,46 @@ namespace mainMenu
         public double Left { get; set; }
     }
 
-    public class StoreSectionViewModel
+    public class StoreSectionViewModel : INotifyPropertyChanged
     { 
         public ICommand WindowLoadedCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
         public ICommand SelectCurrentStoreSectionCommand { get; private set; }
         public ICommand DeleteStoreSectionCommand { get; private set; }
         public ICommand EditStoreSectionCommand { get; private set; }
+        public ICommand SearchItemsCommand { get; private set; }
+        public ICommand AddItemToSectionCommand { get; private set; }
      
         public string NewSectionName { get; set; }
 
         public  string PreviousSectionName { get; set; }
 
+        private string _searchString;
+        public string SearchString
+        {
+            get { return _searchString; }
+            set
+            {
+                if (_searchString != value)
+                {
+                    _searchString = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public DisplayItems ListOfItems { get; set; }
+        private IList _selectedItemsList = new ArrayList();
+
+        public IList SelectedItemsList
+        {
+            get {return _selectedItemsList;}
+            set { _selectedItemsList = value; OnPropertyChanged(); }
+        }
+
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
+        
 
         private Window currentWindow { get; }
 
@@ -65,12 +92,15 @@ namespace mainMenu
                 MessageBox.Show("Something went wrong" + e.Message);
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
+            ListOfItems = new DisplayItems();
 
             WindowLoadedCommand = new RelayCommand(windowLoadedHandler);
             BackCommand = new RelayCommand(backHandler);
             SelectCurrentStoreSectionCommand = new RelayCommand<SectionShape>(selectCurrentStoreSectionHandler);
             DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => SelectedStoreSection != 0);
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
+            SearchItemsCommand = new RelayCommand(searchItemsHandler);
+            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
             currentWindow = window;
         }
 
@@ -168,6 +198,39 @@ namespace mainMenu
             }
 
         }
-        
+
+        private void searchItemsHandler()
+        {
+            try
+            {
+                var searchList = _db.TableItem.SearchItems(SearchString);
+                ListOfItems.Clear();
+                ListOfItems.Populate(searchList);
+
+                if (searchList.Count == 0)
+                    MessageBox.Show($"Fandt ingen varer med navnet {SearchString}");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+            }
+
+        }
+
+        private void addItemToSectionHandler()
+        {
+            Debug.WriteLine(SelectedItemsList.Count);
+            foreach (DisplayItem item in SelectedItemsList)
+            {
+                _db.TableItemSectionPlacement.PlaceItem(item.ID,SelectedStoreSection);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
