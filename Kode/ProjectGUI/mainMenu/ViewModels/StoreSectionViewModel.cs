@@ -172,7 +172,19 @@ namespace mainMenu
 
             FloorplanImage = null;
             ImageBrush floorplanImgBrush = new ImageBrush();
-            floorplanImgBrush.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg", UriKind.Relative));
+
+            BitmapImage result = new BitmapImage();
+            result.BeginInit();
+            result.UriSource = new Uri("../../images/floorplan.jpg", UriKind.Relative);
+            // .OnLoad makes sure WPF prevents keeping a lock on the file
+            result.CacheOption = BitmapCacheOption.OnLoad;
+            // .IgnoreImageCache causes WPF to reread the image every time
+            // Should be used when selected images needs to be refreshed
+            result.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            result.EndInit();
+
+            floorplanImgBrush.ImageSource = result;
+
             FloorplanImage = floorplanImgBrush;
         }
         private void backHandler()
