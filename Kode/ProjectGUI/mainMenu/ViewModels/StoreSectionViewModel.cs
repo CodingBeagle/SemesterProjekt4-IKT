@@ -43,7 +43,10 @@ namespace mainMenu
         public ICommand EditStoreSectionCommand { get; private set; }
         public ICommand SearchItemsCommand { get; private set; }
         public ICommand AddItemToSectionCommand { get; private set; }
-     
+
+        public ICommand RemoveItemFromSectionCommand { get; private set; }
+
+
         public string NewSectionName { get; set; }
 
         public  string PreviousSectionName { get; set; }
@@ -84,6 +87,7 @@ namespace mainMenu
             }
         }
 
+        public Item SelectedSectionItem { get; set; }
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
@@ -115,6 +119,7 @@ namespace mainMenu
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
             AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
+            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler);
             currentWindow = window;
         }
 
@@ -242,6 +247,13 @@ namespace mainMenu
             }
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+        }
+
+        private void removeItemFromSectionHandler()
+        {
+            _db.TableItemSectionPlacement.DeletePlacementByItem(SelectedSectionItem.ItemID);
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
