@@ -151,5 +151,23 @@ namespace DatabaseAPI.TableItemSectionPlacement
                 _conn?.Close();
             }
         }
+
+        public void DeletePlacement(long itemId, long sectionId)
+        {
+            try
+            {
+                _conn.Open();
+
+                string sqlCommand = $"DELETE FROM ItemSectionPlacement " +
+                                    $"WHERE ItemID = {itemId} And StoreSectionID = {sectionId};";
+
+                _cmd = new SqlCommand(sqlCommand, _conn);
+                _cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn?.Close();
+            }
+        }
     }
 }

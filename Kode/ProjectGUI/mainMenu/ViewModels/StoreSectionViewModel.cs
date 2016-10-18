@@ -92,7 +92,21 @@ namespace mainMenu
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
 
         public long SelectedStoreSection = 0;
-        
+
+        private string _selectedStoreSectionName;
+
+        public string SelectedStoreSectionName
+        {
+            get { return _selectedStoreSectionName; }
+            set
+            {
+                if (_selectedStoreSectionName != value)
+                {
+                    _selectedStoreSectionName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private Window currentWindow { get; }
 
@@ -201,6 +215,10 @@ namespace mainMenu
             Debug.WriteLine(SelectedStoreSection +" "+ shape.ID);
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+
+            StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
+            SelectedStoreSectionName = selectedStoreSection.Name;
+           
         }
 
    
@@ -265,7 +283,17 @@ namespace mainMenu
             Debug.WriteLine(SelectedItemsList.Count);
             foreach (DisplayItem item in SelectedItemsList)
             {
-                _db.TableItemSectionPlacement.PlaceItem(item.ID,SelectedStoreSection);
+                int findValue = ItemsInSectionList.FindIndex(currentItem => currentItem.ItemID == item.ID);
+
+                if (findValue == -1)
+                {
+                    _db.TableItemSectionPlacement.PlaceItem(item.ID, SelectedStoreSection);
+                }
+                else
+                {
+                    MessageBox.Show("Varen " + item.VareNavn + " findes i sektionen i forvejen");
+                }               
+                
             }
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
