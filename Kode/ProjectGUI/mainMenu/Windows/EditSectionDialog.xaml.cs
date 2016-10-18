@@ -37,7 +37,6 @@ namespace mainMenu
             if (Regex.IsMatch(NewSectionNameTextBox.Text, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
             {
                 IsSectionNameChanged = true;
-                //NewSectionName = NewSectionNameTextBox.Text;
                 
                 Close();
             }

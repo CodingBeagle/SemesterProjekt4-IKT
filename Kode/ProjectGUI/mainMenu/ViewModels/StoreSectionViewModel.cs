@@ -148,13 +148,9 @@ namespace mainMenu
             DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => SelectedStoreSection != 0);
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
-            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
-            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler);
+            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => SelectedStoreSection != 0);
+            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => SelectedStoreSection != 0);
             currentWindow = window;
-
-            ImageBrush floorplanImgBrush = new ImageBrush();
-            floorplanImgBrush.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg", UriKind.Relative));
-            FloorplanImage = floorplanImgBrush;
         }
 
         private void windowLoadedHandler()
@@ -171,6 +167,25 @@ namespace mainMenu
 
                 ShapeCollection.Add(loadedSectionShape);
             }
+
+            _db.TableFloorplan.DownloadFloorplan();
+
+            FloorplanImage = null;
+            ImageBrush floorplanImgBrush = new ImageBrush();
+
+            BitmapImage result = new BitmapImage();
+            result.BeginInit();
+            result.UriSource = new Uri("../../images/floorplan.jpg", UriKind.Relative);
+            // .OnLoad makes sure WPF prevents keeping a lock on the file
+            result.CacheOption = BitmapCacheOption.OnLoad;
+            // .IgnoreImageCache causes WPF to reread the image every time
+            // Should be used when selected images needs to be refreshed
+            result.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            result.EndInit();
+
+            floorplanImgBrush.ImageSource = result;
+
+            FloorplanImage = floorplanImgBrush;
         }
         private void backHandler()
         {
@@ -281,7 +296,17 @@ namespace mainMenu
             Debug.WriteLine(SelectedItemsList.Count);
             foreach (DisplayItem item in SelectedItemsList)
             {
-                _db.TableItemSectionPlacement.PlaceItem(item.ID,SelectedStoreSection);
+                int findValue = ItemsInSectionList.FindIndex(currentItem => currentItem.ItemID == item.ID);
+
+                if (findValue == -1)
+                {
+                    _db.TableItemSectionPlacement.PlaceItem(item.ID, SelectedStoreSection);
+                }
+                else
+                {
+                    MessageBox.Show("Varen " + item.VareNavn + " findes i sektionen i forvejen");
+                }               
+                
             }
 
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
