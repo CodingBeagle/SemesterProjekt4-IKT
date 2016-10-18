@@ -59,7 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ItemDataGrid.cs" />
     <Compile Include="Models\DisplayItem.cs" />
+    <Compile Include="Properties\Annotations2.cs" />
     <Compile Include="ViewModels\AdminItemViewModel.cs" />
     <Compile Include="ViewModels\FloorplanViewModel.cs" />
     <Compile Include="ViewModels\StoreSectionViewModel.cs" />
