@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -14,13 +15,14 @@ using DatabaseAPI;
 using DatabaseAPI.Factories;
 using Microsoft.Win32;
 using MvvmFoundation.Wpf;
+using mainMenu;
 
 namespace mainMenu.ViewModels
 {
     public class FloorplanViewModel : INotifyPropertyChanged
     {
         private string _imagePath;
-
+        
         public string ImagePath
         {
             get { return _imagePath; }
@@ -97,6 +99,8 @@ namespace mainMenu.ViewModels
                 return;
 
             SelectedFileName = floorplanBrowser.FileName;
+            
+
         }
 
         private void UpdateFloorplanHandler()
