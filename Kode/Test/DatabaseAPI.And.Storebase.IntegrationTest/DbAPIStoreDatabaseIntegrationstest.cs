@@ -241,21 +241,49 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         }
 
         [Test]
-        public void FindPlacementByItem_FindPlacementByItemCalled_ReturnsTheItemsSection()
+        public void FindPlacementsByItem_ItemPlacedInTwoSections_ReturnsSectionsOfItem()
         {
-            
+            StoreSection tStoreSection = storeSection.GetStoreSection(storeSection.CreateStoreSection("A38", 4, 2, 1));
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);            
+            itemSectionPlacement.PlaceItem(item1.ItemID, tStoreSection.StoreSectionID);
+            List<StoreSection> retSecs = itemSectionPlacement.FindPlacementsByItem(item1.ItemID);
+            List<long> retSecsIDs = new List<long>();
+            foreach(var sec in retSecs)
+                retSecsIDs.Add(sec.StoreSectionID);
+            Assert.That(retSecsIDs.Contains(locStoreSection.StoreSectionID) && retSecsIDs.Contains(tStoreSection.StoreSectionID));
+
+            item.DeleteItem(item1.ItemID);
+            storeSection.DeleteStoreSection(tStoreSection.StoreSectionID);
         }
 
         [Test]
         public void DeleteAllPlacementsInSection_DeleteAllPlacementsInSectionCalled_ListItemsInSectionReturnsEmptyList()
         {
-            
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("TestPlaceItem2", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.PlaceItem(item2.ItemID, locStoreSection.StoreSectionID);
+
+            itemSectionPlacement.DeleteAllPlacementsInSection(locStoreSection.StoreSectionID);
+
+            List<Item> retItems = itemSectionPlacement.ListItemsInSection(locStoreSection.StoreSectionID);
+            Assert.That(retItems.Count==0);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
         }
 
         [Test]
-        public void DeletePlacementByItem_DeletePlacementByItemCalled_ItemPlacementRemoved()
+        public void DeletePlacementsByItem_DeletePlacementByItemCalled_FindPlacementByItemReturnsNull()
         {
-            
+            Item item1 = item.GetItem(item.CreateItem("TestPlaceItem1", locItemGroup.ItemGroupID));
+            itemSectionPlacement.PlaceItem(item1.ItemID, locStoreSection.StoreSectionID);
+            itemSectionPlacement.DeletePlacementsByItem(item1.ItemID);
+
+            Assert.That(itemSectionPlacement.FindPlacementsByItem(item1.ItemID).Count==0);
+
+            item.DeleteItem(item1.ItemID);
         }
 
     }
