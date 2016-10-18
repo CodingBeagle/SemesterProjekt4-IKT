@@ -148,8 +148,8 @@ namespace mainMenu
             DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => SelectedStoreSection != 0);
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
-            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
-            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler);
+            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => SelectedStoreSection != 0);
+            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => SelectedStoreSection != 0);
             currentWindow = window;
 
             ImageBrush floorplanImgBrush = new ImageBrush();
