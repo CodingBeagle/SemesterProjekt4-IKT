@@ -151,12 +151,6 @@ namespace mainMenu
             AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler);
             RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler);
             currentWindow = window;
-
-            _db.TableFloorplan.DownloadFloorplan();
-
-            ImageBrush floorplanImgBrush = new ImageBrush();
-            floorplanImgBrush.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg", UriKind.Relative));
-            FloorplanImage = floorplanImgBrush;
         }
 
         private void windowLoadedHandler()
@@ -173,6 +167,13 @@ namespace mainMenu
 
                 ShapeCollection.Add(loadedSectionShape);
             }
+
+            _db.TableFloorplan.DownloadFloorplan();
+
+            FloorplanImage = null;
+            ImageBrush floorplanImgBrush = new ImageBrush();
+            floorplanImgBrush.ImageSource = new BitmapImage(new Uri(@"../../images/floorplan.jpg", UriKind.Relative));
+            FloorplanImage = floorplanImgBrush;
         }
         private void backHandler()
         {
