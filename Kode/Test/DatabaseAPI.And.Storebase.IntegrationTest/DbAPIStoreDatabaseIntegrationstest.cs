@@ -90,6 +90,14 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
         }
 
+        [Test] // DeleteItemGroup - Parent group (not possible)
+        public void DeleteItemGroup_DeleteItemGroupParentGroup_DeleteItemGroupThrowsException()
+        {
+            long createID = itemGroup.CreateItemGroup("ChildItemGroup", locItemGroup.ItemGroupID);
+            Assert.Throws<SqlException>(() => itemGroup.DeleteItemGroup(locItemGroup.ItemGroupID));
+            itemGroup.DeleteItemGroup(createID); 
+        }
+
         [Test] // DeleteItemGroup with referenced Item (not possible - throws exception)
         public void DeleteItemGroup_DeleteReferencedItemGroupCalled_DeleteItemGroupThrowsException()
         {
@@ -150,9 +158,63 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
         [Test] // SearchItems()
         public void SearchItems_SearchItemSForInsertedItems_ReturnsListWithMatchingItems()
         {
-               
+            Item item1 = item.GetItem(item.CreateItem("blablaFindMeblabla", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("blaFindMe", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("FindMeblabla", locItemGroup.ItemGroupID));
+
+            List<long> insertedItems = new List<long>();
+            insertedItems.Add(item1.ItemID);
+            insertedItems.Add(item2.ItemID);
+            insertedItems.Add(item3.ItemID);
+            List<Item> searchResultItems = item.SearchItems("FindMe");
+
+            int matchingSearch = 0;
+            foreach (var searchResult in searchResultItems)
+            {
+                if (insertedItems.Contains(searchResult.ItemID))
+                {
+                    matchingSearch++;
+                }
+            }
+
+            Assert.That(matchingSearch == insertedItems.Count);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+    
         }
-//Table - StoreSection
+
+        [Test] // SearchItems() no items found
+        public void SearchItems_SearchItemSForInsertedItems_ReturnsEmptyList()
+        {
+            Item item1 = item.GetItem(item.CreateItem("blablablabla", locItemGroup.ItemGroupID));
+            Item item2 = item.GetItem(item.CreateItem("bla", locItemGroup.ItemGroupID));
+            Item item3 = item.GetItem(item.CreateItem("blabla", locItemGroup.ItemGroupID));
+
+            List<long> insertedItems = new List<long>();
+            insertedItems.Add(item1.ItemID);
+            insertedItems.Add(item2.ItemID);
+            insertedItems.Add(item3.ItemID);
+            List<Item> searchResultItems = item.SearchItems("FindMe");
+
+            int matchingSearch = 0;
+            foreach (var searchResult in searchResultItems)
+            {
+                if (insertedItems.Contains(searchResult.ItemID))
+                {
+                    matchingSearch++;
+                }
+            }
+
+            Assert.That(matchingSearch == 0);
+
+            item.DeleteItem(item1.ItemID);
+            item.DeleteItem(item2.ItemID);
+            item.DeleteItem(item3.ItemID);
+
+        }
+        //Table - StoreSection
         [Test] // CreateStoreSection() and GetStoreSection() Test
         public void CreateStoreSectionGetStoreSection_CreateStoreSectionAndGetStoreSectionCalled_GetStoreSectionReturnsCreatedStoreSection()
         {
