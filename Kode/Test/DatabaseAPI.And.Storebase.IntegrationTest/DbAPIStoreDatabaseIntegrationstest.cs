@@ -133,7 +133,77 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             Assert.That(count==3);
         }
 
-//Table - Item
+        [Test]
+        public void UpdateItemGroup_ItemGroupInsertedAndEdited_GetItemReturnsTrue()
+        {
+            string updatedName = "NewItemGroupname";          
+            itemGroup.UpdateItemGroup(locItemGroup.ItemGroupName, updatedName);
+            locItemGroup = itemGroup.GetItemGroup(locItemGroup.ItemGroupID);
+
+            Assert.That(locItemGroup.ItemGroupName == updatedName);
+        }
+
+        [Test]
+        public void SearchItemGroup_InsertItemGroupsAndSearch_ReturnsListWithMatchingItemGroups()
+        {
+            ItemGroup itemGroup1 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("FindMeblabla"));
+            ItemGroup itemGroup2 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaFindMeblabla"));
+            ItemGroup itemGroup3 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaFind"));
+
+            List<long> insertedItemGroups = new List<long>();
+            insertedItemGroups.Add(itemGroup1.ItemGroupID);
+            insertedItemGroups.Add(itemGroup2.ItemGroupID);
+            insertedItemGroups.Add(itemGroup3.ItemGroupID);
+            List<ItemGroup> searchResultItemGroups = itemGroup.SearchItemGroups("FindMe");
+
+            int matchingSearch = 0;
+            foreach (var searchResult in searchResultItemGroups)
+            {
+                if (insertedItemGroups.Contains(searchResult.ItemGroupID))
+                {
+                    matchingSearch++;
+                }
+            }
+
+            Assert.That(matchingSearch == insertedItemGroups.Count);
+
+            itemGroup.DeleteItemGroup(itemGroup1.ItemGroupID);
+            itemGroup.DeleteItemGroup(itemGroup2.ItemGroupID);
+            itemGroup.DeleteItemGroup(itemGroup3.ItemGroupID);
+
+        }
+
+        [Test]
+        public void SearchItemGroup_InsertItemGroupsAndSearch_ReturnsEmptyList()
+        {
+            ItemGroup itemGroup1 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blabla"));
+            ItemGroup itemGroup2 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaasdzxcblabla"));
+            ItemGroup itemGroup3 = itemGroup.GetItemGroup(itemGroup.CreateItemGroup("blablaliqwje"));
+
+            List<long> insertedItemGroups = new List<long>();
+            insertedItemGroups.Add(itemGroup1.ItemGroupID);
+            insertedItemGroups.Add(itemGroup2.ItemGroupID);
+            insertedItemGroups.Add(itemGroup3.ItemGroupID);
+            List<ItemGroup> searchResultItemGroups = itemGroup.SearchItemGroups("FindMe");
+
+            int matchingSearch = 0;
+            foreach (var searchResult in searchResultItemGroups)
+            {
+                if (insertedItemGroups.Contains(searchResult.ItemGroupID))
+                {
+                    matchingSearch++;
+                }
+            }
+
+            Assert.That(matchingSearch == 0);
+
+            itemGroup.DeleteItemGroup(itemGroup1.ItemGroupID);
+            itemGroup.DeleteItemGroup(itemGroup2.ItemGroupID);
+            itemGroup.DeleteItemGroup(itemGroup3.ItemGroupID);
+
+        }
+
+        //Table - Item
         [Test] //CreateItem() and GetItem() tested
         public void CreateItemGetItem_CreateItemAndGetItemCalled_GetItemReturnsCreatedItem()
         {
