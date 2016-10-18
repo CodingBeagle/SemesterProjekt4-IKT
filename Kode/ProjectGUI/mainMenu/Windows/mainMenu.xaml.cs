@@ -56,5 +56,12 @@ namespace mainMenu
             adminFloorplan.Show();
             Close();
         }
+
+        private void addItemGrpBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AdminItemGroups adminItemGroup = new AdminItemGroups();
+            adminItemGroup.Show();
+            Close();
+        }
     }
 }

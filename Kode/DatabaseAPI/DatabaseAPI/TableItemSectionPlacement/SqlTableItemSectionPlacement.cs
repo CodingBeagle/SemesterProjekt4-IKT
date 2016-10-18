@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
@@ -78,7 +79,7 @@ namespace DatabaseAPI.TableItemSectionPlacement
             }
             catch (Exception e)
             {
-
+                Debug.WriteLine(e.Message);
             }
             return null;
         }

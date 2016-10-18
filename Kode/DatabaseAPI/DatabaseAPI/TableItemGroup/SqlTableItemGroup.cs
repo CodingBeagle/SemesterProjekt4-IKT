@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
 
@@ -8,14 +9,14 @@ namespace DatabaseAPI.TableItemGroup
 {
     public class SqlTableItemGroup : ITableItemGroup
     {
-        private SqlConnection _connection;
-        private SqlCommand _command;
+        private SqlConnection _conn;
+        private SqlCommand _cmd;
         private SqlDataReader _dataReader;
 
 
         public SqlTableItemGroup(string connectionString)
         {
-            _connection = new SqlConnection(connectionString);
+            _conn = new SqlConnection(connectionString);
         }
 
         public long CreateItemGroup(string itemGroupName, long itemGroupParentID)
@@ -23,19 +24,19 @@ namespace DatabaseAPI.TableItemGroup
             long _createdID;
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command =
+                _cmd =
                     new SqlCommand(
                         $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ('" + itemGroupName + "', '" +
                         itemGroupParentID + "'); SELECT CAST(scope_identity() AS BIGINT)",
-                        _connection);
+                        _conn);
 
-                _createdID = (long)_command.ExecuteScalar();
+                _createdID = (long) _cmd.ExecuteScalar();
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
             }
             return _createdID;
         }
@@ -45,38 +46,103 @@ namespace DatabaseAPI.TableItemGroup
             long _createdID;
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command =
+                _cmd =
                     new SqlCommand(
                         $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "');" +
-                                          "SELECT CAST(scope_identity() AS BIGINT)",
-                        _connection);
+                        "SELECT CAST(scope_identity() AS BIGINT)",
+                        _conn);
 
-                _createdID = (long)_command.ExecuteScalar();
+                _createdID = (long) _cmd.ExecuteScalar();
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
             }
             return _createdID;
+        }
+
+        public List<ItemGroup> SearchItemGroup(string itemGroupName)
+        {
+            List<ItemGroup> searchResults = new List<ItemGroup>();
+            string name = null;
+            long itemGroupParentID = 0;
+            long itemGroupID = 0;
+            try
+            {
+                _conn.Open();
+
+                string sqlCommand = $"SELECT * FROM ItemGroup WHERE Name LIKE '%{itemGroupName}%'";
+                _cmd = new SqlCommand(sqlCommand, _conn);
+
+                _dataReader = _cmd.ExecuteReader();
+
+                    while (_dataReader.Read())
+                    {
+                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
+                        {
+                            name = (string) _dataReader["Name"];
+                        }
+                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ParentItemGroupID")))
+                        {
+                            itemGroupParentID = (long) _dataReader["ParentItemGroupID"];
+                        }
+                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ItemGroupID")))
+                        {
+                            itemGroupID = (long) _dataReader["ItemGroupID"];
+                        }
+                    searchResults.Add(new ItemGroup(name, itemGroupParentID, itemGroupID));
+                }
+                    
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            finally
+            {
+                _dataReader?.Close();
+                _conn?.Close();
+            }
+            return searchResults;
+        }
+
+        public void UpdateItemGroup(string oldItemGroupName, string itemGroupName)
+        {
+            try
+            {
+                _conn.Open();
+                string sqlCommand = $"UPDATE ItemGroup SET Name='{itemGroupName}' WHERE Name='{oldItemGroupName}'";
+                _cmd = new SqlCommand(sqlCommand, _conn);
+
+                _cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            finally
+            {
+                _conn?.Close();
+            }
         }
 
         public void DeleteItemGroup(long itemGroupID)
         {
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = " + itemGroupID,
-                    _connection);
+                _cmd = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = " + itemGroupID,
+                    _conn);
 
-                _command.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
 
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
 
             }
         }
@@ -90,11 +156,11 @@ namespace DatabaseAPI.TableItemGroup
 
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command = new SqlCommand($"SELECT  * FROM ItemGroup WHERE ItemGroupID = {itemGroupID}", _connection);
+                _cmd = new SqlCommand($"SELECT  * FROM ItemGroup WHERE ItemGroupID = {itemGroupID}", _conn);
 
-                _dataReader = _command.ExecuteReader();
+                _dataReader = _cmd.ExecuteReader();
 
                 if (_dataReader.HasRows)
                 {
@@ -114,7 +180,7 @@ namespace DatabaseAPI.TableItemGroup
             finally
             {
                 _dataReader?.Close();
-                _connection?.Close();
+                _conn?.Close();
 
             }
 
@@ -126,10 +192,10 @@ namespace DatabaseAPI.TableItemGroup
             List<ItemGroup> itemGroupQuery = new List<ItemGroup>();
             try
             {
-                _connection.Open();
-                _command = new SqlCommand("SELECT * FROM ItemGroup", _connection);
+                _conn.Open();
+                _cmd = new SqlCommand("SELECT * FROM ItemGroup", _conn);
 
-                _dataReader = _command.ExecuteReader();
+                _dataReader = _cmd.ExecuteReader();
 
 
                 while (_dataReader.Read())
@@ -156,7 +222,7 @@ namespace DatabaseAPI.TableItemGroup
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
                 _dataReader?.Close();
             }
             return itemGroupQuery;

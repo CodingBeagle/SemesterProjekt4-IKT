@@ -48,7 +48,7 @@ namespace mainMenu
 
         public long SelectedStoreSection = 0;
 
-        private Window currentWindow { get; }
+        private System.Windows.Window currentWindow { get; }
 
         private DatabaseService _db;
         private long _floorplanID = 1;
