@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
-using mainMenu.Annotations;
 using mainMenu.FloorplanLogic;
 using mainMenu.Models;
 using MvvmFoundation.Wpf;
@@ -229,7 +228,6 @@ namespace mainMenu
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

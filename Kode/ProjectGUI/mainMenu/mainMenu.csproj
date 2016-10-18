@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ItemDataGrid.cs" />
     <Compile Include="Models\DisplayItem.cs" />
     <Compile Include="Models\ThumbnailImageConverter.cs" />
     <Compile Include="ViewModels\AdminItemViewModel.cs" />
