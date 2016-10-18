@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using mainMenu.ViewModels;
 using Microsoft.Win32;
 
 namespace mainMenu
@@ -21,22 +22,13 @@ namespace mainMenu
     /// </summary>
     public partial class AdminFloorplan : Window
     {
+        readonly FloorplanViewModel viewModel = new FloorplanViewModel();
+
         public AdminFloorplan()
         {
             InitializeComponent();
-        }
 
-        private void LoadFloorplanImage()
-        {
-
-        }
-
-        private void backBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
-            Close();
-
+            DataContext = viewModel;
         }
 
         private void browseBtn_Click(object sender, RoutedEventArgs e)
@@ -51,7 +43,14 @@ namespace mainMenu
 
             if (!result.HasValue || !result.Value) return;
             var filename = browse.FileName;
-            filepathBox.Text = filename;
+            //filepathBox.Text = filename;
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            Close();
         }
     }
 }

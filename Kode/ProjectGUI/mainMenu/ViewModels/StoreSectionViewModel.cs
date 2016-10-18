@@ -32,7 +32,7 @@ namespace mainMenu
         public double Left { get; set; }
     }
 
-    public class StoreSectionViewModel: INotifyPropertyChanged
+    public class StoreSectionViewModel
     { 
         public ICommand WindowLoadedCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
