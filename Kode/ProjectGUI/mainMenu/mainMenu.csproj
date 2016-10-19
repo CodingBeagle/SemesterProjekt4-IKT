@@ -59,9 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="RefreshableImage.cs" />
-    <Compile Include="ItemDataGrid.cs" />
-    <Compile Include="ItemUtility.cs" />
+    <Compile Include="Models\RefreshableImage.cs" />
+    <Compile Include="Models\SectionShape.cs" />
+    <Compile Include="ViewModels\ItemDataGrid.cs" />
+    <Compile Include="Models\ItemUtility.cs" />
     <Compile Include="ViewModels\ItemGroupViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="Windows\EditItemGroupDialog.xaml.cs">
@@ -90,8 +91,8 @@
     <Compile Include="Windows\EditSectionDialog.xaml.cs">
       <DependentUpon>EditSectionDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RelayCommand.cs" />
-    <Compile Include="ShapeButtonCreator.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="Models\ShapeButtonCreator.cs" />
     <Page Include="Windows\EditItemGroupDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
