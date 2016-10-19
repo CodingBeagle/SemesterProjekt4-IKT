@@ -18,8 +18,6 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
     [TestFixture]
     public class DbAPIStoreDatabaseIntegrationstest
     {
-        //test push for git
-
         SqlStoreDatabaseFactory _storedatabasefactory = new SqlStoreDatabaseFactory();
         private ITableFloorplan floorplan;
         private ITableItem item;
