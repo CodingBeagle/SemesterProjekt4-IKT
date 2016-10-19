@@ -31,6 +31,7 @@ namespace mainMenu.Models
 
         public void Populate(string itemGroupName)
         {
+            Clear();
             var searchResults = db.TableItemGroup.SearchItemGroups(itemGroupName);
             foreach (var searchResult in searchResults)
             {

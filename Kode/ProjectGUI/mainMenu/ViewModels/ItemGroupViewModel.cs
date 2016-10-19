@@ -172,12 +172,14 @@ namespace mainMenu.ViewModels
             {
                 ListOfItemGroups.Clear();
                 ListOfItemGroups.Populate(SearchString);
-                SearchString = "";
+                
 
                 if (ListOfItemGroups.Count == 0)
                 {
                     MessageBox.Show($"Kunne ikke finde nogen varegruppe med navnet {SearchString}");
+                    SearchString = "";
                 }
+                SearchString = "";
             }
             catch (Exception exception)
             {
