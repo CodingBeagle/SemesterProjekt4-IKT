@@ -38,7 +38,7 @@ namespace mainMenu
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
         public long SelectedStoreSection = 0;
 
-        private Window currentWindow { get; }
+        private Window _currentWindow { get; }
         private DatabaseService _db;
         private long _floorplanID = 1;
         private List<StoreSection> _storeSectionList;
@@ -119,7 +119,7 @@ namespace mainMenu
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
             ListOfItems = new DisplayItems();
-            currentWindow = window;
+            _currentWindow = window;
 
             WindowLoadedCommand = new RelayCommand(windowLoadedHandler);
             BackCommand = new RelayCommand(backHandler);
@@ -182,7 +182,7 @@ namespace mainMenu
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
 
-            currentWindow.Close();
+            _currentWindow.Close();
         }
 
         public void CreateStoreSection(object sender, MouseButtonEventArgs e)

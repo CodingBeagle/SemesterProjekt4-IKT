@@ -27,61 +27,73 @@ namespace DatabaseAPI.TableFloorplan
             {
                 byte[] imageContent = File.ReadAllBytes(filePath);
 
-                _conn.Open();
+                bool floorplanExist = DoesFloorplanExist();
 
-                string checkFloorplanExistanceSql = "SELECT FloorPlanID FROM Floorplan";
-
-                bool isEmpty = false;
-                using (SqlCommand sqlCmd = new SqlCommand(checkFloorplanExistanceSql, _conn))
+                if (!floorplanExist)
                 {
-                    SqlDataReader reader = sqlCmd.ExecuteReader();
-
-                    if (!reader.HasRows)
-                    {
-                        isEmpty = true;
-                    }
-
-                    reader.Close();
-                }
-
-                string sqlStatement = "";
-
-                if (isEmpty)
-                {
-                    sqlStatement = @"INSERT INTO Floorplan
-                                        (FloorPlanID, Name, Image, imageWidth, imageHeight)
-                                        VALUES (@id, @name, @image, @width, @height);";
-
-                    using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
-                    {
-                        sqlCmd.Parameters.AddWithValue("@id", 1);
-                        sqlCmd.Parameters.AddWithValue("@name", name);
-                        sqlCmd.Parameters.AddWithValue("@width", width);
-                        sqlCmd.Parameters.AddWithValue("@height", height);
-                        sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
-
-                        sqlCmd.ExecuteNonQuery(); 
-                    }
+                    InsertFloorplan(name, width, height, imageContent);
                 }
                 else
                 {
-                    sqlStatement = @"UPDATE Floorplan SET Name=@name, Image=@image, imageWidth=@width, imageHeight=@height
-                                     WHERE Floorplan.FloorPlanID = 1";
-
-                    using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
-                    {
-                        sqlCmd.Parameters.AddWithValue("@name", name);
-                        sqlCmd.Parameters.AddWithValue("@width", width);
-                        sqlCmd.Parameters.AddWithValue("@height", height);
-                        sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
-
-                        sqlCmd.ExecuteNonQuery();
-                    }
+                    UpdateFloorplan(name, width, height, imageContent);
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Something went wrong: " + e.Message);
+                Debug.WriteLine("An error occoured while uploading a new floorplan image: " + e.Message);
+            }
+        }
+
+        private void InsertFloorplan(string name, int width, int height, byte[] imageContent)
+        {
+            try
+            {
+                string sqlStatement = @"INSERT INTO Floorplan
+                                        (FloorPlanID, Name, Image, imageWidth, imageHeight)
+                                        VALUES (@id, @name, @image, @width, @height);";
+
+                using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+                {
+                    sqlCmd.Parameters.AddWithValue("@id", 1);
+                    sqlCmd.Parameters.AddWithValue("@name", name);
+                    sqlCmd.Parameters.AddWithValue("@width", width);
+                    sqlCmd.Parameters.AddWithValue("@height", height);
+                    sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+
+                    sqlCmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("An error occoured while inserting floorplan to database: " + e.Message);
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+
+        private void UpdateFloorplan(string name, int width, int height, byte[] imageContent)
+        {
+            try
+            {
+                string sqlStatement = @"UPDATE Floorplan SET Name=@name, Image=@image, imageWidth=@width, imageHeight=@height
+                                     WHERE Floorplan.FloorPlanID = 1";
+
+                _conn.Open();
+                using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+                {
+                    sqlCmd.Parameters.AddWithValue("@name", name);
+                    sqlCmd.Parameters.AddWithValue("@width", width);
+                    sqlCmd.Parameters.AddWithValue("@height", height);
+                    sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+
+                    sqlCmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("An error occoured while updating floorplan to database: " + e.Message);
             }
             finally
             {
@@ -93,17 +105,16 @@ namespace DatabaseAPI.TableFloorplan
         {
             try
             {
-                _conn.Open();
-
                 string sqlStatement = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
 
+                _conn.Open();
                 using (SqlCommand cmd = new SqlCommand(sqlStatement, _conn))
                 {
                     SqlDataReader rd = cmd.ExecuteReader();
 
                     while (rd.Read())
                     {
-                        ReadImageData("floorplan", rd);
+                        DownloadImageDataToImageFile("floorplan", rd);
                     }
 
                     rd.Close();
@@ -119,7 +130,40 @@ namespace DatabaseAPI.TableFloorplan
             }
         }
 
-        private Byte[] ReadImageData(string floorplanName, SqlDataReader reader)
+        private bool DoesFloorplanExist()
+        {
+            bool floorplanExist = false;
+
+            try
+            {
+                string checkFloorplanExistanceSql = "SELECT FloorPlanID FROM Floorplan";
+
+                _conn.Open();
+                using (SqlCommand sqlCmd = new SqlCommand(checkFloorplanExistanceSql, _conn))
+                {
+                    SqlDataReader reader = sqlCmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        floorplanExist = true;
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("");
+            }
+            finally
+            {
+                _conn.Close();
+            }
+
+            return floorplanExist;
+        }
+
+        private Byte[] DownloadImageDataToImageFile(string floorplanName, SqlDataReader reader)
         {
             FileStream stream;
             BinaryWriter br;
