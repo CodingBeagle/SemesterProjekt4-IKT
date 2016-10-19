@@ -28,15 +28,15 @@
         <Label x:Name="WindowName" Content="Opret Varegruppe" FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="81,0,0,0"></Label>
 
         <Label Content="Varegruppenavn:" FontSize="16" Grid.Column="1" Grid.Row="2"></Label>
-        <TextBox x:Name="ItemNameTextBox" Text="{Binding ItemGroupName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="2"></TextBox>
+        <TextBox x:Name="ItemGroupNameTextBox" Text="{Binding ItemGroupName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="2"></TextBox>
 
         <Label Content="Over varegruppe:" FontSize="16" Grid.Column="1" Grid.Row="4"></Label>
         <ComboBox x:Name="ItemGroupComboBox"
                   SelectedIndex="{Binding Path=ComboBoxIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                  ItemsSource="{Binding Path=ComboBoxOpetions, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding Path=ListOfItemGroups, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"></ComboBox>
 
-        <Button x:Name="CreateItemButton" Content="Opret Varegruppe" Command="{Binding CreateItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
+        <Button x:Name="CreateItemGroupButton" Content="Opret Varegruppe" Command="{Binding CreateItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
         <Button x:Name="CancelButton" Content="Annuller" Grid.Column="2" Grid.Row="7" Click="CancelButton_Click"/>
     </Grid>
 </Window>

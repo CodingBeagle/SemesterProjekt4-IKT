@@ -28,9 +28,9 @@
             <ColumnDefinition Width="65*"/>
             <ColumnDefinition Width="58*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="AddItems" Content="Opret Varegruppe" FontSize="26" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="AddItems_Click"/>
-        <Button x:Name="EditItems" Content="Rediger Varegruppe" FontSize="26" Grid.Column="1" Grid.Row="3" Click="EditItems_Click"></Button>
-        <Button x:Name="DeleteItems" Content="Slet Varegruppe" Command="{Binding DeleteItemGroupCommand}"  FontSize="26" Grid.Column="1" Grid.Row="5"/>
+        <Button x:Name="AddItemGroup" Content="Opret Varegruppe" FontSize="26" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="AddItems_Click"/>
+        <Button x:Name="EditItemGroup" Content="Rediger Varegruppe" FontSize="26" Grid.Column="1" Grid.Row="3" Click="EditItems_Click"></Button>
+        <Button x:Name="DeleteItemGroup" Content="Slet Varegruppe" Command="{Binding DeleteItemGroupCommand}"  FontSize="26" Grid.Column="1" Grid.Row="5"/>
 
         <Label x:Name="SearchLabel" Content="Søg varegrupper:" Grid.Column="3" Grid.Row="1" FontSize="26"></Label>
         <TextBox x:Name="SearchBox" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" FontSize="26" Grid.Column="4" Grid.Row="1"/>

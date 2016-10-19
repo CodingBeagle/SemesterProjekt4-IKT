@@ -20,21 +20,17 @@ namespace mainMenu.ViewModels
 {
     public class ItemGroupViewModel : INotifyPropertyChanged
     {
-        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
-        public DisplayItemGroups ListOfItemGroups { get; set; }
-        public DisplayItemGroups ComboBoxOptions { get; set; }
-
         #region Privates
+        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
         private string _searchString;
         private int _comboBoxIndex;
         private string _itemGroupName;
         private string _oldItemGroupName;
-
-
-
         #endregion
 
-        #region MyRegion
+        #region Properties
+        public DisplayItemGroups ListOfItemGroups { get; set; }
+        public DisplayItemGroups ComboBoxOptions { get; set; }
         public string SearchString
         {
             get { return _searchString; }
@@ -91,7 +87,6 @@ namespace mainMenu.ViewModels
         public ICommand DeleteItemGroupCommand { get; private set; }
         public ICommand EditItemGroupCommand { get; private set; }
         public ICommand SearchCommand { get; private set; }
-
         #endregion
 
 
@@ -126,6 +121,7 @@ namespace mainMenu.ViewModels
             }
             catch (Exception e)
             {
+                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }    
         }
@@ -137,9 +133,10 @@ namespace mainMenu.ViewModels
             long parentItemGroupID;
             try
             {
-                
+                //Check om de indtastede tegn er gyldige. Er vigtigt i forhold til SQL-sætninger   
                 if (Regex.IsMatch(ItemGroupName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
                 {
+                    //Checker om der er valgt en parentItemGroup
                     if (ComboBoxOptions.CurrentIndex == -1)
                     {
                         itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName);
@@ -151,8 +148,7 @@ namespace mainMenu.ViewModels
                         itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName,parentItemGroupID);
                     }
                     
-                    var createdItem = new ItemGroup(ItemGroupName, parentItemGroupID, itemGroupID);
-                    ListOfItemGroups.Add(createdItem);
+                    ListOfItemGroups.Add(new ItemGroup(ItemGroupName, parentItemGroupID, itemGroupID));
                     MessageBox.Show($"{ItemGroupName} er blevet tilføjet til databasen");
                     ComboBoxIndex = -1;
                     ItemGroupName = "";
@@ -165,7 +161,8 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                Debug.WriteLine(exception.Message);
             }
         }
 
@@ -174,14 +171,8 @@ namespace mainMenu.ViewModels
             try
             {
                 ListOfItemGroups.Clear();
-                if (SearchString == "")
-                {
-                    ListOfItemGroups.Populate();
-                }
-                else
-                {
-                    ListOfItemGroups.Populate(SearchString);
-                }
+                ListOfItemGroups.Populate(SearchString);
+                SearchString = "";
 
                 if (ListOfItemGroups.Count == 0)
                 {
@@ -190,8 +181,8 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
-
+                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                Debug.WriteLine(exception.Message);
             }
 
         }
@@ -213,13 +204,14 @@ namespace mainMenu.ViewModels
                 if (selectedItem != null)
                 {
                     MessageBox.Show("Varegruppen " + selectedItem.ItemGroupName +
-                                " kan ikke slettes da den indeholder en eller flere undervaregrupper");
+                                " kan ikke slettes, da denne enten er en over-varegruppe eller den har tilknyttede varer");
                 }
                 
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                Debug.WriteLine(exception.Message);
             }
         }
 
