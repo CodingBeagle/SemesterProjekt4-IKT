@@ -68,8 +68,8 @@
     <Compile Include="Models\DisplayItem.cs" />
     <Compile Include="Models\DisplayItemGroups.cs" />
     <Compile Include="Models\ThumbnailImageConverter.cs" />
-    <Compile Include="ViewModels\AdminItemGroupsViewModel.cs" />
-    <Compile Include="ViewModels\AdminItemViewModel.cs" />
+    <Compile Include="ViewModels\ItemGroupViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\FloorplanViewModel.cs" />
     <Compile Include="ViewModels\StoreSectionViewModel.cs" />
     <Compile Include="Windows\AddSectionDialog.xaml.cs">

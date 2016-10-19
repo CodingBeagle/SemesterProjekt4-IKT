@@ -14,13 +14,13 @@ using MvvmFoundation.Wpf;
 
 namespace mainMenu.ViewModels
 {
-    public class AdminItemViewModel : INotifyPropertyChanged
+    public class ItemViewModel : INotifyPropertyChanged
     {
         public ICommand CreateItemCommand { get; private set; }
         public ICommand DeleteItemCommand { get; private set; }
         public ICommand EditItemCommand { get; set; }
-        public ICommand SearchCommand { get; private set; }
-        private DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
+        public ICommand SearchItemCommand { get; private set; }
+        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
 
         private int _comboBoxIndex;
         private string _searchString;
@@ -70,22 +70,22 @@ namespace mainMenu.ViewModels
 
         public List<ItemGroup> ItemGroupComboBoxList
         {
-            get { return db.TableItemGroup.GetAllItemGroups(); }
+            get { return _db.TableItemGroup.GetAllItemGroups(); }
         }
 
-        public AdminItemViewModel()
+        public ItemViewModel()
         {
             try
             {
                 ListOfItems = new DisplayItems();
                 ComboBoxIndex = -1;
                 bool dummybool = false;
-                DeleteItemCommand = new RelayCommand(DeleteItem, () => ListOfItems.CurrentIndex >= 0);
-                CreateItemCommand = new RelayCommand(AddItem, () => dummybool == false);
+                DeleteItemCommand = new RelayCommand(deleteItemHandler, () => ListOfItems.CurrentIndex >= 0);
+                CreateItemCommand = new RelayCommand(addItemHandler, () => dummybool == false);
                 EditItemCommand = new RelayCommand(() => MessageBox.Show("Not Implemented"), () => dummybool == true);
-                SearchCommand = new RelayCommand(Search, () => dummybool == false);
+                SearchItemCommand = new RelayCommand(searchItemHandler, () => dummybool == false);
 
-                ListOfItems.Populate(db.TableItem.SearchItems(""));
+                ListOfItems.Populate(_db.TableItem.SearchItems(""));
             }
             catch (Exception e)
             {
@@ -94,12 +94,12 @@ namespace mainMenu.ViewModels
             
         }
 
-        public void DeleteItem()
+        private void deleteItemHandler()
         {
             try
             {
                 DisplayItem selectedItem = ListOfItems[ListOfItems.CurrentIndex];
-                db.TableItem.DeleteItem((long)selectedItem.ID);
+                _db.TableItem.DeleteItem((long)selectedItem.ID);
                 ListOfItems.RemoveAt(ListOfItems.CurrentIndex);
                 MessageBox.Show($"{selectedItem.VareNavn} blev slettet fra databasen");
 
@@ -110,13 +110,13 @@ namespace mainMenu.ViewModels
             }
         }
 
-        public void AddItem()
+        private void addItemHandler()
         {
             try
             {
                 if (Regex.IsMatch(ItemName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
                 {
-                    var itemID = db.TableItem.CreateItem(ItemName, ItemGroupComboBoxList[ComboBoxIndex].ItemGroupID);
+                    var itemID = _db.TableItem.CreateItem(ItemName, ItemGroupComboBoxList[ComboBoxIndex].ItemGroupID);
                     var createdItem = new Item(itemID, ItemName, ItemGroupComboBoxList[ComboBoxIndex].ItemGroupID);
                     ListOfItems.Add(new DisplayItem(createdItem));
                     MessageBox.Show($"{ItemName} er blevet tilføjet til databasen");
@@ -133,11 +133,11 @@ namespace mainMenu.ViewModels
             }
         }
 
-        public void Search()
+        private void searchItemHandler()
         {
             try
             {
-                var searchList = db.TableItem.SearchItems(SearchString);
+                var searchList = _db.TableItem.SearchItems(SearchString);
                 ListOfItems.Clear();
                 ListOfItems.Populate(searchList);
 

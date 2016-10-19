@@ -22,8 +22,8 @@ namespace mainMenu
     /// </summary>
     public partial class AddItemGroupDialog : Window
     {
-        public AdminItemGroupsViewModel ViewModel { get; set; }
-        public AddItemGroupDialog(AdminItemGroupsViewModel view)
+        public ItemGroupViewModel ViewModel { get; set; }
+        public AddItemGroupDialog(ItemGroupViewModel view)
         {
             InitializeComponent();
             ViewModel = view;

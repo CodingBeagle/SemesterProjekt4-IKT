@@ -20,7 +20,7 @@ namespace mainMenu
     /// </summary>
     public partial class AdminItemGroups : Window
     {
-        public AdminItemGroupsViewModel ViewModel = new AdminItemGroupsViewModel();
+        public ItemGroupViewModel ViewModel = new ItemGroupViewModel();
         public AdminItemGroups()
         {
             InitializeComponent();
