@@ -187,7 +187,7 @@ namespace mainMenu.ViewModels
 
         }
 
-        public void deleteItemGroupHandler()
+        private void deleteItemGroupHandler()
         {
 
             ItemGroup selectedItem = null;
