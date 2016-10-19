@@ -44,6 +44,7 @@ namespace mainMenu
         private List<Item> _itemsInSectionList = new List<Item>();
         private string _selectedStoreSectionName;
         private ImageBrush _floorplanImage;
+        private Window _currentWindow;
         #endregion
 
         #region Properties
