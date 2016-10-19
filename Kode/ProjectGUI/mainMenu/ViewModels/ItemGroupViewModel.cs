@@ -18,9 +18,9 @@ using MvvmFoundation.Wpf;
 
 namespace mainMenu.ViewModels
 {
-    public class AdminItemGroupsViewModel : INotifyPropertyChanged
+    public class ItemGroupViewModel : INotifyPropertyChanged
     {
-        private DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
+        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
         public DisplayItemGroups ListOfItemGroups { get; set; }
         public DisplayItemGroups ComboBoxOptions { get; set; }
 
@@ -95,7 +95,7 @@ namespace mainMenu.ViewModels
         #endregion
 
 
-        public AdminItemGroupsViewModel()
+        public ItemGroupViewModel()
         {
             ComboBoxIndex = -1;
             ItemGroupName = "";
@@ -104,20 +104,20 @@ namespace mainMenu.ViewModels
             ComboBoxOptions = ListOfItemGroups;
 
             var dummyBool = true;
-            CreateItemGroupCommand = new RelayCommand(CreateItemGroup, () => dummyBool == true);
-            DeleteItemGroupCommand = new RelayCommand(DeleteItemGroup, () => ListOfItemGroups.CurrentIndex >= 0);
-            EditItemGroupCommand = new RelayCommand(EditItemGroup,
+            CreateItemGroupCommand = new RelayCommand(createItemGroupHandler, () => dummyBool == true);
+            DeleteItemGroupCommand = new RelayCommand(deleteItemGroupHandler, () => ListOfItemGroups.CurrentIndex >= 0);
+            EditItemGroupCommand = new RelayCommand(editItemGroupHandler,
                 () => dummyBool == true);
-            SearchCommand = new RelayCommand(Search, () => dummyBool == true);
+            SearchCommand = new RelayCommand(searchItemGroupHandler, () => dummyBool == true);
 
 
         }
 
-        public void EditItemGroup()
+        private void editItemGroupHandler()
         {
             try
             {
-                db.TableItemGroup.UpdateItemGroup(OldItemGroupName, ItemGroupName);
+                _db.TableItemGroup.UpdateItemGroup(OldItemGroupName, ItemGroupName);
                 ItemGroup temp = new ItemGroup(ItemGroupName, ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupParentID, ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupID);
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
                 ListOfItemGroups.Add(temp);
@@ -131,7 +131,7 @@ namespace mainMenu.ViewModels
         }
 
 
-        public void CreateItemGroup()
+        private void createItemGroupHandler()
         {
             long itemGroupID;
             long parentItemGroupID;
@@ -142,13 +142,13 @@ namespace mainMenu.ViewModels
                 {
                     if (ComboBoxOptions.CurrentIndex == -1)
                     {
-                        itemGroupID = db.TableItemGroup.CreateItemGroup(ItemGroupName);
+                        itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName);
                         parentItemGroupID = 0;
                     }
                     else
                     {
                         parentItemGroupID = ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupID;
-                        itemGroupID = db.TableItemGroup.CreateItemGroup(ItemGroupName,parentItemGroupID);
+                        itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName,parentItemGroupID);
                     }
                     
                     var createdItem = new ItemGroup(ItemGroupName, parentItemGroupID, itemGroupID);
@@ -169,7 +169,7 @@ namespace mainMenu.ViewModels
             }
         }
 
-        public void Search()
+        private void searchItemGroupHandler()
         {
             try
             {
@@ -196,7 +196,7 @@ namespace mainMenu.ViewModels
 
         }
 
-        public void DeleteItemGroup()
+        public void deleteItemGroupHandler()
         {
 
             ItemGroup selectedItem = null;
@@ -204,7 +204,7 @@ namespace mainMenu.ViewModels
             {
 
                 selectedItem = ListOfItemGroups[ListOfItemGroups.CurrentIndex];
-                db.TableItemGroup.DeleteItemGroup((long) selectedItem.ItemGroupID);
+                _db.TableItemGroup.DeleteItemGroup((long) selectedItem.ItemGroupID);
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
                 MessageBox.Show($"{selectedItem.ItemGroupName} blev slettet fra databasen");
             }

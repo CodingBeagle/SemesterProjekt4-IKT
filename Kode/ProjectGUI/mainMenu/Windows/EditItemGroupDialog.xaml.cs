@@ -20,8 +20,8 @@ namespace mainMenu
     /// </summary>
     public partial class EditItemGroupDialog : Window
     {
-        public AdminItemGroupsViewModel ViewModel;
-        public EditItemGroupDialog(AdminItemGroupsViewModel view)
+        public ItemGroupViewModel ViewModel;
+        public EditItemGroupDialog(ItemGroupViewModel view)
         {
             InitializeComponent();
             ViewModel = view;

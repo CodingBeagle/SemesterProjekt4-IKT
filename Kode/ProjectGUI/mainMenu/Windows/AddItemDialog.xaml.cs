@@ -25,8 +25,8 @@ namespace mainMenu
     /// </summary>
     public partial class AddItemDialog : Window
     {
-        private AdminItemViewModel viewModel;
-        public AddItemDialog(AdminItemViewModel view)
+        private ItemViewModel viewModel;
+        public AddItemDialog(ItemViewModel view)
         {
             InitializeComponent();
             viewModel = view;

@@ -26,7 +26,7 @@ namespace mainMenu
     /// </summary>
     public partial class adminItems : Window
     {
-        public AdminItemViewModel viewModel = new AdminItemViewModel();
+        public ItemViewModel viewModel = new ItemViewModel();
 
         public adminItems()
         {
