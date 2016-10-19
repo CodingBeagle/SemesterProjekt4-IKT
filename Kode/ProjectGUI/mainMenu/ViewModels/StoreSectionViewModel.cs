@@ -178,8 +178,8 @@ namespace mainMenu
             Canvas canvas = sender as Canvas;
             SectionShape newSectionShape = new SectionShape();
 
-            newSectionShape.Top = e.GetPosition(canvas).Y;
-            newSectionShape.Left = e.GetPosition(canvas).X;
+            newSectionShape.Top = e.GetPosition(canvas).Y-7;
+            newSectionShape.Left = e.GetPosition(canvas).X-7;
 
             newSectionShape.Shape = ShapeButtonCreator.CreateShapeForButton();
             
