@@ -44,6 +44,35 @@ namespace DatabaseAPI.TableFloorplan
             }
         }
 
+        public void DownloadFloorplan()
+        {
+            try
+            {
+                string sqlStatement = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
+
+                _conn.Open();
+                using (SqlCommand cmd = new SqlCommand(sqlStatement, _conn))
+                {
+                    SqlDataReader rd = cmd.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        DownloadImageDataToImageFile("floorplan", rd);
+                    }
+
+                    rd.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Something went horrible wrong when downloading the floorplan: " + e.Message);
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+
         private void InsertFloorplan(string name, int width, int height, byte[] imageContent)
         {
             try
@@ -94,35 +123,6 @@ namespace DatabaseAPI.TableFloorplan
             catch (Exception e)
             {
                 Debug.WriteLine("An error occoured while updating floorplan to database: " + e.Message);
-            }
-            finally
-            {
-                _conn.Close();
-            }
-        }
-
-        public void DownloadFloorplan()
-        {
-            try
-            {
-                string sqlStatement = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
-
-                _conn.Open();
-                using (SqlCommand cmd = new SqlCommand(sqlStatement, _conn))
-                {
-                    SqlDataReader rd = cmd.ExecuteReader();
-
-                    while (rd.Read())
-                    {
-                        DownloadImageDataToImageFile("floorplan", rd);
-                    }
-
-                    rd.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Something went horrible wrong when downloading the floorplan: " + e.Message);
             }
             finally
             {
