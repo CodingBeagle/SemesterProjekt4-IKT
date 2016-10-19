@@ -175,8 +175,8 @@ namespace mainMenu
 
             FloorplanImage = null;
             ImageBrush floorplanImgBrush = new ImageBrush();
-            ImageRefresh refresh = new ImageRefresh();
-            BitmapImage result = refresh.ImgRefresh("../../images/floorplan.jpg");
+            RefreshableImage refresh = new RefreshableImage();
+            BitmapImage result = refresh.Get("../../images/floorplan.jpg");
 
             #region Outcommented Refreshlogic
             /*BitmapImage result = new BitmapImage();

@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using DatabaseAPI;
 using DatabaseAPI.Factories;
 using Microsoft.Win32;
 using MvvmFoundation.Wpf;
-using mainMenu;
 
 namespace mainMenu.ViewModels
 {
@@ -57,7 +47,7 @@ namespace mainMenu.ViewModels
         {
             get
             {
-                return _browseFloorplanCommand ?? (_browseFloorplanCommand = new RelayCommand(BrowseFloorplanHandler));
+                return _browseFloorplanCommand ?? (_browseFloorplanCommand = new RelayCommand(browseFloorplanHandler));
             }
         }
 
@@ -67,19 +57,17 @@ namespace mainMenu.ViewModels
         {
             get
             {
-                return _updateFloorplanCommand ?? (_updateFloorplanCommand = new RelayCommand(UpdateFloorplanHandler));
+                return _updateFloorplanCommand ?? (_updateFloorplanCommand = new RelayCommand(updateFloorplanHandler));
             }
         }
 
-        private DatabaseService _databaseService = new DatabaseService(new SqlStoreDatabaseFactory());
+        private readonly DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
          
         public event PropertyChangedEventHandler PropertyChanged;
 
         public FloorplanViewModel()
         {
-            _databaseService.TableFloorplan.DownloadFloorplan();
-            var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
-            ImagePath = "../../images/floorplan.jpg";
+            refreshFloorplanThumbnail();
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -87,7 +75,7 @@ namespace mainMenu.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void BrowseFloorplanHandler()
+        private void browseFloorplanHandler()
         {
             OpenFileDialog floorplanBrowser = new OpenFileDialog();
 
@@ -99,22 +87,21 @@ namespace mainMenu.ViewModels
                 return;
 
             SelectedFileName = floorplanBrowser.FileName;
-            
-
         }
 
-        private void UpdateFloorplanHandler()
+        private void updateFloorplanHandler()
         {
-            DatabaseService dbService = new DatabaseService(new SqlStoreDatabaseFactory());
+            _db.TableFloorplan.UploadFloorplan("floorplan", 10, 10, SelectedFileName);
+            refreshFloorplanThumbnail();
+            _db.TableStoreSection.DeleteAllStoreSections(1);
+        }
 
-            dbService.TableFloorplan.UploadFloorplan("floorplan", 10, 10, SelectedFileName);
-
+        private void refreshFloorplanThumbnail()
+        {
             ImagePath = null;
-            _databaseService.TableFloorplan.DownloadFloorplan();
+            _db.TableFloorplan.DownloadFloorplan();
             var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
             ImagePath = "../../images/floorplan.jpg";
-
-            dbService.TableStoreSection.DeleteAllStoreSections(1);
         }
     }
 }
