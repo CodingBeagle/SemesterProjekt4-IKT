@@ -59,17 +59,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ImageRefresh.cs" />
+    <Compile Include="RefreshableImage.cs" />
     <Compile Include="ItemDataGrid.cs" />
     <Compile Include="ItemUtility.cs" />
+    <Compile Include="ViewModels\ItemGroupViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="Windows\EditItemGroupDialog.xaml.cs">
       <DependentUpon>EditItemGroupDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\DisplayItem.cs" />
     <Compile Include="Models\DisplayItemGroups.cs" />
     <Compile Include="Models\ThumbnailImageConverter.cs" />
-    <Compile Include="ViewModels\ItemGroupViewModel.cs" />
-    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\FloorplanViewModel.cs" />
     <Compile Include="ViewModels\StoreSectionViewModel.cs" />
     <Compile Include="Windows\AddSectionDialog.xaml.cs">
