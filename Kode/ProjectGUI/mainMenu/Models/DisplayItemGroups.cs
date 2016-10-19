@@ -29,16 +29,6 @@ namespace mainMenu.Models
             CurrentIndex = -1;
         }
 
-        public void Populate()
-        {
-            var allTheItemGroups = db.TableItemGroup.GetAllItemGroups();
-            foreach (var itemgroup in allTheItemGroups)
-            {
-                Add(itemgroup);
-            }
-            Add(new ItemGroup("None", 0, 0));
-        }
-
         public void Populate(string itemGroupName)
         {
             var searchResults = db.TableItemGroup.SearchItemGroups(itemGroupName);

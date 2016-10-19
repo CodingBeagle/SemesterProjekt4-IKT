@@ -11,8 +11,13 @@ namespace mainMenu.ViewModels
 {
     public class FloorplanViewModel : INotifyPropertyChanged
     {
+        #region Privates
+        private readonly DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
         private string _imagePath;
-        
+        private string _selectedFileName;
+        #endregion
+
+        #region Properties
         public string ImagePath
         {
             get { return _imagePath; }
@@ -21,28 +26,26 @@ namespace mainMenu.ViewModels
                 if (_imagePath != value)
                 {
                     _imagePath = value;
-                    OnPropertyChanged();
+                    NotifyPropertyChanged();
                 }
             }
         }
-
-        private string _selectedFileName;
-
         public string SelectedFileName
         {
-            get { return _selectedFileName;}
+            get { return _selectedFileName; }
             set
             {
                 if (_selectedFileName != value)
                 {
                     _selectedFileName = value;
-                    OnPropertyChanged();
+                    NotifyPropertyChanged();
                 }
             }
         }
+        #endregion
 
+        #region ICommand
         private ICommand _browseFloorplanCommand;
-
         public ICommand BrowseFloorplanCommand
         {
             get
@@ -50,9 +53,7 @@ namespace mainMenu.ViewModels
                 return _browseFloorplanCommand ?? (_browseFloorplanCommand = new RelayCommand(browseFloorplanHandler));
             }
         }
-
         private ICommand _updateFloorplanCommand;
-
         public ICommand UpdateFloorplanCommand
         {
             get
@@ -60,19 +61,11 @@ namespace mainMenu.ViewModels
                 return _updateFloorplanCommand ?? (_updateFloorplanCommand = new RelayCommand(updateFloorplanHandler));
             }
         }
-
-        private readonly DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
-         
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
         public FloorplanViewModel()
         {
             refreshFloorplanThumbnail();
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void browseFloorplanHandler()
@@ -102,6 +95,12 @@ namespace mainMenu.ViewModels
             _db.TableFloorplan.DownloadFloorplan();
             var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
             ImagePath = "../../images/floorplan.jpg";
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

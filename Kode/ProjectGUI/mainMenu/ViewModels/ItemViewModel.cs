@@ -16,16 +16,19 @@ namespace mainMenu.ViewModels
 {
     public class ItemViewModel : INotifyPropertyChanged
     {
+        #region ICommands
         public ICommand CreateItemCommand { get; private set; }
         public ICommand DeleteItemCommand { get; private set; }
         public ICommand EditItemCommand { get; set; }
         public ICommand SearchItemCommand { get; private set; }
+        #endregion
+        #region Privates
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
-
         private int _comboBoxIndex;
         private string _searchString;
         private string _itemName;
-
+        #endregion
+        #region Properties
         public int ComboBoxIndex
         {
             get { return _comboBoxIndex; }
@@ -39,7 +42,6 @@ namespace mainMenu.ViewModels
                 }
             }
         }
-
         public string SearchString
         {
             get { return _searchString; }
@@ -52,7 +54,6 @@ namespace mainMenu.ViewModels
                 }
             }
         }
-
         public string ItemName
         {
             get { return _itemName; }
@@ -65,13 +66,14 @@ namespace mainMenu.ViewModels
                 }
             }
         }
-
         public DisplayItems ListOfItems { get; set; }
-
         public List<ItemGroup> ItemGroupComboBoxList
         {
             get { return _db.TableItemGroup.GetAllItemGroups(); }
         }
+        #endregion
+
+
 
         public ItemViewModel()
         {
@@ -89,7 +91,8 @@ namespace mainMenu.ViewModels
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Something went horribly wrong: " + e.Message);
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                Debug.WriteLine(e.Message);
             }
             
         }
@@ -106,7 +109,8 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                Debug.WriteLine(exception.Message); 
             }
         }
 
@@ -129,7 +133,8 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                Debug.WriteLine(exception.Message);
             }
         }
 
@@ -146,7 +151,8 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                Debug.WriteLine(exception.Message);
             }
         }
 
