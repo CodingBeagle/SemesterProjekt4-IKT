@@ -7,14 +7,14 @@ namespace DatabaseAPI.TableStoreSection
 {
     public class SqlTableStoreSection : ITableStoreSection 
     {
-        private SqlConnection _connection;
-        private SqlCommand _command;
-        private SqlDataReader _dataReader;
+        private SqlConnection _conn;
+        private SqlCommand _cmd;
+        private SqlDataReader _reader;
 
 
         public SqlTableStoreSection(string connectionString)
         {
-            _connection = new SqlConnection(connectionString);
+            _conn = new SqlConnection(connectionString);
         }
 
         public long CreateStoreSection(string storeSectionName, long coordinateX, long coordinateY, long floorPlanID)
@@ -22,20 +22,20 @@ namespace DatabaseAPI.TableStoreSection
             long createdID;
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command =
+                _cmd =
                     new SqlCommand(
                         $"INSERT INTO StoreSection (Name, CoordinateX, CoordinateY, FloorPlanID) " +
                         $"VALUES ('" + storeSectionName + "', '" + coordinateX + "', '" + coordinateY + "', '" + floorPlanID + "');" +
                         "SELECT CAST(scope_identity() AS BIGINT)",
-                        _connection);
+                        _conn);
 
-                createdID = (long)_command.ExecuteScalar();
+                createdID = (long)_cmd.ExecuteScalar();
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
             }
             return createdID;
         }
@@ -44,17 +44,17 @@ namespace DatabaseAPI.TableStoreSection
         {
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command = new SqlCommand($"DELETE FROM StoreSection WHERE StoreSectionID = '" + storeSectionID + "'",
-                    _connection);
+                _cmd = new SqlCommand($"DELETE FROM StoreSection WHERE StoreSectionID = '" + storeSectionID + "'",
+                    _conn);
 
-                _command.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
 
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
 
             }
         }
@@ -63,17 +63,17 @@ namespace DatabaseAPI.TableStoreSection
         {
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command = new SqlCommand($"DELETE FROM StoreSection WHERE FloorPlanID = '" + floorPlanID + "'",
-                    _connection);
+                _cmd = new SqlCommand($"DELETE FROM StoreSection WHERE FloorPlanID = '" + floorPlanID + "'",
+                    _conn);
 
-                _command.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
 
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
 
             }
         }
@@ -83,35 +83,35 @@ namespace DatabaseAPI.TableStoreSection
             List<StoreSection> allStoreSections = new List<StoreSection>();
             try
             {
-                _connection.Open();
-                _command = new SqlCommand("SELECT * FROM StoreSection WHERE FloorPlanID = '" + floorPlanID + "'", _connection);
+                _conn.Open();
+                _cmd = new SqlCommand("SELECT * FROM StoreSection WHERE FloorPlanID = '" + floorPlanID + "'", _conn);
 
-                _dataReader = _command.ExecuteReader();
+                _reader = _cmd.ExecuteReader();
 
 
-                while (_dataReader.Read())
+                while (_reader.Read())
                 {
                     StoreSection newSection = new StoreSection(0,"",0,0,0);
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
-                        newSection.Name = (string)_dataReader["Name"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        newSection.Name = (string)_reader["Name"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("StoreSectionID")))
-                        newSection.StoreSectionID = (long)_dataReader["StoreSectionID"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("StoreSectionID")))
+                        newSection.StoreSectionID = (long)_reader["StoreSectionID"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateX")))
-                        newSection.CoordinateX = (long)_dataReader["CoordinateX"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("CoordinateX")))
+                        newSection.CoordinateX = (long)_reader["CoordinateX"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateY")))
-                        newSection.CoordinateY = (long)_dataReader["CoordinateY"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("CoordinateY")))
+                        newSection.CoordinateY = (long)_reader["CoordinateY"];
 
                     allStoreSections.Add(newSection);
                 }
             }
             finally
             {
-                _connection?.Close();
-                _dataReader?.Close();
+                _conn?.Close();
+                _reader?.Close();
             }
             return allStoreSections;
         }
@@ -122,30 +122,30 @@ namespace DatabaseAPI.TableStoreSection
             StoreSection storeSectionReturnValue = null;
             try
             {
-                _connection.Open();
-                _command = new SqlCommand("SELECT * FROM StoreSection WHERE StoreSectionID = '" + storeSectionID + "'", _connection);
+                _conn.Open();
+                _cmd = new SqlCommand("SELECT * FROM StoreSection WHERE StoreSectionID = '" + storeSectionID + "'", _conn);
 
-                _dataReader = _command.ExecuteReader();
+                _reader = _cmd.ExecuteReader();
 
 
-                while (_dataReader.Read())
+                while (_reader.Read())
                 {
                     long floorPlanID = 0;
                     string storeSectionName = "";
                     long coordinateX = 0;
                     long coordinateY = 0;
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
-                        storeSectionName = (string)_dataReader["Name"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        storeSectionName = (string)_reader["Name"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateX")))
-                        coordinateX = (long)_dataReader["CoordinateX"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("CoordinateX")))
+                        coordinateX = (long)_reader["CoordinateX"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("CoordinateY")))
-                        coordinateY = (long)_dataReader["CoordinateY"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("CoordinateY")))
+                        coordinateY = (long)_reader["CoordinateY"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("FloorPlanID")))
-                        floorPlanID = (long)_dataReader["FloorPlanID"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("FloorPlanID")))
+                        floorPlanID = (long)_reader["FloorPlanID"];
 
                     storeSectionReturnValue = new StoreSection(storeSectionID, storeSectionName, coordinateX, coordinateY, floorPlanID);
                     
@@ -153,8 +153,8 @@ namespace DatabaseAPI.TableStoreSection
             }
             finally
             {
-                _connection?.Close();
-                _dataReader?.Close();
+                _conn?.Close();
+                _reader?.Close();
             }
             return storeSectionReturnValue;
         }
@@ -163,18 +163,18 @@ namespace DatabaseAPI.TableStoreSection
         {
             try
             {
-                _connection.Open();
+                _conn.Open();
 
-                _command =
+                _cmd =
                     new SqlCommand(
                         $"UPDATE StoreSection SET  CoordinateX = '"+ coordinateX + "', CoordinateY = '" + coordinateY + "' WHERE StoreSectionID = '"+ storeSectionID +"'",
-                        _connection);
+                        _conn);
 
-                _command.ExecuteNonQuery();
+                _cmd.ExecuteNonQuery();
             }
             finally
             {
-                _connection?.Close();
+                _conn?.Close();
             }
         }
 
@@ -182,14 +182,14 @@ namespace DatabaseAPI.TableStoreSection
         {
             string query = @"UPDATE StoreSection SET Name = @newSectionName WHERE StoreSectionID = @storeSectionID";
 
-            using (_command =  new SqlCommand(query,_connection))
+            using (_cmd =  new SqlCommand(query,_conn))
             {
-                _connection.Open();
-                _command.Parameters.AddWithValue("@newSectionName", storeSectionName);
-                _command.Parameters.AddWithValue("@storeSectionID", storeSectionID);
+                _conn.Open();
+                _cmd.Parameters.AddWithValue("@newSectionName", storeSectionName);
+                _cmd.Parameters.AddWithValue("@storeSectionID", storeSectionID);
 
-                _command.ExecuteNonQuery();
-                _connection.Close();
+                _cmd.ExecuteNonQuery();
+                _conn.Close();
             }
         }
 
