@@ -3,17 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
@@ -24,18 +19,6 @@ using MvvmFoundation.Wpf;
 
 namespace mainMenu
 {
-    public class SectionShape
-    {
-        public string Name { get; set; }
-
-        public  long ID { get; set; }
-
-        public Shape Shape { get; set; }
-
-        public double Top { get; set; }
-        public double Left { get; set; }
-    }
-
     public class StoreSectionViewModel : INotifyPropertyChanged
     { 
         public ICommand WindowLoadedCommand { get; private set; }
@@ -45,13 +28,21 @@ namespace mainMenu
         public ICommand EditStoreSectionCommand { get; private set; }
         public ICommand SearchItemsCommand { get; private set; }
         public ICommand AddItemToSectionCommand { get; private set; }
-
         public ICommand RemoveItemFromSectionCommand { get; private set; }
 
 
         public string NewSectionName { get; set; }
-
         public  string PreviousSectionName { get; set; }
+        public DisplayItems ListOfItems { get; set; }
+        public Item SelectedSectionItem { get; set; }
+        public ObservableCollection<SectionShape> ShapeCollection { get; set; }
+        public long SelectedStoreSection = 0;
+
+        private Window currentWindow { get; }
+        private DatabaseService _db;
+        private long _floorplanID = 1;
+        private List<StoreSection> _storeSectionList;
+
 
         private string _searchString;
         public string SearchString
@@ -66,9 +57,8 @@ namespace mainMenu
                 }
             }
         }
-        public DisplayItems ListOfItems { get; set; }
-        private IList _selectedItemsList = new ArrayList();
 
+        private IList _selectedItemsList = new ArrayList();
         public IList SelectedItemsList
         {
             get {return _selectedItemsList;}
@@ -89,13 +79,7 @@ namespace mainMenu
             }
         }
 
-        public Item SelectedSectionItem { get; set; }
-        public ObservableCollection<SectionShape> ShapeCollection { get; set; }
-
-        public long SelectedStoreSection = 0;
-
         private string _selectedStoreSectionName;
-
         public string SelectedStoreSectionName
         {
             get { return _selectedStoreSectionName; }
@@ -109,14 +93,7 @@ namespace mainMenu
             }
         }
 
-        private Window currentWindow { get; }
-
-        private DatabaseService _db;
-        private long _floorplanID = 1;
-        private List<StoreSection> _storeSectionList;
-
         private ImageBrush _floorplanImage;
-
         public ImageBrush FloorplanImage
         {
             get { return _floorplanImage; }
@@ -151,11 +128,12 @@ namespace mainMenu
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
             AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => SelectedStoreSection != 0);
             RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => SelectedStoreSection != 0);
-            currentWindow = window;
+            
         }
 
         private void windowLoadedHandler()
         {
+            // Load sections from database and display on canvas
             _storeSectionList = _db.TableStoreSection.GetAllStoreSections(_floorplanID);
             foreach (var section in _storeSectionList)
             {
@@ -169,8 +147,11 @@ namespace mainMenu
                 ShapeCollection.Add(loadedSectionShape);
             }
 
+            // Load items from database and display on itemdatagrid
             ListOfItems.Populate(_db.TableItem.SearchItems(""));
 
+
+            // Load floorplan and display on canvas
             _db.TableFloorplan.DownloadFloorplan();
 
             FloorplanImage = null;
@@ -233,8 +214,6 @@ namespace mainMenu
         private void selectCurrentStoreSectionHandler(SectionShape shape)
         {
             SelectedStoreSection = shape.ID;
-            Debug.WriteLine(SelectedStoreSection +" "+ shape.ID);
-
             ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
 
             StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
@@ -268,9 +247,9 @@ namespace mainMenu
         private void editStoreSectionHandler()
         {
             StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
-
             NewSectionName = "";
             PreviousSectionName = sectionToEdit.Name;
+
             EditSectionDialog newSectionDialog = new EditSectionDialog(this, sectionToEdit.Name);
             newSectionDialog.ShowDialog();
 
@@ -288,7 +267,6 @@ namespace mainMenu
 
         private void addItemToSectionHandler()
         {
-            Debug.WriteLine(SelectedItemsList.Count);
             foreach (DisplayItem item in SelectedItemsList)
             {
                 int findValue = ItemsInSectionList.FindIndex(currentItem => currentItem.ItemID == item.ID);
