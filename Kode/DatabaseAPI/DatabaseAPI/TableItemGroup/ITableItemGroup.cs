@@ -10,9 +10,7 @@ namespace DatabaseAPI.TableItemGroup
         void DeleteItemGroup(long itemGroupID);
         ItemGroup GetItemGroup(long itemGroupID);
         List<ItemGroup> SearchItemGroups(string itemGroupName);
-        void UpdateItemGroup(string OldItemGroupName, string itemGroupName);
-        
-
+        void UpdateItemGroup(string oldItemGroupName, string newItemGroupName);
         List<ItemGroup> GetAllItemGroups();
     }
 }

@@ -34,7 +34,7 @@
         
         <Label x:Name="SearchLabel" Content="Søg vare:" Grid.Column="3" Grid.Row="1" FontSize="26"></Label>
         <TextBox x:Name="SearchBox" Text="{Binding Path=SearchString, UpdateSourceTrigger=PropertyChanged}" FontSize="26" Grid.Column="4" Grid.Row="1"/>
-        <Button x:Name="SearchButton" Content="Søg" FontSize="26" Grid.Column="5" Grid.Row="1" Command="{Binding SearchCommand}"></Button>
+        <Button x:Name="SearchButton" Content="Søg" FontSize="26" Grid.Column="5" Grid.Row="1" Command="{Binding SearchItemCommand}"></Button>
         <Button x:Name="backBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="406,39,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Click="BackBtn_OnClick" Grid.Column="4" Grid.Row="9" Grid.ColumnSpan="3"/>
         <Label x:Name="windowTitle" Content="Administrer Varer" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Height="76" Width="408" FontSize="48" Grid.Column="2" Grid.ColumnSpan="3"/>
 
