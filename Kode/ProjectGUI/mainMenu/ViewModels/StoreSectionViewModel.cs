@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +21,8 @@ using MvvmFoundation.Wpf;
 namespace mainMenu
 {
     public class StoreSectionViewModel : INotifyPropertyChanged
-    { 
+    {
+        #region ICommand
         public ICommand WindowLoadedCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
         public ICommand SelectCurrentStoreSectionCommand { get; private set; }
@@ -29,22 +31,27 @@ namespace mainMenu
         public ICommand SearchItemsCommand { get; private set; }
         public ICommand AddItemToSectionCommand { get; private set; }
         public ICommand RemoveItemFromSectionCommand { get; private set; }
+        #endregion
 
-
-        public string NewSectionName { get; set; }
-        public  string PreviousSectionName { get; set; }
-        public DisplayItems ListOfItems { get; set; }
-        public Item SelectedSectionItem { get; set; }
-        public ObservableCollection<SectionShape> ShapeCollection { get; set; }
-        public long SelectedStoreSection = 0;
-
+        #region Privates
         private Window currentWindow { get; }
         private DatabaseService _db;
         private long _floorplanID = 1;
         private List<StoreSection> _storeSectionList;
-
-
         private string _searchString;
+        private long _selectedStoreSection = 0;
+        private IList _selectedItemsList = new ArrayList();
+        private List<Item> _itemsInSectionList = new List<Item>();
+        private string _selectedStoreSectionName;
+        private ImageBrush _floorplanImage;
+        #endregion
+
+        #region Properties
+        public string NewSectionName { get; set; }
+        public string PreviousSectionName { get; set; }
+        public DisplayItems ListOfItems { get; set; }
+        public Item SelectedSectionItem { get; set; }
+        public ObservableCollection<SectionShape> ShapeCollection { get; set; }
         public string SearchString
         {
             get { return _searchString; }
@@ -53,19 +60,15 @@ namespace mainMenu
                 if (_searchString != value)
                 {
                     _searchString = value;
-                    OnPropertyChanged();
+                    NotifyPropertyChanged();
                 }
             }
         }
-
-        private IList _selectedItemsList = new ArrayList();
         public IList SelectedItemsList
         {
-            get {return _selectedItemsList;}
-            set { _selectedItemsList = value; OnPropertyChanged(); }
+            get { return _selectedItemsList; }
+            set { _selectedItemsList = value; NotifyPropertyChanged(); }
         }
-
-        private List<Item> _itemsInSectionList = new List<Item>();
         public List<Item> ItemsInSectionList
         {
             get { return _itemsInSectionList; }
@@ -74,12 +77,10 @@ namespace mainMenu
                 if (value != _itemsInSectionList)
                 {
                     _itemsInSectionList = value;
-                    OnPropertyChanged();
+                    NotifyPropertyChanged();
                 }
             }
         }
-
-        private string _selectedStoreSectionName;
         public string SelectedStoreSectionName
         {
             get { return _selectedStoreSectionName; }
@@ -88,12 +89,10 @@ namespace mainMenu
                 if (_selectedStoreSectionName != value)
                 {
                     _selectedStoreSectionName = value;
-                    OnPropertyChanged();
+                    NotifyPropertyChanged();
                 }
             }
         }
-
-        private ImageBrush _floorplanImage;
         public ImageBrush FloorplanImage
         {
             get { return _floorplanImage; }
@@ -102,10 +101,11 @@ namespace mainMenu
                 if (_floorplanImage != value)
                 {
                     _floorplanImage = value;
-                    OnPropertyChanged();
+                    NotifyPropertyChanged();
                 }
             }
         }
+        #endregion
 
         public StoreSectionViewModel(Window window)
         {
@@ -115,7 +115,8 @@ namespace mainMenu
             }
             catch (Exception e)
             {
-                MessageBox.Show("Something went wrong" + e.Message);
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                Debug.WriteLine(e.Message);
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
             ListOfItems = new DisplayItems();
@@ -124,11 +125,11 @@ namespace mainMenu
             WindowLoadedCommand = new RelayCommand(windowLoadedHandler);
             BackCommand = new RelayCommand(backHandler);
             SelectCurrentStoreSectionCommand = new RelayCommand<SectionShape>(selectCurrentStoreSectionHandler);
-            DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => SelectedStoreSection != 0);
-            EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => SelectedStoreSection != 0);
+            DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => _selectedStoreSection != 0);
+            EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => _selectedStoreSection != 0);
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
-            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => SelectedStoreSection != 0);
-            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => SelectedStoreSection != 0);
+            AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => _selectedStoreSection != 0);
+            RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => _selectedStoreSection != 0);
             
         }
 
@@ -159,20 +160,6 @@ namespace mainMenu
             ImageBrush floorplanImgBrush = new ImageBrush();
             RefreshableImage refresh = new RefreshableImage();
             BitmapImage result = refresh.Get("../../images/floorplan.jpg");
-
-            #region Outcommented Refreshlogic
-            /*BitmapImage result = new BitmapImage();
-           result.BeginInit();
-           result.UriSource = new Uri("../../images/floorplan.jpg", UriKind.Relative);
-           // .OnLoad makes sure WPF prevents keeping a lock on the file
-           result.CacheOption = BitmapCacheOption.OnLoad;
-           // .IgnoreImageCache causes WPF to reread the image every time
-           // Should be used when selected images needs to be refreshed
-           result.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-           result.EndInit();*/
-
-
-            #endregion
 
             floorplanImgBrush.ImageSource = result;
             FloorplanImage = floorplanImgBrush;
@@ -214,10 +201,10 @@ namespace mainMenu
 
         private void selectCurrentStoreSectionHandler(SectionShape shape)
         {
-            SelectedStoreSection = shape.ID;
-            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+            _selectedStoreSection = shape.ID;
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(_selectedStoreSection);
 
-            StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
+            StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(_selectedStoreSection);
             SelectedStoreSectionName = selectedStoreSection.Name;
            
         }
@@ -227,7 +214,7 @@ namespace mainMenu
         private void deleteStoreSectionHandler()
         {
             SectionShape shapeToDelete = null;
-            string sectionShapeToDelete = "Button" + SelectedStoreSection;
+            string sectionShapeToDelete = "Button" + _selectedStoreSection;
 
             foreach (var shape in ShapeCollection)
             {
@@ -242,12 +229,12 @@ namespace mainMenu
                 ShapeCollection.Remove(shapeToDelete);
             }
 
-            _db.TableStoreSection.DeleteStoreSection(SelectedStoreSection);
+            _db.TableStoreSection.DeleteStoreSection(_selectedStoreSection);
         }
 
         private void editStoreSectionHandler()
         {
-            StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(SelectedStoreSection);
+            StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(_selectedStoreSection);
             NewSectionName = "";
             PreviousSectionName = sectionToEdit.Name;
 
@@ -256,7 +243,7 @@ namespace mainMenu
 
             if (newSectionDialog.IsSectionNameChanged)
             {
-                _db.TableStoreSection.UpdateStoreSectionName(SelectedStoreSection, NewSectionName);
+                _db.TableStoreSection.UpdateStoreSectionName(_selectedStoreSection, NewSectionName);
             }
 
         }
@@ -274,7 +261,7 @@ namespace mainMenu
 
                 if (findValue == -1)
                 {
-                    _db.TableItemSectionPlacement.PlaceItem(item.ID, SelectedStoreSection);
+                    _db.TableItemSectionPlacement.PlaceItem(item.ID, _selectedStoreSection);
                 }
                 else
                 {
@@ -283,19 +270,19 @@ namespace mainMenu
                 
             }
 
-            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(_selectedStoreSection);
         }
 
         private void removeItemFromSectionHandler()
         {
-            _db.TableItemSectionPlacement.DeletePlacement(SelectedSectionItem.ItemID,SelectedStoreSection);
-            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(SelectedStoreSection);
+            _db.TableItemSectionPlacement.DeletePlacement(SelectedSectionItem.ItemID,_selectedStoreSection);
+            ItemsInSectionList = _db.TableItemSectionPlacement.ListItemsInSection(_selectedStoreSection);
 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
