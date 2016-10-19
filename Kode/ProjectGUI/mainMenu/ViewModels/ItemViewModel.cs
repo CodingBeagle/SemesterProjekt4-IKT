@@ -140,20 +140,7 @@ namespace mainMenu.ViewModels
 
         private void searchItemHandler()
         {
-            try
-            {
-                var searchList = _db.TableItem.SearchItems(SearchString);
-                ListOfItems.Clear();
-                ListOfItems.Populate(searchList);
-
-                if (searchList.Count == 0)
-                    MessageBox.Show($"Fandt ingen varer med navnet {SearchString}");
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
-                Debug.WriteLine(exception.Message);
-            }
+            ItemUtility.SearchItem(_db,SearchString,ListOfItems);
         }
 
 
