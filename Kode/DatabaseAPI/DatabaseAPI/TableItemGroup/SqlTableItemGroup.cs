@@ -92,6 +92,9 @@ namespace DatabaseAPI.TableItemGroup
                             itemGroupID = (long) _dataReader["ItemGroupID"];
                         }
                     searchResults.Add(new ItemGroup(name, itemGroupParentID, itemGroupID));
+                    name = null;
+                    itemGroupParentID = 0;
+                    itemGroupID = 0;
                 }
                     
             }

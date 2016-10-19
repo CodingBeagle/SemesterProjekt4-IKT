@@ -27,6 +27,7 @@ namespace mainMenu
         {
             InitializeComponent();
             ViewModel = view;
+            ViewModel.ComboBoxIndex = -1;
             DataContext = ViewModel;
             ItemGroupComboBox.ItemsSource = ViewModel.ListOfItemGroups;
             ItemGroupComboBox.DisplayMemberPath = "ItemGroupName";

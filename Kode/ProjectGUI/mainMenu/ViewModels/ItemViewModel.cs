@@ -124,6 +124,8 @@ namespace mainMenu.ViewModels
                     var createdItem = new Item(itemID, ItemName, ItemGroupComboBoxList[ComboBoxIndex].ItemGroupID);
                     ListOfItems.Add(new DisplayItem(createdItem));
                     MessageBox.Show($"{ItemName} er blevet tilføjet til databasen");
+                    ItemName = "";
+                    ComboBoxIndex = -1;
                 }
                 else
                 {
