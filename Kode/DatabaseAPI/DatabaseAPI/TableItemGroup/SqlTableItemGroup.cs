@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using DatabaseAPI.DatabaseModel;
-using DatabaseAPI.Factories;
 
 namespace DatabaseAPI.TableItemGroup
 {
