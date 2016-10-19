@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using DatabaseAPI.DatabaseModel;
-using DatabaseAPI.Factories;
-using System.Linq;
 
 namespace DatabaseAPI.TableItem
 {

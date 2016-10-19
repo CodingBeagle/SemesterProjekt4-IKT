@@ -25,7 +25,7 @@ namespace mainMenu.ViewModels
         private string _searchString;
         private int _comboBoxIndex;
         private string _itemGroupName;
-        private string _oldItemGroupName;
+        private string _previousItemGroupName;
         #endregion
 
         #region Properties
@@ -68,14 +68,14 @@ namespace mainMenu.ViewModels
                 }
             }
         }
-        public string OldItemGroupName
+        public string PreviousItemGroupName
         {
-            get { return _oldItemGroupName; }
+            get { return _previousItemGroupName; }
             set
             {
-                if (_oldItemGroupName != value)
+                if (_previousItemGroupName != value)
                 {
-                    _oldItemGroupName = value;
+                    _previousItemGroupName = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -112,7 +112,7 @@ namespace mainMenu.ViewModels
         {
             try
             {
-                _db.TableItemGroup.UpdateItemGroup(OldItemGroupName, ItemGroupName);
+                _db.TableItemGroup.UpdateItemGroup(PreviousItemGroupName, ItemGroupName);
                 ItemGroup temp = new ItemGroup(ItemGroupName, ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupParentID, ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupID);
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
                 ListOfItemGroups.Add(temp);
@@ -187,7 +187,7 @@ namespace mainMenu.ViewModels
 
         }
 
-        public void deleteItemGroupHandler()
+        private void deleteItemGroupHandler()
         {
 
             ItemGroup selectedItem = null;
@@ -217,7 +217,7 @@ namespace mainMenu.ViewModels
 
         public void UpdateItemGroupName()
         {
-            OldItemGroupName = ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupName;
+            PreviousItemGroupName = ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupName;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

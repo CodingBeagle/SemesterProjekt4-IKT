@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using DatabaseAPI.DatabaseModel;
-using System.Threading.Tasks;
 using DatabaseAPI.Factories;
 
 namespace DatabaseAPI.TableStoreSection

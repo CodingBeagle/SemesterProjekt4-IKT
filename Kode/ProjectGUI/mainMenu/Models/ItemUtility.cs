@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace mainMenu
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Something went horribly wrong: {exception.Message}");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
+                Debug.WriteLine(exception.Message);
             }
         }
     }

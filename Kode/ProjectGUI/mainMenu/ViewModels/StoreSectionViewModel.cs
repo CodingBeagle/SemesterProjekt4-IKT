@@ -44,6 +44,7 @@ namespace mainMenu
         private List<Item> _itemsInSectionList = new List<Item>();
         private string _selectedStoreSectionName;
         private ImageBrush _floorplanImage;
+        private Window _currentWindow;
         #endregion
 
         #region Properties
@@ -120,7 +121,7 @@ namespace mainMenu
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
             ListOfItems = new DisplayItems();
-            currentWindow = window;
+            _currentWindow = window;
 
             WindowLoadedCommand = new RelayCommand(windowLoadedHandler);
             BackCommand = new RelayCommand(backHandler);
@@ -169,7 +170,7 @@ namespace mainMenu
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
 
-            currentWindow.Close();
+            _currentWindow.Close();
         }
 
         public void CreateStoreSection(object sender, MouseButtonEventArgs e)
