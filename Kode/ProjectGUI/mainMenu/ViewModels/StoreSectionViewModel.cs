@@ -119,6 +119,7 @@ namespace mainMenu
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
             ListOfItems = new DisplayItems();
+            currentWindow = window;
 
             WindowLoadedCommand = new RelayCommand(windowLoadedHandler);
             BackCommand = new RelayCommand(backHandler);
