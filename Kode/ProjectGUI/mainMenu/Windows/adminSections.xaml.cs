@@ -29,7 +29,15 @@ namespace mainMenu
         {
             InitializeComponent();
     
-            DataContext = new StoreSectionViewModel(this);
+            DataContext = new StoreSectionViewModel();
+        }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            Close();
         }
     }
 }
