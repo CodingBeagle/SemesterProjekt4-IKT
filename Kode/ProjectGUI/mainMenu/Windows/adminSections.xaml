@@ -88,7 +88,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button x:Name="backBtn" Content="_Tilbage" Command="{Binding BackCommand}" Grid.Column="10" Grid.Row="7"/>
+        <Button x:Name="backBtn" Content="_Tilbage" Grid.Column="10" Grid.Row="7" Click="backBtn_Click"/>
         <Button x:Name="deleteSectionBtn" Content="_Slet Sektion" Command="{Binding DeleteStoreSectionCommand}" Grid.Column="8" Grid.Row="7"/>
         <Button x:Name="editSectionBtn" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}" Grid.Column="7" Grid.Row="7"/>
         <Button Content="Sø_g" Grid.Column="5" Grid.Row="1" Command="{Binding SearchItemsCommand}"></Button>
