@@ -83,7 +83,7 @@ namespace mainMenu.ViewModels
                 ComboBoxIndex = -1;
                 bool dummybool = false;
                 DeleteItemCommand = new RelayCommand(deleteItemHandler, () => ListOfItems.CurrentIndex >= 0);
-                CreateItemCommand = new RelayCommand(addItemHandler, () => dummybool == false);
+                CreateItemCommand = new RelayCommand(addItemHandler, () => ComboBoxIndex != -1);
                 EditItemCommand = new RelayCommand(() => MessageBox.Show("Not Implemented"), () => dummybool == true);
                 SearchItemCommand = new RelayCommand(searchItemHandler, () => dummybool == false);
 
