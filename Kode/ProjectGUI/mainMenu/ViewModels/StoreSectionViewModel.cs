@@ -24,7 +24,6 @@ namespace mainMenu
     {
         #region ICommand
         public ICommand WindowLoadedCommand { get; private set; }
-        public ICommand BackCommand { get; private set; }
         public ICommand SelectCurrentStoreSectionCommand { get; private set; }
         public ICommand DeleteStoreSectionCommand { get; private set; }
         public ICommand EditStoreSectionCommand { get; private set; }
@@ -34,7 +33,6 @@ namespace mainMenu
         #endregion
 
         #region Privates
-        private Window currentWindow { get; }
         private DatabaseService _db;
         private long _floorplanID = 1;
         private List<StoreSection> _storeSectionList;
@@ -44,7 +42,6 @@ namespace mainMenu
         private List<Item> _itemsInSectionList = new List<Item>();
         private string _selectedStoreSectionName;
         private ImageBrush _floorplanImage;
-        private Window _currentWindow;
         #endregion
 
         #region Properties
@@ -108,7 +105,7 @@ namespace mainMenu
         }
         #endregion
 
-        public StoreSectionViewModel(Window window)
+        public StoreSectionViewModel()
         {
             try
             {
@@ -121,10 +118,8 @@ namespace mainMenu
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
             ListOfItems = new DisplayItems();
-            _currentWindow = window;
 
             WindowLoadedCommand = new RelayCommand(windowLoadedHandler);
-            BackCommand = new RelayCommand(backHandler);
             SelectCurrentStoreSectionCommand = new RelayCommand<SectionShape>(selectCurrentStoreSectionHandler);
             DeleteStoreSectionCommand = new RelayCommand(deleteStoreSectionHandler, () => _selectedStoreSection != 0);
             EditStoreSectionCommand = new RelayCommand(editStoreSectionHandler, () => _selectedStoreSection != 0);
@@ -164,13 +159,6 @@ namespace mainMenu
 
             floorplanImgBrush.ImageSource = result;
             FloorplanImage = floorplanImgBrush;
-        }
-        private void backHandler()
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-
-            _currentWindow.Close();
         }
 
         public void CreateStoreSection(object sender, MouseButtonEventArgs e)
