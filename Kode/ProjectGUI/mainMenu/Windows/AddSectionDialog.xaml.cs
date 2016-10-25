@@ -28,9 +28,14 @@ namespace mainMenu
             IsOKPressed = false;
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            Close();
+        }
+
+        private void CreateSectionButton_OnClick(object sender, RoutedEventArgs e)
+        {
             if (Regex.IsMatch(SectionNameTextBox.Text, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
             {
                 IsOKPressed = true;
@@ -41,12 +46,6 @@ namespace mainMenu
             {
                 MessageBox.Show("Navnet på en sektion må kun indeholde bogstaver og tal");
             }
-           
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }
