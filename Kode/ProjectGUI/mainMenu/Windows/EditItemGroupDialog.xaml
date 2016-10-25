@@ -28,7 +28,7 @@
         <Label x:Name="WindowName" Content="Rediger Varegruppe" FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="71,0,10,0"></Label>
 
         <Label Content="Gammelt varegruppenavn:"  Grid.Column="1" Grid.Row="2"></Label>
-        <Label Content="{Binding Path=OldItemGroupName, UpdateSourceTrigger=PropertyChanged}"                
+        <Label Content="{Binding Path=PreviousItemGroupName, UpdateSourceTrigger=PropertyChanged}"                
                Grid.Column="2" Grid.Row="2"></Label>
 
         <Label Content="Nyt varegruppenavn:" Grid.Column="1" Grid.Row="4"></Label>
