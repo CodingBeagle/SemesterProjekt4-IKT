@@ -47,6 +47,8 @@ namespace mainMenu
         #region Properties
         public string NewSectionName { get; set; }
         public string PreviousSectionName { get; set; }
+
+
         public DisplayItems ListOfItems { get; set; }
         public Item SelectedSectionItem { get; set; }
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
@@ -227,7 +229,7 @@ namespace mainMenu
             NewSectionName = "";
             PreviousSectionName = sectionToEdit.Name;
 
-            EditSectionDialog newSectionDialog = new EditSectionDialog(this, sectionToEdit.Name);
+            EditSectionDialog newSectionDialog = new EditSectionDialog(this);
             newSectionDialog.ShowDialog();
 
             if (newSectionDialog.IsSectionNameChanged)

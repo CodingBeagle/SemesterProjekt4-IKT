@@ -24,7 +24,7 @@ namespace mainMenu
         public bool IsSectionNameChanged { get; private set; }
 
         private StoreSectionViewModel _viewModel;
-        public EditSectionDialog(StoreSectionViewModel viewModel, string sectionNameToEdit)
+        public EditSectionDialog(StoreSectionViewModel viewModel)
         {
             InitializeComponent();
 
