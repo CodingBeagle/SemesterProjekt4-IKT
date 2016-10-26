@@ -37,10 +37,10 @@
 
         <Label Content="Gammel Sektionnavn:" Grid.Row="2" Grid.Column="1"></Label>
         <TextBox x:Name="OldSectionNameTextBox" Grid.Row="2" Grid.Column="2" Text="{Binding Path=PreviousSectionName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"></TextBox>
-        <Label Content="Ny Sektionnavn:" Grid.Row="3" Grid.Column="1"></Label>
+        <Label Content="Nyt Sektionnavn:" Grid.Row="3" Grid.Column="1"></Label>
         <TextBox x:Name="NewSectionNameTextBox" Text="{Binding NewSectionName}"  Grid.Row="3" Grid.Column="2"></TextBox>
 
-        <Button x:Name="EditButton" Content="_Rediger Sektionnavn" Grid.Row="5" Grid.Column="2" Click="EditButton_Click"></Button>
+        <Button x:Name="EditButton" Content="_Rediger Sektionsnavn" Grid.Row="5" Grid.Column="2" Click="EditButton_Click"></Button>
         <Button x:Name="CancelButton" Content="_Annuller" Grid.Row="6" Grid.Column="2" Click="CancelButton_Click" ></Button>
     </Grid>
 </Window>
