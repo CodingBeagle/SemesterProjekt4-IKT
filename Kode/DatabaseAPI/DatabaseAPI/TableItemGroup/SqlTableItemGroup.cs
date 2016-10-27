@@ -10,7 +10,7 @@ namespace DatabaseAPI.TableItemGroup
     {
         private SqlConnection _conn;
         private SqlCommand _cmd;
-        private SqlDataReader _dataReader;
+        private SqlDataReader _reader;
 
 
         public SqlTableItemGroup(string connectionString)
@@ -75,21 +75,21 @@ namespace DatabaseAPI.TableItemGroup
                 string sqlCommand = $"SELECT * FROM ItemGroup WHERE Name LIKE '%{itemGroupName}%'";
                 _cmd = new SqlCommand(sqlCommand, _conn);
 
-                _dataReader = _cmd.ExecuteReader();
+                _reader = _cmd.ExecuteReader();
 
-                    while (_dataReader.Read())
+                    while (_reader.Read())
                     {
-                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
                         {
-                            name = (string) _dataReader["Name"];
+                            name = (string) _reader["Name"];
                         }
-                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ParentItemGroupID")))
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
                         {
-                            itemGroupParentID = (long) _dataReader["ParentItemGroupID"];
+                            itemGroupParentID = (long) _reader["ParentItemGroupID"];
                         }
-                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ItemGroupID")))
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("ItemGroupID")))
                         {
-                            itemGroupID = (long) _dataReader["ItemGroupID"];
+                            itemGroupID = (long) _reader["ItemGroupID"];
                         }
                     searchResults.Add(new ItemGroup(name, itemGroupParentID, itemGroupID));
                     name = null;
@@ -104,7 +104,7 @@ namespace DatabaseAPI.TableItemGroup
             }
             finally
             {
-                _dataReader?.Close();
+                _reader?.Close();
                 _conn?.Close();
             }
             return searchResults;
@@ -162,17 +162,17 @@ namespace DatabaseAPI.TableItemGroup
 
                 _cmd = new SqlCommand($"SELECT  * FROM ItemGroup WHERE ItemGroupID = {itemGroupID}", _conn);
 
-                _dataReader = _cmd.ExecuteReader();
+                _reader = _cmd.ExecuteReader();
 
-                if (_dataReader.HasRows)
+                if (_reader.HasRows)
                 {
-                    while (_dataReader.Read())
+                    while (_reader.Read())
                     {
-                        itemGroupName = (string) _dataReader["Name"];
+                        itemGroupName = (string) _reader["Name"];
 
-                        if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ParentItemGroupID")))
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
                         {
-                            itemGroupParentID = (long) _dataReader["ParentItemGroupID"];
+                            itemGroupParentID = (long) _reader["ParentItemGroupID"];
                         }
                         ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
                     }
@@ -181,7 +181,7 @@ namespace DatabaseAPI.TableItemGroup
             }
             finally
             {
-                _dataReader?.Close();
+                _reader?.Close();
                 _conn?.Close();
 
             }
@@ -197,24 +197,24 @@ namespace DatabaseAPI.TableItemGroup
                 _conn.Open();
                 _cmd = new SqlCommand("SELECT * FROM ItemGroup", _conn);
 
-                _dataReader = _cmd.ExecuteReader();
+                _reader = _cmd.ExecuteReader();
 
 
-                while (_dataReader.Read())
+                while (_reader.Read())
                 {
                     string itemGroupName = "";
                     long itemGroupID = 0;
                     long parentItemGroupId = 0;
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("Name")))
-                        itemGroupName = (string) _dataReader["Name"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        itemGroupName = (string) _reader["Name"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ItemGroupID")))
-                        itemGroupID = (long) _dataReader["ItemGroupID"];
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemGroupID")))
+                        itemGroupID = (long) _reader["ItemGroupID"];
 
-                    if (!_dataReader.IsDBNull(_dataReader.GetOrdinal("ParentItemGroupID")))
+                    if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
                     {
-                        var rItemGroupID = _dataReader["ParentItemGroupID"];
+                        var rItemGroupID = _reader["ParentItemGroupID"];
                         if (rItemGroupID != null)
                             parentItemGroupId = (long)rItemGroupID;
                     }
@@ -225,7 +225,7 @@ namespace DatabaseAPI.TableItemGroup
             finally
             {
                 _conn?.Close();
-                _dataReader?.Close();
+                _reader?.Close();
             }
             return itemGroupQuery;
         }
