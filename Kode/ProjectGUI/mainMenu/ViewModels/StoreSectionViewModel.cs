@@ -235,6 +235,8 @@ namespace mainMenu
             if (newSectionDialog.IsSectionNameChanged)
             {
                 _db.TableStoreSection.UpdateStoreSectionName(_selectedStoreSection, NewSectionName);
+                sectionToEdit.Name = NewSectionName;
+                SelectedStoreSectionName = sectionToEdit.Name;
             }
 
         }
