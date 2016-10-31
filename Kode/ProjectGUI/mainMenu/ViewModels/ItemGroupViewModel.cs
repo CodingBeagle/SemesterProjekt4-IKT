@@ -21,7 +21,7 @@ namespace mainMenu.ViewModels
     public class ItemGroupViewModel : INotifyPropertyChanged
     {
         #region Privates
-        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
+        private DatabaseService _db;
         private string _searchString;
         private int _comboBoxIndex;
         private string _itemGroupName;
@@ -90,8 +90,9 @@ namespace mainMenu.ViewModels
         #endregion
 
 
-        public ItemGroupViewModel()
+        public ItemGroupViewModel(DatabaseService db)
         {
+            _db = db;
             ComboBoxIndex = -1;
             ItemGroupName = "";
             ListOfItemGroups = new DisplayItemGroups();

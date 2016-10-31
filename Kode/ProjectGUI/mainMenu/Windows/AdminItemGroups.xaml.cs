@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using DatabaseAPI;
+using DatabaseAPI.Factories;
 using mainMenu.ViewModels;
 
 namespace mainMenu
@@ -8,7 +10,7 @@ namespace mainMenu
     /// </summary>
     public partial class AdminItemGroups : Window
     {
-        public ItemGroupViewModel ViewModel = new ItemGroupViewModel();
+        public ItemGroupViewModel ViewModel = new ItemGroupViewModel(new DatabaseService(new SqlStoreDatabaseFactory()));
         public AdminItemGroups()
         {
             InitializeComponent();
