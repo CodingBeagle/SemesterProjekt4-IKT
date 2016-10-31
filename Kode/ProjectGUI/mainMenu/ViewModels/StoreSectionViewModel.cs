@@ -129,7 +129,7 @@ namespace mainMenu
             }
             catch (Exception e)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
