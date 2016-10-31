@@ -91,7 +91,7 @@ namespace mainMenu.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }
             
@@ -109,7 +109,7 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message); 
             }
         }
@@ -135,7 +135,7 @@ namespace mainMenu.ViewModels
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message);
             }
         }

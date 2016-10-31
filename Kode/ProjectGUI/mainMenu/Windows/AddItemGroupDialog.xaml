@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mainMenu"
         mc:Ignorable="d"
-        Title="AddItemGroupDialog" Height="300" Width="300" WindowStartupLocation="CenterScreen">
+        Title="Opret Varegruppe" Height="300" Width="300" WindowStartupLocation="CenterScreen" Icon="../images/favicon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>

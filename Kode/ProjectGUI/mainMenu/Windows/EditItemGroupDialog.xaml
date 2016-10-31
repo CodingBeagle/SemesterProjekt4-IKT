@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mainMenu"
         mc:Ignorable="d"
-        Title="EditItemGroupDialog" Height="300" Width="300" WindowStartupLocation="CenterScreen">
+        Title="Rediger Varegruppe" Height="300" Width="300" WindowStartupLocation="CenterScreen" Icon="../images/favicon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>
@@ -28,15 +28,15 @@
         <Label x:Name="WindowName" Content="Rediger Varegruppe" FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="71,0,10,0"></Label>
 
         <Label Content="Gammelt varegruppenavn:"  Grid.Column="1" Grid.Row="2"></Label>
-        <Label Content="{Binding Path=OldItemGroupName, UpdateSourceTrigger=PropertyChanged}"                
+        <Label Content="{Binding Path=PreviousItemGroupName, UpdateSourceTrigger=PropertyChanged}"                
                Grid.Column="2" Grid.Row="2"></Label>
 
         <Label Content="Nyt varegruppenavn:" Grid.Column="1" Grid.Row="4"></Label>
-        <TextBox x:Name="ItemNameTextBox" Text="{Binding ItemGroupName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="4"></TextBox>
+        <TextBox x:Name="ItemGroupNameTextBox" Text="{Binding ItemGroupName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Grid.Column="2" Grid.Row="4"></TextBox>
 
 
 
-        <Button x:Name="CreateItemButton" Content="Rediger" Command="{Binding EditItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
+        <Button x:Name="EditItemButton" Content="Rediger" Command="{Binding EditItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
         <Button x:Name="CancelButton" Content="Annuller" Grid.Column="2" Grid.Row="7" Click="CancelButton_Click"/>
     </Grid>
 </Window>

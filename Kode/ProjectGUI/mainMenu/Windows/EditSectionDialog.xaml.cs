@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace mainMenu
 {
@@ -24,7 +12,7 @@ namespace mainMenu
         public bool IsSectionNameChanged { get; private set; }
 
         private StoreSectionViewModel _viewModel;
-        public EditSectionDialog(StoreSectionViewModel viewModel, string sectionNameToEdit)
+        public EditSectionDialog(StoreSectionViewModel viewModel)
         {
             InitializeComponent();
 
