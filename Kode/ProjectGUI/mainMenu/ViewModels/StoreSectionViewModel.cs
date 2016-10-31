@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,6 +31,9 @@ namespace mainMenu
         public ICommand SearchItemsCommand { get; private set; }
         public ICommand AddItemToSectionCommand { get; private set; }
         public ICommand RemoveItemFromSectionCommand { get; private set; }
+        public ICommand AddStoreSectionCommand { get; private set; }
+        public ICommand CancelStoreSectionCommand { get; private set; }
+        public ICommand EditStoreSectionDialogOKCommand { get; private set; }
         #endregion
 
         #region Privates
@@ -43,6 +47,8 @@ namespace mainMenu
         private string _selectedStoreSectionName;
         private ImageBrush _floorplanImage;
         private string _newlyCreatedStoreSectionName;
+        private SectionShape _newlyCreatedSection;
+        private StoreSection _sectionToEdit;
         #endregion
 
         #region Properties
@@ -121,11 +127,11 @@ namespace mainMenu
         }
         #endregion
 
-        public StoreSectionViewModel()
+        public StoreSectionViewModel(DatabaseService database)
         {
             try
             {
-                _db = new DatabaseService(new SqlStoreDatabaseFactory());
+                _db = database;
             }
             catch (Exception e)
             {
@@ -142,7 +148,9 @@ namespace mainMenu
             SearchItemsCommand = new RelayCommand(searchItemsHandler);
             AddItemToSectionCommand = new RelayCommand(addItemToSectionHandler, () => _selectedStoreSection != 0);
             RemoveItemFromSectionCommand = new RelayCommand(removeItemFromSectionHandler, () => _selectedStoreSection != 0);
-            
+            AddStoreSectionCommand = new RelayCommand(AddStoreSectionDialogOkButtonHandler, () => CheckValidName(NewlyCreatedStoreSectionName));
+            CancelStoreSectionCommand = new RelayCommand(AddStoreSectionDialogCancelButtonHandler);
+            EditStoreSectionDialogOKCommand = new RelayCommand(editStoreSectionButtonOKHandler, () => CheckValidName(NewSectionName));
         }
 
         private void windowLoadedHandler()
@@ -188,22 +196,41 @@ namespace mainMenu
             newSectionShape.Shape = ShapeButtonCreator.CreateShapeForButton();
             
             ShapeCollection.Add(newSectionShape);
+            _newlyCreatedSection = newSectionShape;
 
             NewlyCreatedStoreSectionName = "";
-            AddSectionDialog newSectionDialog = new AddSectionDialog(this);
-            newSectionDialog.ShowDialog();
+        }
 
-            if (newSectionDialog.IsOKPressed)
+        public void AddStoreSectionDialogOkButtonHandler()
+        {
+            if (Regex.IsMatch(NewlyCreatedStoreSectionName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
             {
-                Debug.WriteLine(NewlyCreatedStoreSectionName + "ncssn");
-                long newStoreSectionID = _db.TableStoreSection.CreateStoreSection(NewlyCreatedStoreSectionName, (long)newSectionShape.Left, (long)newSectionShape.Top, _floorplanID);
-                newSectionShape.ID = newStoreSectionID;
-                newSectionShape.Name = "Button" + newStoreSectionID;
+                long newStoreSectionID = _db.TableStoreSection.CreateStoreSection(NewlyCreatedStoreSectionName,
+                    (long)_newlyCreatedSection.Left, (long)_newlyCreatedSection.Top, _floorplanID);
+                _newlyCreatedSection.ID = newStoreSectionID;
+                _newlyCreatedSection.Name = "Button" + newStoreSectionID;
             }
             else
             {
-                ShapeCollection.Remove(newSectionShape);
+                ShapeCollection.Remove(_newlyCreatedSection);
             }
+        }
+
+        private bool CheckValidName(string Name)
+        {
+            if (Regex.IsMatch(Name, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void AddStoreSectionDialogCancelButtonHandler()
+        {
+            ShapeCollection.Remove(_newlyCreatedSection);
         }
 
         private void selectCurrentStoreSectionHandler(SectionShape shape)
@@ -213,11 +240,8 @@ namespace mainMenu
 
             StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(_selectedStoreSection);
             SelectedStoreSectionName = selectedStoreSection.Name;
-            Debug.WriteLine(SelectedStoreSectionName + "sssn");
            
         }
-
-   
 
         private void deleteStoreSectionHandler()
         {
@@ -242,22 +266,25 @@ namespace mainMenu
 
         private void editStoreSectionHandler()
         {
-            StoreSection sectionToEdit = _db.TableStoreSection.GetStoreSection(_selectedStoreSection);
-            NewSectionName = "";
-            PreviousSectionName = sectionToEdit.Name;
-
-            EditSectionDialog newSectionDialog = new EditSectionDialog(this);
-            newSectionDialog.ShowDialog();
-
-            if (newSectionDialog.IsSectionNameChanged)
-            {
-                _db.TableStoreSection.UpdateStoreSectionName(_selectedStoreSection, NewSectionName);
-                sectionToEdit.Name = NewSectionName;
-                SelectedStoreSectionName = sectionToEdit.Name;
-            }
-
+           //THIS IS A DUMMY NOW
         }
 
+        public void PrepareSectionToEdit()
+        {
+            _sectionToEdit = _db.TableStoreSection.GetStoreSection(_selectedStoreSection);
+            NewSectionName = "";
+            PreviousSectionName = _sectionToEdit.Name;
+        }
+
+        private void editStoreSectionButtonOKHandler()
+        {
+            if (Regex.IsMatch(NewSectionName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
+            {
+                _db.TableStoreSection.UpdateStoreSectionName(_selectedStoreSection, NewSectionName);
+                _sectionToEdit.Name = NewSectionName;
+                SelectedStoreSectionName = _sectionToEdit.Name;
+            }
+        }
         private void searchItemsHandler()
         {
             ItemUtility.SearchItem(_db, SearchString, ListOfItems);

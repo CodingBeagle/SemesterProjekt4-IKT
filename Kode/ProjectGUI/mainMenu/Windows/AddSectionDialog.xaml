@@ -33,8 +33,8 @@
         <Label Content="Opret Sektion" Grid.Column="1" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
         <Label Content="Sektionnavn:" Grid.Row="3" Grid.Column="1"></Label>
         <TextBox x:Name="SectionNameTextBox" Text="{Binding Path=NewlyCreatedStoreSectionName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="3" Grid.Column="2" ></TextBox>
-        
-        <Button x:Name="CreateSectionButton" Content="_Opret Sektion" Grid.Row="5" Grid.Column="2" Click="CreateSectionButton_OnClick"></Button>
-        <Button x:Name="CancelButton" Content="_Annuller" Grid.Row="6" Grid.Column="2" Click="CancelButton_Click"></Button>
+
+        <Button x:Name="CreateSectionButton" Content="_Opret Sektion" Grid.Row="5" Command="{Binding AddStoreSectionCommand}" Grid.Column="2" Click="CreateSectionButton_OnClick"></Button>
+        <Button x:Name="CancelButton" Content="_Annuller" Command="{Binding CancelStoreSectionCommand}" Grid.Row="6" Grid.Column="2" Click="CancelButton_Click"></Button>
     </Grid>
 </Window>
