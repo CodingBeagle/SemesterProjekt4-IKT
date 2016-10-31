@@ -61,6 +61,8 @@
     </ApplicationDefinition>
     <Compile Include="Models\RefreshableImage.cs" />
     <Compile Include="Models\SectionShape.cs" />
+    <Compile Include="ViewModels\IBrowseFileService.cs" />
+    <Compile Include="ViewModels\ImageFileBrowser.cs" />
     <Compile Include="ViewModels\ItemDataGrid.cs" />
     <Compile Include="Models\ItemUtility.cs" />
     <Compile Include="ViewModels\ItemGroupViewModel.cs" />

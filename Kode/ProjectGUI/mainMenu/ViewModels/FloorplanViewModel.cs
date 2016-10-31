@@ -12,7 +12,9 @@ namespace mainMenu.ViewModels
     public class FloorplanViewModel : INotifyPropertyChanged
     {
         #region Privates
-        private readonly DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
+
+        private IBrowseFileService _fileBrowseService;
+        private readonly DatabaseService _db;
         private string _imagePath;
         private string _selectedFileName;
         #endregion
@@ -63,33 +65,30 @@ namespace mainMenu.ViewModels
         }
         #endregion
 
-        public FloorplanViewModel()
+        public FloorplanViewModel(DatabaseService db, IBrowseFileService browseFileService)
         {
+            _db = db;
+            _fileBrowseService = browseFileService;
+
             refreshFloorplanThumbnail();
         }
 
-        private void browseFloorplanHandler()
+        public void browseFloorplanHandler()
         {
-            OpenFileDialog floorplanBrowser = new OpenFileDialog();
+            bool browseResult = _fileBrowseService.OpenFileDialog();
 
-            floorplanBrowser.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
-
-            bool? browseResult = floorplanBrowser.ShowDialog();
-
-            if (!browseResult.HasValue || !browseResult.Value)
-                return;
-
-            SelectedFileName = floorplanBrowser.FileName;
+            if (browseResult)
+                SelectedFileName = _fileBrowseService.FileName;
         }
 
-        private void updateFloorplanHandler()
+        public void updateFloorplanHandler()
         {
             _db.TableFloorplan.UploadFloorplan("floorplan", 10, 10, SelectedFileName);
             refreshFloorplanThumbnail();
             _db.TableStoreSection.DeleteAllStoreSections(1);
         }
 
-        private void refreshFloorplanThumbnail()
+        public void refreshFloorplanThumbnail()
         {
             ImagePath = null;
             _db.TableFloorplan.DownloadFloorplan();
