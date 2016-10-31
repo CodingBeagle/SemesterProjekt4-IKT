@@ -9,11 +9,12 @@ namespace mainMenu
     public partial class AddSectionDialog : Window
     {
         public bool IsOKPressed { get; private set; }
-        public string SectionName { get; private set; } 
-        public AddSectionDialog()
+
+        public AddSectionDialog(StoreSectionViewModel viewModel)
         {
             InitializeComponent();
             IsOKPressed = false;
+            DataContext = viewModel;
         }
 
 
@@ -27,7 +28,6 @@ namespace mainMenu
             if (Regex.IsMatch(SectionNameTextBox.Text, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
             {
                 IsOKPressed = true;
-                SectionName = SectionNameTextBox.Text;
                 Close();
             }
             else

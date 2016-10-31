@@ -42,16 +42,30 @@ namespace mainMenu
         private List<Item> _itemsInSectionList = new List<Item>();
         private string _selectedStoreSectionName;
         private ImageBrush _floorplanImage;
+        private string _newlyCreatedStoreSectionName;
         #endregion
 
         #region Properties
-        public string NewSectionName { get; set; }
-        public string PreviousSectionName { get; set; }
 
+        public string PreviousSectionName { get; set; }
+        public string NewSectionName { get; set; }
 
         public DisplayItems ListOfItems { get; set; }
         public Item SelectedSectionItem { get; set; }
         public ObservableCollection<SectionShape> ShapeCollection { get; set; }
+        public string NewlyCreatedStoreSectionName
+        {
+            get { return _newlyCreatedStoreSectionName; }
+            set
+            {
+                if (_newlyCreatedStoreSectionName != value)
+                {
+                    _newlyCreatedStoreSectionName = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public string SearchString
         {
             get { return _searchString; }
@@ -115,7 +129,7 @@ namespace mainMenu
             }
             catch (Exception e)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelsel");
+                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
@@ -175,12 +189,14 @@ namespace mainMenu
             
             ShapeCollection.Add(newSectionShape);
 
-            AddSectionDialog newSectionDialog = new AddSectionDialog();
+            NewlyCreatedStoreSectionName = "";
+            AddSectionDialog newSectionDialog = new AddSectionDialog(this);
             newSectionDialog.ShowDialog();
 
             if (newSectionDialog.IsOKPressed)
             {
-                long newStoreSectionID = _db.TableStoreSection.CreateStoreSection(newSectionDialog.SectionName, (long)newSectionShape.Left, (long)newSectionShape.Top, _floorplanID);
+                Debug.WriteLine(NewlyCreatedStoreSectionName + "ncssn");
+                long newStoreSectionID = _db.TableStoreSection.CreateStoreSection(NewlyCreatedStoreSectionName, (long)newSectionShape.Left, (long)newSectionShape.Top, _floorplanID);
                 newSectionShape.ID = newStoreSectionID;
                 newSectionShape.Name = "Button" + newStoreSectionID;
             }
@@ -197,6 +213,7 @@ namespace mainMenu
 
             StoreSection selectedStoreSection = _db.TableStoreSection.GetStoreSection(_selectedStoreSection);
             SelectedStoreSectionName = selectedStoreSection.Name;
+            Debug.WriteLine(SelectedStoreSectionName + "sssn");
            
         }
 
