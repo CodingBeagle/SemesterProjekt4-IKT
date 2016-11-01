@@ -6,14 +6,11 @@ using DatabaseAPI.TableItemSectionPlacement;
 
 namespace DatabaseAPI
 {
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         public ITableItem TableItem { get; private set; }
-
         public ITableItemGroup TableItemGroup { get; private set; }
-
         public ITableFloorplan TableFloorplan { get; private set; }
-
         public ITableStoreSection TableStoreSection { get; private set; }
         public ITableItemSectionPlacement TableItemSectionPlacement { get; private set; }
 
