@@ -17,6 +17,7 @@ using DatabaseAPI.Factories;
 using mainMenu.FloorplanLogic;
 using mainMenu.Models;
 using mainMenu.RefreshLogic;
+using mainMenu.ViewModels;
 using MvvmFoundation.Wpf;
 
 namespace mainMenu
@@ -49,6 +50,7 @@ namespace mainMenu
         private string _newlyCreatedStoreSectionName;
         private SectionShape _newlyCreatedSection;
         private StoreSection _sectionToEdit;
+        private IMessageBox _messageBox;
         #endregion
 
         #region Properties
@@ -127,15 +129,16 @@ namespace mainMenu
         }
         #endregion
 
-        public StoreSectionViewModel(DatabaseService database)
+        public StoreSectionViewModel(DatabaseService database, IMessageBox mb)
         {
             try
             {
                 _db = database;
+                _messageBox = mb;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }
             ShapeCollection = new ObservableCollection<SectionShape>();
@@ -302,7 +305,7 @@ namespace mainMenu
                 }
                 else
                 {
-                    MessageBox.Show("Varen " + item.VareNavn + " findes i sektionen i forvejen");
+                    _messageBox.OpenMessageBox("Varen " + item.VareNavn + " findes i sektionen i forvejen");
                 }               
                 
             }

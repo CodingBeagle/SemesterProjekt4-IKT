@@ -23,7 +23,8 @@ namespace mainMenu.ViewModels
         public ICommand SearchItemCommand { get; private set; }
         #endregion
         #region Privates
-        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
+        private DatabaseService _db;
+        private IMessageBox _messageBox;
         private int _comboBoxIndex;
         private string _searchString;
         private string _itemName;
@@ -75,10 +76,12 @@ namespace mainMenu.ViewModels
 
 
 
-        public ItemViewModel()
+        public ItemViewModel(DatabaseService db, IMessageBox mb)
         {
             try
             {
+                _db = db;
+                _messageBox = mb;
                 ListOfItems = new DisplayItems();
                 ComboBoxIndex = -1;
                 bool dummybool = false;
@@ -91,7 +94,7 @@ namespace mainMenu.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }
             
@@ -104,12 +107,12 @@ namespace mainMenu.ViewModels
                 DisplayItem selectedItem = ListOfItems[ListOfItems.CurrentIndex];
                 _db.TableItem.DeleteItem((long)selectedItem.ID);
                 ListOfItems.RemoveAt(ListOfItems.CurrentIndex);
-                MessageBox.Show($"{selectedItem.VareNavn} blev slettet fra databasen");
+                _messageBox.OpenMessageBox($"{selectedItem.VareNavn} blev slettet fra databasen");
 
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message); 
             }
         }
@@ -123,19 +126,19 @@ namespace mainMenu.ViewModels
                     var itemID = _db.TableItem.CreateItem(ItemName, ItemGroupComboBoxList[ComboBoxIndex].ItemGroupID);
                     var createdItem = new Item(itemID, ItemName, ItemGroupComboBoxList[ComboBoxIndex].ItemGroupID);
                     ListOfItems.Add(new DisplayItem(createdItem));
-                    MessageBox.Show($"{ItemName} er blevet tilføjet til databasen");
+                    _messageBox.OpenMessageBox($"{ItemName} er blevet tilføjet til databasen");
                     ItemName = "";
                     ComboBoxIndex = -1;
                 }
                 else
                 {
-                    MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
+                    _messageBox.OpenMessageBox("Navnet på en vare kan kun indeholde bogstaver og tal");
                 }
 
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message);
             }
         }
