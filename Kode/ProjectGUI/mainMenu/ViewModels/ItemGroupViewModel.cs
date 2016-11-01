@@ -22,6 +22,7 @@ namespace mainMenu.ViewModels
     {
         #region Privates
         private DatabaseService _db;
+        private IMessageBox _messageBox;
         private string _searchString;
         private int _comboBoxIndex;
         private string _itemGroupName;
@@ -90,9 +91,10 @@ namespace mainMenu.ViewModels
         #endregion
 
 
-        public ItemGroupViewModel(DatabaseService db)
+        public ItemGroupViewModel(DatabaseService db, IMessageBox mb)
         {
             _db = db;
+            _messageBox = mb;
             ComboBoxIndex = -1;
             ItemGroupName = "";
             ListOfItemGroups = new DisplayItemGroups();
@@ -117,12 +119,12 @@ namespace mainMenu.ViewModels
                 ItemGroup temp = new ItemGroup(ItemGroupName, ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupParentID, ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupID);
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
                 ListOfItemGroups.Add(temp);
-                MessageBox.Show($"Varegruppens navn er blevet opdateret til {ItemGroupName}");
+                _messageBox.OpenMessageBox($"Varegruppens navn er blevet opdateret til {ItemGroupName}");
                 ItemGroupName = "";
             }
             catch (Exception e)
             {
-                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check debug for fejlmeddelelse");
                 Debug.WriteLine(e.Message);
             }    
         }
@@ -150,19 +152,19 @@ namespace mainMenu.ViewModels
                     }
                     
                     ListOfItemGroups.Add(new ItemGroup(ItemGroupName, parentItemGroupID, itemGroupID));
-                    MessageBox.Show($"{ItemGroupName} er blevet tilføjet til databasen");
+                    _messageBox.OpenMessageBox($"{ItemGroupName} er blevet tilføjet til databasen");
                     ComboBoxIndex = -1;
                     ItemGroupName = "";
                 }
                 else
                 {
-                    MessageBox.Show("Navnet på en vare kan kun indeholde bogstaver og tal");
+                    _messageBox.OpenMessageBox("Navnet på en vare kan kun indeholde bogstaver og tal");
                 }
 
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message);
             }
         }
@@ -177,14 +179,14 @@ namespace mainMenu.ViewModels
 
                 if (ListOfItemGroups.Count == 0)
                 {
-                    MessageBox.Show($"Kunne ikke finde nogen varegruppe med navnet {SearchString}");
+                    _messageBox.OpenMessageBox($"Kunne ikke finde nogen varegruppe med navnet {SearchString}");
                     SearchString = "";
                 }
                 SearchString = "";
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message);
             }
 
@@ -200,20 +202,20 @@ namespace mainMenu.ViewModels
                 selectedItem = ListOfItemGroups[ListOfItemGroups.CurrentIndex];
                 _db.TableItemGroup.DeleteItemGroup((long) selectedItem.ItemGroupID);
                 ListOfItemGroups.RemoveAt(ListOfItemGroups.CurrentIndex);
-                MessageBox.Show($"{selectedItem.ItemGroupName} blev slettet fra databasen");
+                _messageBox.OpenMessageBox($"{selectedItem.ItemGroupName} blev slettet fra databasen");
             }
             catch (SqlException e)
             {
                 if (selectedItem != null)
                 {
-                    MessageBox.Show("Varegruppen " + selectedItem.ItemGroupName +
+                    _messageBox.OpenMessageBox("Varegruppen " + selectedItem.ItemGroupName +
                                 " kan ikke slettes, da denne enten er en over-varegruppe eller den har tilknyttede varer");
                 }
                 
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check debug for fejlmeddelelse");
+                _messageBox.OpenMessageBox("Noget gik galt! Check debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message);
             }
         }

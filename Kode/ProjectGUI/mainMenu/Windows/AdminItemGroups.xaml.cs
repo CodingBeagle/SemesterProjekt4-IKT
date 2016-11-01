@@ -10,7 +10,7 @@ namespace mainMenu
     /// </summary>
     public partial class AdminItemGroups : Window
     {
-        public ItemGroupViewModel ViewModel = new ItemGroupViewModel(new DatabaseService(new SqlStoreDatabaseFactory()));
+        public ItemGroupViewModel ViewModel = new ItemGroupViewModel(new DatabaseService(new SqlStoreDatabaseFactory()), new ErrorMessageBox());
         public AdminItemGroups()
         {
             InitializeComponent();
