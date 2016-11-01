@@ -23,7 +23,7 @@ namespace mainMenu.ViewModels
         public ICommand SearchItemCommand { get; private set; }
         #endregion
         #region Privates
-        private DatabaseService _db;
+        private IDatabaseService _db;
         private IMessageBox _messageBox;
         private int _comboBoxIndex;
         private string _searchString;

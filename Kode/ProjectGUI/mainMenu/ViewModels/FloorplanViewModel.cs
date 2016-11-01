@@ -14,7 +14,7 @@ namespace mainMenu.ViewModels
         #region Privates
 
         private IBrowseFileService _fileBrowseService;
-        private readonly DatabaseService _db;
+        private readonly IDatabaseService _db;
         private string _imagePath;
         private string _selectedFileName;
         #endregion

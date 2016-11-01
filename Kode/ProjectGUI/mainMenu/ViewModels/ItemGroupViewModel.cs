@@ -21,7 +21,7 @@ namespace mainMenu.ViewModels
     public class ItemGroupViewModel : INotifyPropertyChanged
     {
         #region Privates
-        private DatabaseService _db;
+        private IDatabaseService _db;
         private IMessageBox _messageBox;
         private string _searchString;
         private int _comboBoxIndex;

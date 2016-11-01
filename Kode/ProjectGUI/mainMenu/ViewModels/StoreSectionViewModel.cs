@@ -38,7 +38,7 @@ namespace mainMenu
         #endregion
 
         #region Privates
-        private DatabaseService _db;
+        private IDatabaseService _db;
         private long _floorplanID = 1;
         private List<StoreSection> _storeSectionList;
         private string _searchString;
