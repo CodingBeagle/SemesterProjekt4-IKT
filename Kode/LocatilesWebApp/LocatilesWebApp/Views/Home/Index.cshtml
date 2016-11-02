@@ -1,4 +1,4 @@
-﻿
+﻿@model String
 @{
     ViewBag.Title = "Locatiles";
 }
@@ -8,11 +8,7 @@
         <div class="col-sm-4" style="background-color:lavender;">
             <h3>Column 1</h3>
             <ul style="list-style-type:circle">
-                <li>Mejeri</li>
-                <ul >
-                    <li>Letmælk</li>
-                    <li>Havarti</li>
-                </ul>
+                <li>@Model</li>
             </ul>
         </div>
         <div class="col-sm-7 col-sm-offset-1" style="background-color:chartreuse;">
