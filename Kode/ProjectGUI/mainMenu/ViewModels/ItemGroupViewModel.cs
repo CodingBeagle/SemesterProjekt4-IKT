@@ -91,7 +91,7 @@ namespace mainMenu.ViewModels
         #endregion
 
 
-        public ItemGroupViewModel(DatabaseService db, IMessageBox mb)
+        public ItemGroupViewModel(IDatabaseService db, IMessageBox mb)
         {
             _db = db;
             _messageBox = mb;
