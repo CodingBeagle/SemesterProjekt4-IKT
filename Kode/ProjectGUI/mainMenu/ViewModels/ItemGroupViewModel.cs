@@ -97,8 +97,9 @@ namespace mainMenu.ViewModels
             _messageBox = mb;
             ComboBoxIndex = -1;
             ItemGroupName = "";
+            SearchString = "";
             ListOfItemGroups = new DisplayItemGroups();
-            ListOfItemGroups.Populate("");
+            PopulateListOfItemGroups();
             ComboBoxOptions = ListOfItemGroups;
 
             var dummyBool = true;
@@ -173,9 +174,7 @@ namespace mainMenu.ViewModels
         {
             try
             {
-                ListOfItemGroups.Clear();
-                ListOfItemGroups.Populate(SearchString);
-                
+                PopulateListOfItemGroups();
 
                 if (ListOfItemGroups.Count == 0)
                 {
@@ -223,6 +222,17 @@ namespace mainMenu.ViewModels
         public void UpdateItemGroupName()
         {
             PreviousItemGroupName = ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupName;
+        }
+
+        private void PopulateListOfItemGroups()
+        {
+            ListOfItemGroups.Clear();
+            List<ItemGroup> searchResults = _db.TableItemGroup.SearchItemGroups(SearchString);
+            foreach (ItemGroup searchResult in searchResults)
+            {
+                ListOfItemGroups.Add(searchResult);
+            }
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
