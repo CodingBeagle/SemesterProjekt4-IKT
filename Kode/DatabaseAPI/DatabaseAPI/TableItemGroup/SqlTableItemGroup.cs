@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -11,141 +12,168 @@ namespace DatabaseAPI.TableItemGroup
         private SqlConnection _conn;
         private SqlCommand _cmd;
         private SqlDataReader _reader;
+        private string _connString;
+        private string _sqlQueryString;
 
 
         public SqlTableItemGroup(string connectionString)
         {
-            _conn = new SqlConnection(connectionString);
+            _connString = connectionString;
         }
 
         public long CreateItemGroup(string itemGroupName, long itemGroupParentID)
         {
-            long _createdID;
-            try
-            {
-                _conn.Open();
+            long createdID = 0;
 
-                _cmd =
-                    new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name, ParentItemGroupID) VALUES ('" + itemGroupName + "', '" +
-                        itemGroupParentID + "'); SELECT CAST(scope_identity() AS BIGINT)",
-                        _conn);
+            _sqlQueryString = @"INSERT INTO ItemGroup (Name, ParentItemGroupID) 
+                              VALUES (@itemGroupName, @itemGroupParentID)" +
+                              @"SELECT CAST(scope_identity() AS BIGINT)";
 
-                _createdID = (long) _cmd.ExecuteScalar();
-            }
-            finally
+            using (_conn = new SqlConnection(_connString))
             {
-                _conn?.Close();
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue("@itemGroupName", itemGroupName);
+                _cmd.Parameters.AddWithValue("@itemGroupParentID", itemGroupParentID);
+
+                try
+                {
+                    _conn.Open();
+                    createdID = (long) _cmd.ExecuteScalar();
+
+                }
+                catch (Exception e)
+                {
+
+                    Debug.WriteLine("Something went wrong in CreateItemGroup: " + e.Message);
+                }
             }
-            return _createdID;
+            return createdID;
         }
 
         public long CreateItemGroup(string itemGroupName)
         {
-            long _createdID;
-            try
-            {
-                _conn.Open();
+            long createdID = 0;
 
-                _cmd =
-                    new SqlCommand(
-                        $"INSERT INTO ItemGroup (Name) VALUES ('" + itemGroupName + "');" +
-                        "SELECT CAST(scope_identity() AS BIGINT)",
-                        _conn);
+            _sqlQueryString = @"INSERT INTO ItemGroup (Name) " +
+                              @"VALUES (@itemGroupName); " +
+                              @"SELECT CAST(scope_identity() AS BIGINT)";
 
-                _createdID = (long) _cmd.ExecuteScalar();
-            }
-            finally
+            using (_conn = new SqlConnection(_connString))
             {
-                _conn?.Close();
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue("@itemGroupName", itemGroupName);
+
+                try
+                {
+                    _conn.Open();
+                    createdID = (long)_cmd.ExecuteScalar();
+
+                }
+                catch (Exception e)
+                {
+
+                    Debug.WriteLine("Something went wrong in CreateItemGroup: " + e.Message);
+                }
             }
-            return _createdID;
+            return createdID;
         }
 
         public List<ItemGroup> SearchItemGroups(string itemGroupName)
         {
+            string itemGroupNameWithWildCards = string.Format("%{0}%",itemGroupName);
             List<ItemGroup> searchResults = new List<ItemGroup>();
             string name = null;
             long itemGroupParentID = 0;
             long itemGroupID = 0;
-            try
+
+            _sqlQueryString = @"SELECT * FROM ItemGroup WHERE Name LIKE @itemGroupName";
+
+            using (_conn = new SqlConnection(_connString))
             {
-                _conn.Open();
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue("@itemGroupName", itemGroupNameWithWildCards);
 
-                string sqlCommand = $"SELECT * FROM ItemGroup WHERE Name LIKE '%{itemGroupName}%'";
-                _cmd = new SqlCommand(sqlCommand, _conn);
+                try
+                {
+                    _conn.Open();
+                    _reader = _cmd.ExecuteReader();
 
-                _reader = _cmd.ExecuteReader();
-
-                    while (_reader.Read())
+                    if (_reader.HasRows)
                     {
-                        if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                        while (_reader.Read())
                         {
-                            name = (string) _reader["Name"];
+                            if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                            {
+                                name = (string)_reader["Name"];
+                            }
+                            if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
+                            {
+                                itemGroupParentID = (long)_reader["ParentItemGroupID"];
+                            }
+                            if (!_reader.IsDBNull(_reader.GetOrdinal("ItemGroupID")))
+                            {
+                                itemGroupID = (long)_reader["ItemGroupID"];
+                            }
+                            searchResults.Add(new ItemGroup(name, itemGroupParentID, itemGroupID));
+
+                            name = null;
+                            itemGroupParentID = 0;
+                            itemGroupID = 0;
                         }
-                        if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
-                        {
-                            itemGroupParentID = (long) _reader["ParentItemGroupID"];
-                        }
-                        if (!_reader.IsDBNull(_reader.GetOrdinal("ItemGroupID")))
-                        {
-                            itemGroupID = (long) _reader["ItemGroupID"];
-                        }
-                    searchResults.Add(new ItemGroup(name, itemGroupParentID, itemGroupID));
-                    name = null;
-                    itemGroupParentID = 0;
-                    itemGroupID = 0;
+                    }
+                   
+
                 }
-                    
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            finally
-            {
-                _reader?.Close();
-                _conn?.Close();
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Something went wrong in SearchItemGroups: " + e.Message);
+                }
             }
             return searchResults;
         }
 
         public void UpdateItemGroup(string oldItemGroupName, string itemGroupName)
         {
-            try
-            {
-                _conn.Open();
-                string sqlCommand = $"UPDATE ItemGroup SET Name='{itemGroupName}' WHERE Name='{oldItemGroupName}'";
-                _cmd = new SqlCommand(sqlCommand, _conn);
+            _sqlQueryString = @"UPDATE ItemGroup SET Name= @itemGroupName 
+                                WHERE Name= @oldItemGroupName";
 
-                _cmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
+            using (_conn = new SqlConnection(_connString))
             {
-                Debug.WriteLine(e.Message);
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue(@"itemGroupName", itemGroupName);
+                _cmd.Parameters.AddWithValue(@"oldItemGroupName", oldItemGroupName);
+
+                try
+                {
+                    _conn.Open();
+                    _cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Something went wrong in UpdateItemGroup: " + e.Message);
+                }
             }
-            finally
-            {
-                _conn?.Close();
-            }
+
         }
 
         public void DeleteItemGroup(long itemGroupID)
         {
-            try
+            _sqlQueryString = @"DELETE FROM ItemGroup WHERE ItemGroupID = @itemGroupID";
+            using (_conn = new SqlConnection(_connString))
             {
-                _conn.Open();
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue(@"itemGroupID", itemGroupID);
 
-                _cmd = new SqlCommand($"DELETE FROM ItemGroup WHERE ItemGroupID = " + itemGroupID,
-                    _conn);
-
-                _cmd.ExecuteNonQuery();
-
-            }
-            finally
-            {
-                _conn?.Close();
-
+                try
+                {
+                    _conn.Open();
+                    _cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Something went wrong in DeleteItemGroup: " + e.Message);
+                  
+                }
             }
         }
 
@@ -156,78 +184,85 @@ namespace DatabaseAPI.TableItemGroup
             string itemGroupName;
             long itemGroupParentID = 0;
 
-            try
+            _sqlQueryString = @"SELECT * FROM ItemGroup WHERE ItemGroupID = @itemGroupID";
+
+            using (_conn = new SqlConnection(_connString))
             {
-                _conn.Open();
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue("@itemGroupID", itemGroupID);
 
-                _cmd = new SqlCommand($"SELECT  * FROM ItemGroup WHERE ItemGroupID = {itemGroupID}", _conn);
-
-                _reader = _cmd.ExecuteReader();
-
-                if (_reader.HasRows)
+                try
                 {
-                    while (_reader.Read())
-                    {
-                        itemGroupName = (string) _reader["Name"];
+                    _conn.Open();
+                    _reader = _cmd.ExecuteReader();
 
-                        if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
+                    if (_reader.HasRows)
+                    {
+                        while (_reader.Read())
                         {
-                            itemGroupParentID = (long) _reader["ParentItemGroupID"];
+                            itemGroupName = (string) _reader["Name"];
+
+                            if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
+                            {
+                                itemGroupParentID = (long) _reader["ParentItemGroupID"];
+                            }
+                            ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
                         }
-                        ItemGroupResult = new ItemGroup(itemGroupName, itemGroupParentID, itemGroupID);
                     }
                 }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Something went wrong in GetItemGroup: " + e.Message);
+                }
 
+                
             }
-            finally
-            {
-                _reader?.Close();
-                _conn?.Close();
-
-            }
-
             return ItemGroupResult;
         }
 
         public List<ItemGroup> GetAllItemGroups()
         {
-            List<ItemGroup> itemGroupQuery = new List<ItemGroup>();
-            try
+            List<ItemGroup> itemGroupList = new List<ItemGroup>();
+            string itemGroupName = "";
+            long itemGroupID = 0;
+            long parentItemGroupId = 0;
+
+            _sqlQueryString = "SELECT * FROM ItemGroup";
+
+            using (_conn = new SqlConnection(_connString))
             {
-                _conn.Open();
-                _cmd = new SqlCommand("SELECT * FROM ItemGroup", _conn);
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
 
-                _reader = _cmd.ExecuteReader();
-
-
-                while (_reader.Read())
+                try
                 {
-                    string itemGroupName = "";
-                    long itemGroupID = 0;
-                    long parentItemGroupId = 0;
+                    _conn.Open();
+                    _reader = _cmd.ExecuteReader();
 
-                    if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
-                        itemGroupName = (string) _reader["Name"];
-
-                    if (!_reader.IsDBNull(_reader.GetOrdinal("ItemGroupID")))
-                        itemGroupID = (long) _reader["ItemGroupID"];
-
-                    if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
+                    while (_reader.Read())
                     {
-                        var rItemGroupID = _reader["ParentItemGroupID"];
-                        if (rItemGroupID != null)
-                            parentItemGroupId = (long)rItemGroupID;
+
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("Name")))
+                            itemGroupName = (string) _reader["Name"];
+
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("ItemGroupID")))
+                            itemGroupID = (long) _reader["ItemGroupID"];
+
+                        if (!_reader.IsDBNull(_reader.GetOrdinal("ParentItemGroupID")))
+                        {
+                            var rItemGroupID = _reader["ParentItemGroupID"];
+                            if (rItemGroupID != null)
+                                parentItemGroupId = (long) rItemGroupID;
+                        }
+                        var newItem = new ItemGroup(itemGroupName, parentItemGroupId, itemGroupID);
+                        itemGroupList.Add(newItem);
                     }
-                    var newItem = new ItemGroup(itemGroupName, parentItemGroupId, itemGroupID);
-                    itemGroupQuery.Add(newItem);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Something went wrong in GetAllItemGroups: " + e.Message);
                 }
             }
-            finally
-            {
-                _conn?.Close();
-                _reader?.Close();
-            }
-            return itemGroupQuery;
+            return itemGroupList;
         }
     }
 }
