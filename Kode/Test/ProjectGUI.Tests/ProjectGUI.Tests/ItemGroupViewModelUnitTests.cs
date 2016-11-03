@@ -101,11 +101,20 @@ namespace ProjectGUI.Tests
                     _uut.ListOfItemGroups[_uut.ListOfItemGroups.CurrentIndex].ItemGroupID);
         }
         [Test]
-        public void ItemGroupViewModel_CreteItemGroupCommand_CreateNewItemWithAcceptedName_MessageBoxShowsConfirmationMsg()
+        public void ItemGroupViewModel_CreateItemGroupCommand_CreateNewItemWithAcceptedName_MessageBoxShowsConfirmationMsg()
         {
             _uut.ItemGroupName = "Test1";
             _uut.CreateItemGroupCommand.Execute(null);
+            _mb.Received(1).OpenMessageBox("Test1 er blevet tilføjet til databasen");
+        }
 
+        [Test]
+        public void ItemGroupViewModel_CreateItemGroupCommand_CreateNewItemWithGoneWrong_MessageBoxShowsError()
+        {
+            _uut.ListOfItemGroups = null;
+            _uut.ItemGroupName = "DoomedToFail";
+            _uut.CreateItemGroupCommand.Execute(null);
+            _mb.Received(1).OpenMessageBox("Navnet på en vare kan kun indeholde bogstaver og tal");
         }
     }
 

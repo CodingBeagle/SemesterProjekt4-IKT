@@ -65,7 +65,7 @@ namespace mainMenu.ViewModels
         }
         #endregion
 
-        public FloorplanViewModel(DatabaseService db, IBrowseFileService browseFileService)
+        public FloorplanViewModel(IDatabaseService db, IBrowseFileService browseFileService)
         {
             _db = db;
             _fileBrowseService = browseFileService;
