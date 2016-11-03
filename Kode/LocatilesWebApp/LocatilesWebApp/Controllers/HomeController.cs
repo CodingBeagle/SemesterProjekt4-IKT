@@ -11,7 +11,9 @@ namespace LocatilesWebApp.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+
+            string testString = "this is my teststring";
+            return View((Object)testString);
         }
     }
 }
