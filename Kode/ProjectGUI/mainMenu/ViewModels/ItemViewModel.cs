@@ -76,7 +76,7 @@ namespace mainMenu.ViewModels
 
 
 
-        public ItemViewModel(DatabaseService db, IMessageBox mb)
+        public ItemViewModel(IDatabaseService db, IMessageBox mb)
         {
             try
             {
