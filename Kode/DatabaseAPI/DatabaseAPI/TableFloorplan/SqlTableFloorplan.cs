@@ -2,17 +2,22 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.IO;     
+using System.IO;
 
 namespace DatabaseAPI.TableFloorplan
 {
     public class SqlTableFloorplan : ITableFloorplan
     {
-        private readonly SqlConnection _conn;
+        private SqlConnection _conn;
+        private SqlCommand _cmd;
+        private SqlDataReader _reader;
+        private string _connString;
+        private string _sqlQueryString;
+
 
         public SqlTableFloorplan(string connectionString)
         {
-            _conn = new SqlConnection(connectionString);
+            _connString = connectionString;
         }
 
         public void UploadFloorplan(string name, int width, int height, string filePath)
@@ -40,120 +45,108 @@ namespace DatabaseAPI.TableFloorplan
 
         public void DownloadFloorplan()
         {
-            try
-            {
-                string sqlStatement = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
+            _sqlQueryString = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
 
-                _conn.Open();
-                using (SqlCommand cmd = new SqlCommand(sqlStatement, _conn))
+            using (_conn = new SqlConnection(_connString))
+            {
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+
+                try
                 {
-                    SqlDataReader rd = cmd.ExecuteReader();
+                    _conn.Open();
+                    _reader = _cmd.ExecuteReader();
 
-                    while (rd.Read())
+                    while (_reader.Read())
                     {
-                        DownloadImageDataToImageFile("floorplan", rd);
+                        DownloadImageDataToImageFile("floorplan", _reader);
                     }
-
-                    rd.Close();
                 }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Something went wrong in DownloadFloorplan: " + e.Message);
+                }
+
+
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Something went horrible wrong when downloading the floorplan: " + e.Message);
-            }
-            finally
-            {
-                _conn.Close();
-            }
+
         }
 
         private void InsertFloorplan(string name, int width, int height, byte[] imageContent)
         {
-            try
-            {
-                string sqlStatement = @"INSERT INTO Floorplan
-                                        (FloorPlanID, Name, Image, imageWidth, imageHeight)
-                                        VALUES (@id, @name, @image, @width, @height);";
+            _sqlQueryString = @"INSERT INTO Floorplan
+                                (FloorPlanID, Name, Image, imageWidth, imageHeight)
+                                VALUES (@id, @name, @image, @width, @height)";
 
-                using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+            using (_conn = new SqlConnection(_connString))
+            {
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue("@id", 1);
+                _cmd.Parameters.AddWithValue("@name", name);
+                _cmd.Parameters.AddWithValue("@width", width);
+                _cmd.Parameters.AddWithValue("@height", height);
+                _cmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+
+                try
                 {
-                    sqlCmd.Parameters.AddWithValue("@id", 1);
-                    sqlCmd.Parameters.AddWithValue("@name", name);
-                    sqlCmd.Parameters.AddWithValue("@width", width);
-                    sqlCmd.Parameters.AddWithValue("@height", height);
-                    sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
-
-                    sqlCmd.ExecuteNonQuery();
+                    _conn.Open();
+                    _cmd.ExecuteNonQuery();
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("An error occoured while inserting floorplan to database: " + e.Message);
-            }
-            finally
-            {
-                _conn.Close();
+                catch (Exception e)
+                {
+                    Debug.WriteLine("An error occoured while inserting floorplan to database: " + e.Message);
+                }
             }
         }
 
         private void UpdateFloorplan(string name, int width, int height, byte[] imageContent)
         {
-            try
-            {
-                string sqlStatement = @"UPDATE Floorplan SET Name=@name, Image=@image, imageWidth=@width, imageHeight=@height
-                                     WHERE Floorplan.FloorPlanID = 1";
+            _sqlQueryString = @"UPDATE Floorplan SET Name=@name, Image=@image, imageWidth=@width, imageHeight=@height
+                                WHERE Floorplan.FloorPlanID = 1";
 
-                _conn.Open();
-                using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, _conn))
+            using (_conn = new SqlConnection(_connString))
+            {
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+                _cmd.Parameters.AddWithValue("@name", name);
+                _cmd.Parameters.AddWithValue("@width", width);
+                _cmd.Parameters.AddWithValue("@height", height);
+                _cmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
+
+                try
                 {
-                    sqlCmd.Parameters.AddWithValue("@name", name);
-                    sqlCmd.Parameters.AddWithValue("@width", width);
-                    sqlCmd.Parameters.AddWithValue("@height", height);
-                    sqlCmd.Parameters.Add("@image", SqlDbType.Image, imageContent.Length).Value = imageContent;
-
-                    sqlCmd.ExecuteNonQuery();
+                    _conn.Open();
+                    _cmd.ExecuteNonQuery();
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("An error occoured while updating floorplan to database: " + e.Message);
-            }
-            finally
-            {
-                _conn.Close();
+                catch (Exception e)
+                {
+                    Debug.WriteLine("An error occoured while updating floorplan to database: " + e.Message);
+                }
             }
         }
 
         private bool DoesFloorplanExist()
         {
             bool floorplanExist = false;
+            _sqlQueryString = "SELECT FloorPlanID FROM Floorplan";
 
-            try
+            using (_conn = new SqlConnection(_connString))
             {
-                string checkFloorplanExistanceSql = "SELECT FloorPlanID FROM Floorplan";
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
 
-                _conn.Open();
-                using (SqlCommand sqlCmd = new SqlCommand(checkFloorplanExistanceSql, _conn))
+                try
                 {
-                    SqlDataReader reader = sqlCmd.ExecuteReader();
+                    _conn.Open();
+                    _reader = _cmd.ExecuteReader();
 
-                    if (reader.HasRows)
+                    if (_reader.HasRows)
                     {
                         floorplanExist = true;
                     }
-
-                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("An error occoured while checking if floorplan exists: " + e.Message);
                 }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("");
-            }
-            finally
-            {
-                _conn.Close();
-            }
-
             return floorplanExist;
         }
 

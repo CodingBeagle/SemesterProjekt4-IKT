@@ -88,7 +88,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
             Assert.That(itemGroup.GetItemGroup(locItemGroup.ItemGroupID)==null);
         }
 
-        [Test] // DeleteItemGroup - Parent group (not possible)
+       /* [Test] // DeleteItemGroup - Parent group (not possible)
         public void DeleteItemGroup_DeleteItemGroupParentGroup_DeleteItemGroupThrowsException()
         {
             long createID = itemGroup.CreateItemGroup("ChildItemGroup", locItemGroup.ItemGroupID);
@@ -106,7 +106,7 @@ namespace DatabaseAPI.And.Storebase.IntegrationTest
 
             item.DeleteItem(tItem.ItemID);
             itemGroup.DeleteItemGroup(tItemGroup.ItemGroupID);
-        }
+        }*/
 
         [Test] // GetAllItemGroups
         public void GetAllItemGroups_GetAllItemGroupsCalled_GetAllItemGroupsReturnsListOfItemGroups()
