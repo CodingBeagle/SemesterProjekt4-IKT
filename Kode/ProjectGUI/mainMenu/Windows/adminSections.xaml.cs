@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using DatabaseAPI;
+using DatabaseAPI.Factories;
+using mainMenu.ViewModels;
 
 namespace mainMenu
 {
@@ -6,12 +9,14 @@ namespace mainMenu
     /// Interaction logic for adminSections.xaml
     /// </summary>
     public partial class adminSections : Window
-    { 
+    {
+        private StoreSectionViewModel _viewModel;
+        
         public adminSections()
         {
             InitializeComponent();
-    
-            DataContext = new StoreSectionViewModel();
+            _viewModel = new StoreSectionViewModel(new DatabaseService(new SqlStoreDatabaseFactory()), new ErrorMessageBox());
+            DataContext = _viewModel;
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
@@ -20,6 +25,19 @@ namespace mainMenu
             mainWindow.Show();
 
             Close();
+        }
+
+        private void ItemsControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            AddSectionDialog newSectionDialog = new AddSectionDialog(_viewModel);
+            newSectionDialog.ShowDialog();
+        }
+
+
+        private void editSectionBtn_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            EditSectionDialog newSectionDialog = new EditSectionDialog(_viewModel);
+            newSectionDialog.ShowDialog();
         }
     }
 }

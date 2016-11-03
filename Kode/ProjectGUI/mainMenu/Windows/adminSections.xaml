@@ -61,7 +61,7 @@
 
         </Grid.ColumnDefinitions>
 
-        <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Column="6" Grid.ColumnSpan="6" Grid.RowSpan="6">
+        <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Column="6" Grid.ColumnSpan="6" Grid.RowSpan="6" MouseDown="ItemsControl_MouseDown">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas x:Name="canvas" Background="{Binding FloorplanImage, UpdateSourceTrigger=PropertyChanged}">
@@ -90,7 +90,7 @@
 
         <Button x:Name="backBtn" Content="_Tilbage" Grid.Column="10" Grid.Row="7" Click="backBtn_Click"/>
         <Button x:Name="deleteSectionBtn" Content="_Slet Sektion" Command="{Binding DeleteStoreSectionCommand}" Grid.Column="8" Grid.Row="7"/>
-        <Button x:Name="editSectionBtn" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}" Grid.Column="7" Grid.Row="7"/>
+        <Button x:Name="editSectionBtn" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}" Grid.Column="7" Grid.Row="7" PreviewMouseDown="editSectionBtn_MouseDown"/>
         <Button Content="Sø_g" Grid.Column="5" Grid.Row="1" Command="{Binding SearchItemsCommand}"></Button>
         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=SearchString, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="4"></TextBox>
         <Button Content="_V" Grid.Row="3" Grid.Column="3" Command="{Binding AddItemToSectionCommand}"></Button>

@@ -13,7 +13,7 @@ namespace mainMenu
 {
     public static class ItemUtility
     {
-        public static void SearchItem(DatabaseService db, string searchstring, DisplayItems listofItems )
+        public static void SearchItem(IDatabaseService db, string searchstring, DisplayItems listofItems )
         {
             try
             {

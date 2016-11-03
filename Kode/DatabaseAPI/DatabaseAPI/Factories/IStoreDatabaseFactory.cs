@@ -12,6 +12,5 @@ namespace DatabaseAPI.Factories
         ITableStoreSection CreateTableStoreSection();
         ITableFloorplan CreateTableFloorplan();
         ITableItemSectionPlacement CreateTableItemSectionPlacement();
-
     }
 }

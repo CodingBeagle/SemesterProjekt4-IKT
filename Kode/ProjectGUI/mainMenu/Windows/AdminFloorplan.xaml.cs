@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using DatabaseAPI;
+using DatabaseAPI.Factories;
 using mainMenu.ViewModels;
 
 namespace mainMenu
@@ -8,7 +10,7 @@ namespace mainMenu
     /// </summary>
     public partial class AdminFloorplan : Window
     {
-        readonly FloorplanViewModel viewModel = new FloorplanViewModel();
+        readonly FloorplanViewModel viewModel = new FloorplanViewModel(new DatabaseService(new SqlStoreDatabaseFactory()), new ImageFileBrowser());
 
         public AdminFloorplan()
         {
