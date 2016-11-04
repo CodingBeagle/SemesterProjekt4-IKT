@@ -1,3 +1,5 @@
+/*#region fonts*/
+
 @font-face{
     font-family: "Azedo-Light";
     src: url(/fonts/Azedo-Light.otf);
@@ -8,23 +10,26 @@
     src: url(/fonts/Azedo-Bold.otf);
 }
 
-/* navigation bar*/
+/*#endregion fonts*/
+
+/*#region navigation bar*/
 
 #navbar {
 	background-color: #3a3a3a;
-    
+    padding-bottom: 0.8em;
 }
 
 .logoText {
 	font-family: "Azedo-Light";
 	color: white;
-	font-size: 4.5em;
+    margin: 0.3em 0;
+	font-size: 4.1em;
 	text-align: center;
+    line-height: 0.365em;
 }
 
 #searchBar{
-	margin-top:3.6em;
-    margin-bottom: 0.2em;
+    margin-top: 1.5em;
 	white-space: nowrap;
 	text-align:center;
 }
@@ -32,7 +37,7 @@
 #searchfield{
 	border: 1px solid #ccc;
     border-radius: 4px;
-	padding: 0.5em;
+	padding: 0.43em;
 	width: 80%;
 }
 
@@ -53,6 +58,9 @@ button[type=submit]{
 	height: 0.6em;
 }
 
+/*#endregion navigation bar*/
+
+/*#region content*/
 .resultBox a{
 	background-color: red;
 	text-align: center;
@@ -60,9 +68,33 @@ button[type=submit]{
 	margin: 2em;
 }
 
+#floorplanHeader {
+    background-color: #3a3a3a;
+    color: white;
+    text-align: center;
+    border-radius: 0.3em 0.3em 0 0;
+    margin: 0;
+    margin-top: 20px;
+    padding-top: 0.35em;
+    height: 1.5em;
+}
+
+#floorplan {
+    background-color: lightgray;
+    width: 100%;
+    border-radius: 0 0 0.5em 0.5em;
+    border-width: 0.3em;
+    border-style: solid;
+    border-color: #3a3a3a;
+
+}
+/*#endregion content*/
+
+/*#region footer*/
 #footer {
 	background-color: #DDD;
 	text-align:center;
+    margin-top: 1.4em;
 }
 
 #footerCopyRightText {
@@ -74,3 +106,4 @@ button[type=submit]{
 #footerDate {
 	color: #a8a8a8;
 }
+/*#endregion footer*/
