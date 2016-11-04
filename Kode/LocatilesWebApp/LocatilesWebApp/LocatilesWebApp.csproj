@@ -92,10 +92,15 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Pictures\RainbowLine.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\Azedo-Bold.otf" />
+    <Content Include="fonts\Azedo-Light.otf" />
+    <None Include="Properties\PublishProfiles\locatiles - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -132,9 +137,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
-      <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
-      <Name>DatabaseAPI</Name>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{e18cf904-7e5d-4177-bc52-58e91752cf96}</Project>
+      <Name>BLL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BLL;
 
 namespace LocatilesWebApp.Controllers
 {
@@ -11,8 +12,8 @@ namespace LocatilesWebApp.Controllers
         // GET: Home
         public ActionResult Index()
         {
-
-            string testString = "this is my teststring";
+            Class1 c1 = new Class1();
+            string testString = c1.getItem();
             return View((Object)testString);
         }
     }
