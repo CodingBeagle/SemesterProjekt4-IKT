@@ -12,8 +12,8 @@ namespace LocatilesWebApp.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            Class1 c1 = new Class1();
-            string testString = c1.getItem();
+            //Class1 c1 = new Class1();
+            string testString = "hey"; //c1.getItem();
             return View((Object)testString);
         }
     }
