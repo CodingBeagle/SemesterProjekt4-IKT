@@ -46,7 +46,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Step1TableItemIntegration.cs" />
-    <Compile Include="Step2TableItemGroup.cs" />
+    <Compile Include="Step2TableItemGroupIntegration.cs" />
+    <Compile Include="Step3TableStoreSectionIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
