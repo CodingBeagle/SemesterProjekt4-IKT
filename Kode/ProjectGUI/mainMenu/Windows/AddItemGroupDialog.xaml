@@ -32,8 +32,8 @@
 
         <Label Content="Over varegruppe:" FontSize="16" Grid.Column="1" Grid.Row="4"></Label>
         <ComboBox x:Name="ItemGroupComboBox"
-                  SelectedIndex="{Binding Path=ComboBoxIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   ItemsSource="{Binding Path=ComboBoxOptions, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedIndex="{Binding Path=ComboBoxIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"></ComboBox>
 
         <Button x:Name="CreateItemGroupButton" Content="Opret Varegruppe" Command="{Binding CreateItemGroupCommand}" Grid.Column="2" Grid.Row="6"></Button>
