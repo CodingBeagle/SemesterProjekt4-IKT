@@ -1,21 +1,15 @@
-﻿@model String
-@{
+﻿@{
     ViewBag.Title = "Locatiles";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-4" style="background-color:lavender;">
-            <h3>Column 1</h3>
-            <ul style="list-style-type:circle">
-                <li>@Model</li>
-            </ul>
-        </div>
-        <div class="col-sm-7 col-sm-offset-1" style="background-color:chartreuse;">
-            <h3>Column 2</h3>
-
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-        </div>
+<div class="row">
+    <div class="col-xs-12 col-md-4 clmns">
+        <h3>Column 1</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p> 
     </div>
+    <div class="col-xs-12 col-md-8">
+        <h3 id="floorplanHeader">Butikskort</h3>
+        <canvas id="floorplan"></canvas>
+    </div>
+
 </div>

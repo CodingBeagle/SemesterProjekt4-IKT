@@ -8,8 +8,10 @@ using NUnit.Framework;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
+using mainMenu.Models;
 using mainMenu.ViewModels;
 using NSubstitute;
+using NSubstitute.Core.Arguments;
 
 namespace ProjectGUI.Tests
 {
@@ -112,9 +114,21 @@ namespace ProjectGUI.Tests
         public void ItemGroupViewModel_CreateItemGroupCommand_CreateNewItemWithGoneWrong_MessageBoxShowsError()
         {
             _uut.ListOfItemGroups = null;
-            _uut.ItemGroupName = "DoomedToFail";
+            _uut.ItemGroupName = "Test1";
             _uut.CreateItemGroupCommand.Execute(null);
-            _mb.Received(1).OpenMessageBox("Navnet på en vare kan kun indeholde bogstaver og tal");
+            _mb.Received(1).OpenMessageBox("Noget gik galt! Check debug for fejlmeddelelse");
+        }
+
+        [Test]
+        public void ItemGroupViewModel_SearchCommand_SearchPopulatesList()
+        {
+            _uut.SearchString = "Reieder momma";
+            List<ItemGroup> testList = new List<ItemGroup>();
+            testList.Add(new ItemGroup("test", 0, 0));
+            _db.TableItemGroup.SearchItemGroups(Arg.Any<string>())
+                .Returns(testList);
+            _uut.SearchCommand.Execute(null);
+            _db.Received(2).TableItemGroup.SearchItemGroups(Arg.Any<string>());
         }
     }
 

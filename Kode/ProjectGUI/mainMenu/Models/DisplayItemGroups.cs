@@ -29,16 +29,6 @@ namespace mainMenu.Models
             CurrentIndex = -1;
         }
 
-        public void Populate(string itemGroupName)
-        {
-            Clear();
-            var searchResults = db.TableItemGroup.SearchItemGroups(itemGroupName);
-            foreach (var searchResult in searchResults)
-            {
-                Add(searchResult);
-            }
-
-        }
 
         protected override event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

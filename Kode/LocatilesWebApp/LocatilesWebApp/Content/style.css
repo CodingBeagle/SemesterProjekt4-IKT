@@ -1,0 +1,108 @@
+/*#region fonts*/
+
+@font-face{
+    font-family: "Azedo-Light";
+    src: url(/fonts/Azedo-Light.otf);
+}
+
+@font-face{
+    font-family: "Azedo-Bold";
+    src: url(/fonts/Azedo-Bold.otf);
+}
+
+/*#endregion fonts*/
+
+/*#region navigation bar*/
+
+#navbar {
+	background-color: #3a3a3a;
+    padding-bottom: 0.8em;
+}
+
+.logoText {
+	font-family: "Azedo-Light";
+	color: white;
+    margin: 0.3em 0;
+	font-size: 4.1em;
+	text-align: center;
+    line-height: 0.365em;
+}
+
+#searchBar{
+    margin-top: 1.5em;
+	white-space: nowrap;
+	text-align:center;
+}
+
+#searchfield{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+	padding: 0.43em;
+	width: 80%;
+}
+
+#searchButton{
+	background-color: #5328ff;
+    border: none;
+    color: white;
+    padding: 0.5em;
+	width: 20%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.rainbowline{
+	background: url(/Pictures/RainbowLine.jpg);
+	background-repeat: no-repeat;	
+	background-size: 100% 100%;
+	height: 0.6em;
+}
+
+/*#endregion navigation bar*/
+
+/*#region content*/
+.resultBox a{
+	background-color: red;
+	text-align: center;
+	width: 40%;
+	margin: 2em;
+}
+
+#floorplanHeader {
+    background-color: #3a3a3a;
+    color: white;
+    text-align: center;
+    border-radius: 0.3em 0.3em 0 0;
+    margin: 0;
+    margin-top: 20px;
+    padding: 0.5em 0 0.2em 0;
+}
+
+#floorplan {
+    background-color: lightgray;
+    width: 100%;
+    border-radius: 0 0 0.5em 0.5em;
+    border-width: 0.3em;
+    border-style: solid;
+    border-color: #3a3a3a;
+
+}
+/*#endregion content*/
+
+/*#region footer*/
+#footer {
+	background-color: #DDD;
+	text-align:center;
+    margin-top: 1.4em;
+}
+
+#footerCopyRightText {
+	font-family: "Azedo-Bold";
+	color: darkgrey;
+	font-size: 2em;	
+}
+
+#footerDate {
+	color: #a8a8a8;
+}
+/*#endregion footer*/

@@ -1,51 +1,55 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <title>Locatiles</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/style.css">
+    <script src="~/Scripts/onload.js"></script>
+
+    <!-- 
+    
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
+        -->
+
 </head>
 <body>
 
-<div class="navbar navbar-inverse" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" rel="home" href="/">Logo</a>
-    </div>
+    <div class="container">
+        <div class="row" id="navbar">
 
-    <div class="col-sm-3 col-md-3 pull-right">
-    <form class="navbar-form" role="search">
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-        <div class="input-group-btn">
-            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-        </div>
-    </div>
-    </form>
-    </div>
+            <div class="col-xs-12 col-md-4 logoText">Locatiles</div>
 
-</div>
-@*<div class="row">
-    <div class="col-sm-5 col-sm-offset-3">
-        <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
+            <div class="col-xs-12 col-md-4">
+                <div id="searchBar">                    
+                    <input type="text" id="searchfield" value="test" autofocus>
+                    <button type="button" id="searchButton" onclick="search"><span class="glyphicon glyphicon-search"></span></button>                   
+                </div>
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
-</div>*@
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Locatiles - Your personal shopping assistant</p>
-        </footer>
-    </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+            <div class="hidden-xs col-md-4"></div>
+        </div>
+
+        <div class="row"><div class="col-md-12 rainbowline"></div></div>
+
+        @RenderBody()
+
+        <div class="row" id="footer">
+            <div class="col-md-12">
+                <p id="footerCopyRightText">
+                    Locatiles<span class="glyphicon glyphicon-copyright-mark"></span> *
+                </p>
+                <p id="footerDate">
+                    NOV 2016
+                </p>
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>
