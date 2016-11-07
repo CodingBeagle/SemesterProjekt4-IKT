@@ -91,7 +91,7 @@ namespace mainMenu.ViewModels
         public void refreshFloorplanThumbnail()
         {
             ImagePath = null;
-            _db.TableFloorplan.DownloadFloorplan();
+            _db.TableFloorplan.DownloadFloorplan(@"../../images/");
             var uriSource = new Uri(@"/mainMenu;component../../images/floorplan.jpg", UriKind.Relative);
             ImagePath = "../../images/floorplan.jpg";
         }
