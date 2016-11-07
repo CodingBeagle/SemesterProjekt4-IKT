@@ -99,9 +99,9 @@ namespace mainMenu.ViewModels
             ItemGroupName = "";
             SearchString = "";
             ListOfItemGroups = new DisplayItemGroups();
-            PopulateListOfItemGroups();
-            ComboBoxOptions = ListOfItemGroups;
-
+            PopulateListOfItemGroups(ListOfItemGroups, "");
+            ComboBoxOptions = new DisplayItemGroups();
+            PopulateListOfItemGroups(ComboBoxOptions, "");
             var dummyBool = true;
             CreateItemGroupCommand = new RelayCommand(createItemGroupHandler, () => dummyBool == true);
             DeleteItemGroupCommand = new RelayCommand(deleteItemGroupHandler, () => ListOfItemGroups.CurrentIndex >= 0);
@@ -174,7 +174,7 @@ namespace mainMenu.ViewModels
         {
             try
             {
-                PopulateListOfItemGroups();
+                PopulateListOfItemGroups(ListOfItemGroups, SearchString);
 
                 if (ListOfItemGroups.Count == 0)
                 {
@@ -224,13 +224,13 @@ namespace mainMenu.ViewModels
             PreviousItemGroupName = ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupName;
         }
 
-        private void PopulateListOfItemGroups()
+        private void PopulateListOfItemGroups(DisplayItemGroups List, string searchString)
         {
-            ListOfItemGroups.Clear();
-            List<ItemGroup> searchResults = _db.TableItemGroup.SearchItemGroups(SearchString);
+            List.Clear();
+            List<ItemGroup> searchResults = _db.TableItemGroup.SearchItemGroups(searchString);
             foreach (ItemGroup searchResult in searchResults)
             {
-                ListOfItemGroups.Add(searchResult);
+                List.Add(searchResult);
             }
 
         }

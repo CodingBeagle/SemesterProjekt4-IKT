@@ -29,6 +29,10 @@ namespace ProjectGUI.Tests
             _dbFactory = Substitute.For<IStoreDatabaseFactory>();
             _db = Substitute.For<IDatabaseService>();
             _mb = Substitute.For<IMessageBox>();
+            List<ItemGroup> testList = new List<ItemGroup>();
+            testList.Add(new ItemGroup("test", 0, 0));
+            _db.TableItemGroup.SearchItemGroups(Arg.Any<string>())
+                .Returns(testList);
             _uut = new ItemGroupViewModel(_db, _mb);
         }
 
@@ -122,13 +126,9 @@ namespace ProjectGUI.Tests
         [Test]
         public void ItemGroupViewModel_SearchCommand_SearchPopulatesList()
         {
-            _uut.SearchString = "Reieder momma";
-            List<ItemGroup> testList = new List<ItemGroup>();
-            testList.Add(new ItemGroup("test", 0, 0));
-            _db.TableItemGroup.SearchItemGroups(Arg.Any<string>())
-                .Returns(testList);
+            _uut.SearchString = "Test";
             _uut.SearchCommand.Execute(null);
-            _db.Received(2).TableItemGroup.SearchItemGroups(Arg.Any<string>());
+            _db.Received(1).TableItemGroup.SearchItemGroups("Test");
         }
     }
 
