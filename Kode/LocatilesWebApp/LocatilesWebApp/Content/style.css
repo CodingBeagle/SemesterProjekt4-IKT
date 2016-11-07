@@ -39,6 +39,7 @@
     border-radius: 4px;
 	padding: 0.43em;
 	width: 80%;
+    max-width: 15em;
 }
 
 #searchButton{
@@ -49,6 +50,7 @@
 	width: 20%;
     text-align: center;
     text-decoration: none;
+    max-width: 5em;
 }
 
 .rainbowline{
@@ -85,7 +87,10 @@
     border-width: 0.3em;
     border-style: solid;
     border-color: #3a3a3a;
-
+    background: url(/Pictures/FloorplanBackup.png);
+    background-repeat: no-repeat;	
+	background-size: 100% 100%;
+    
 }
 /*#endregion content*/
 
