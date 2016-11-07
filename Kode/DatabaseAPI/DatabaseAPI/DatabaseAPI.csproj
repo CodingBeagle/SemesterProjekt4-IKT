@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseModel\Floorplan.cs" />
     <Compile Include="DatabaseModel\StoreSection.cs" />
     <Compile Include="IDatabaseService.cs" />
     <Compile Include="TableItemSectionPlacement\ITableItemSectionPlacement.cs" />

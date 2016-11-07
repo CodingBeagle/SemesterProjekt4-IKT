@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="FloorplanViewModelUnitTest.cs" />
     <Compile Include="ItemGroupViewModelUnitTests.cs" />
+    <Compile Include="ItemViewModelUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

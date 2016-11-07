@@ -12,8 +12,8 @@ namespace mainMenu
         public AddItemGroupDialog(ItemGroupViewModel view)
         {
             InitializeComponent();
-            view.ComboBoxIndex = -1;
             DataContext = view;
+            view.ComboBoxIndex = -1;
             ItemGroupComboBox.DisplayMemberPath = "ItemGroupName";
         }
 

@@ -93,22 +93,22 @@ namespace mainMenu.ViewModels
 
         public ItemGroupViewModel(IDatabaseService db, IMessageBox mb)
         {
-            _db = db;
-            _messageBox = mb;
-            ComboBoxIndex = -1;
-            ItemGroupName = "";
-            SearchString = "";
-            ListOfItemGroups = new DisplayItemGroups();
-            PopulateListOfItemGroups(ListOfItemGroups, "");
-            ComboBoxOptions = new DisplayItemGroups();
-            PopulateListOfItemGroups(ComboBoxOptions, "");
             var dummyBool = true;
             CreateItemGroupCommand = new RelayCommand(createItemGroupHandler, () => dummyBool == true);
             DeleteItemGroupCommand = new RelayCommand(deleteItemGroupHandler, () => ListOfItemGroups.CurrentIndex >= 0);
             EditItemGroupCommand = new RelayCommand(editItemGroupHandler,
-                () => dummyBool == true);
+                () => ItemGroupName != "");
             SearchCommand = new RelayCommand(searchItemGroupHandler, () => dummyBool == true);
 
+            _db = db;
+            _messageBox = mb;
+            ListOfItemGroups = new DisplayItemGroups();
+            ComboBoxOptions = new DisplayItemGroups();
+            PopulateListOfItemGroups(ListOfItemGroups, "");
+            PopulateListOfItemGroups(ComboBoxOptions, "");
+            ComboBoxIndex = -1;
+            ItemGroupName = "";
+            SearchString = "";
 
         }
 
@@ -122,6 +122,7 @@ namespace mainMenu.ViewModels
                 ListOfItemGroups.Add(temp);
                 _messageBox.OpenMessageBox($"Varegruppens navn er blevet opdateret til {ItemGroupName}");
                 ItemGroupName = "";
+                ComboBoxIndex = -1;
             }
             catch (Exception e)
             {
@@ -141,14 +142,14 @@ namespace mainMenu.ViewModels
                 if (Regex.IsMatch(ItemGroupName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
                 {
                     //Checker om der er valgt en parentItemGroup
-                    if (ComboBoxOptions.CurrentIndex == -1)
+                    if (ComboBoxIndex == -1)
                     {
                         itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName);
                         parentItemGroupID = 0;
                     }
                     else
                     {
-                        parentItemGroupID = ListOfItemGroups[ListOfItemGroups.CurrentIndex].ItemGroupID;
+                        parentItemGroupID = ComboBoxOptions[ComboBoxIndex].ItemGroupID;
                         itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName,parentItemGroupID);
                     }
                     
@@ -159,6 +160,8 @@ namespace mainMenu.ViewModels
                 }
                 else
                 {
+                    ComboBoxIndex = -1;
+                    ItemGroupName = "";
                     _messageBox.OpenMessageBox("Navnet på en vare kan kun indeholde bogstaver og tal");
                 }
 
