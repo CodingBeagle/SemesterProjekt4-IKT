@@ -8,14 +8,12 @@ namespace mainMenu
     /// </summary>
     public partial class AddItemGroupDialog : Window
     {
-        public ItemGroupViewModel ViewModel { get; set; }
+
         public AddItemGroupDialog(ItemGroupViewModel view)
         {
             InitializeComponent();
-            ViewModel = view;
-            ViewModel.ComboBoxIndex = -1;
-            DataContext = ViewModel;
-            ItemGroupComboBox.ItemsSource = ViewModel.ListOfItemGroups;
+            DataContext = view;
+            view.ComboBoxIndex = -1;
             ItemGroupComboBox.DisplayMemberPath = "ItemGroupName";
         }
 
