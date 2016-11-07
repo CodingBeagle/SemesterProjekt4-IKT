@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using DatabaseAPI.DatabaseModel;
 
 namespace DatabaseAPI.TableFloorplan
 {
@@ -14,7 +15,6 @@ namespace DatabaseAPI.TableFloorplan
         private string _connString;
         private string _sqlQueryString;
 
-
         public SqlTableFloorplan(string connectionString)
         {
             _connString = connectionString;
@@ -24,7 +24,12 @@ namespace DatabaseAPI.TableFloorplan
         {
             try
             {
-                byte[] imageContent = File.ReadAllBytes(filePath);
+                byte[] imageContent = new byte[0];
+
+                if (File.Exists(filePath))
+                {
+                    imageContent = File.ReadAllBytes(filePath);
+                }
 
                 bool floorplanExist = DoesFloorplanExist();
 
@@ -43,7 +48,7 @@ namespace DatabaseAPI.TableFloorplan
             }
         }
 
-        public void DownloadFloorplan()
+        public void DownloadFloorplan(string filepath)
         {
             _sqlQueryString = @"SELECT Image FROM Floorplan WHERE FloorPlanID = 1";
 
@@ -58,17 +63,14 @@ namespace DatabaseAPI.TableFloorplan
 
                     while (_reader.Read())
                     {
-                        DownloadImageDataToImageFile("floorplan", _reader);
+                        DownloadImageDataToImageFile("floorplan", filepath, _reader);
                     }
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Something went wrong in DownloadFloorplan: " + e.Message);
                 }
-
-
             }
-
         }
 
         private void InsertFloorplan(string name, int width, int height, byte[] imageContent)
@@ -96,6 +98,44 @@ namespace DatabaseAPI.TableFloorplan
                     Debug.WriteLine("An error occoured while inserting floorplan to database: " + e.Message);
                 }
             }
+        }
+
+        public Floorplan GetFloorplan()
+        {
+            _sqlQueryString = @"SELECT * FROM Floorplan WHERE Floorplan.FloorPlanID=1";
+            Floorplan floorplan = null;
+
+            using (_conn = new SqlConnection(_connString))
+            {
+                _cmd = new SqlCommand(_sqlQueryString, _conn);
+
+                try
+                {
+                    _conn.Open();
+                    _reader = _cmd.ExecuteReader();
+
+                    long floorplanID = 0;
+                    string floorplanName = "";
+                    long width = 0;
+                    long height = 0;
+
+                    while (_reader.Read())
+                    {
+                        floorplanID = (long)_reader["FloorPlanID"];
+                        floorplanName = (string)_reader["Name"];
+                        width = (long)_reader["imageWidth"];
+                        height = (long)_reader["imageHeight"];
+                    }
+
+                    floorplan = new Floorplan(floorplanID, floorplanName, width, height);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("An error occoured while getting floorplan from database: " + e.Message);
+                }
+            }
+
+            return floorplan;
         }
 
         private void UpdateFloorplan(string name, int width, int height, byte[] imageContent)
@@ -150,7 +190,7 @@ namespace DatabaseAPI.TableFloorplan
             return floorplanExist;
         }
 
-        private Byte[] DownloadImageDataToImageFile(string floorplanName, SqlDataReader reader)
+        private Byte[] DownloadImageDataToImageFile(string floorplanName, string filepath, SqlDataReader reader)
         {
             FileStream stream;
             BinaryWriter br;
@@ -159,8 +199,8 @@ namespace DatabaseAPI.TableFloorplan
             long retval = 0;
             byte[] outbyte = new byte[bufferSize];
 
-            // Create a filestream used to save the floorplan as a local image
-            stream = new FileStream(@"../../images/" + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
+            // Create a filestream used to save the floorplan as a local image @"../../images/"
+            stream = new FileStream(filepath + floorplanName + ".jpg", FileMode.OpenOrCreate, FileAccess.Write);
 
             // The binary writer writes primitive types in binary to a stream
             br = new BinaryWriter(stream);
