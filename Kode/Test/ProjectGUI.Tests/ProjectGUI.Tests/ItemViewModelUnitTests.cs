@@ -40,8 +40,10 @@ namespace ProjectGUI.Tests
         public void ItemViewModel_CreateItemCommand_CreateNewItemWithAcceptedName_ItemIsCreated()
         {
             _uut.ItemName = "test";
+            _db.TableItemGroup.GetAllItemGroups().Returns(new List<ItemGroup>() {new ItemGroup("test", 0 , 1)});
+            _uut.ComboBoxIndex = 0;
             _uut.CreateItemCommand.Execute(null);
-            _db.Received(2).TableItem.CreateItem(_uut.ItemName, Arg.Any<long>());
+            _db.TableItem.Received(1).CreateItem("test", Arg.Any<long>());
         }
 
         
@@ -64,8 +66,11 @@ namespace ProjectGUI.Tests
         [Test]
         public void ItemViewModel_DeleteItemCommand_DeleteItemIsCalled_ItemDeletedFromDB()
         {
+            _uut.ListOfItems = new DisplayItems();
+            _uut.ListOfItems.CurrentIndex = 0;
+            _uut.ListOfItems.Add(new DisplayItem(new Item(1,"test",0)));
             _uut.DeleteItemCommand.Execute(null);
-            _db.Received(1).TableItem.DeleteItem(Arg.Any<long>());
+            _db.TableItem.Received(1).DeleteItem(Arg.Any<long>());
         }
 
         [Test]
