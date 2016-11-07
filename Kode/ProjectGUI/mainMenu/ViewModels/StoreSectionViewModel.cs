@@ -177,7 +177,7 @@ namespace mainMenu
 
 
             // Load floorplan and display on canvas
-            _db.TableFloorplan.DownloadFloorplan();
+            _db.TableFloorplan.DownloadFloorplan(@"../../images/");
 
             FloorplanImage = null;
             ImageBrush floorplanImgBrush = new ImageBrush();
