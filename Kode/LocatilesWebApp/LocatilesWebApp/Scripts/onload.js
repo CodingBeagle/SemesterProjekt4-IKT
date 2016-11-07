@@ -47,7 +47,7 @@ function searchItems() {
 }
 
 function searchbarOnKeyUp(key) {
-    if (key.keyCode == 13) //On enter key up
+    if (key.keyCode === 13) //On enter key up
     {
         searchItems();
     }
