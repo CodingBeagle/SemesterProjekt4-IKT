@@ -48,6 +48,7 @@
     <Compile Include="Step1TableItemIntegration.cs" />
     <Compile Include="Step2TableItemGroupIntegration.cs" />
     <Compile Include="Step3TableStoreSectionIntegration.cs" />
+    <Compile Include="Step5TableItemSectionPlacementIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
