@@ -89,6 +89,16 @@ namespace ProjectGUI.Tests
             _uut.DeleteItemCommand.Execute(null);
             _mb.Received(1).OpenMessageBox(Arg.Any<string>());
         }
+
+        [Test]
+        public void ItemViewModel_SearchItemCommand_SearchFindsCorrectItem()
+        {
+            _uut.ListOfItems = new DisplayItems();
+            _uut.ListOfItems.CurrentIndex = 0;
+            _uut.ListOfItems.Add(new DisplayItem(new Item(1, "Test",0)));
+            _uut.SearchItemCommand.Execute(null);
+            _db.TableItem.Received(1).SearchItems(Arg.Any<string>());
+        }
        
     }
 }
