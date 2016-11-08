@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectGUI.Tests", "ProjectGUI.Tests\ProjectGUI.Tests.csproj", "{D5C80FA8-85C7-4181-94B5-46112A624EF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectGUI.Test.Unit", "ProjectGUI.Tests\ProjectGUI.Test.Unit.csproj", "{D5C80FA8-85C7-4181-94B5-46112A624EF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mainMenu", "..\..\ProjectGUI\mainMenu\mainMenu.csproj", "{3D158870-6781-4107-9394-8ABBF9D6F31B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectGUI", "..\..\ProjectGUI\mainMenu\ProjectGUI.csproj", "{3D158870-6781-4107-9394-8ABBF9D6F31B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAPI", "..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj", "{3FD12E40-227D-404D-8738-BB9266ADBBED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectGUI.Test.Integration", "ProjectGUI.Test.Integration\ProjectGUI.Test.Integration.csproj", "{D0E8C566-07D1-48A4-8080-B0F81D0C4A8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FD12E40-227D-404D-8738-BB9266ADBBED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E8C566-07D1-48A4-8080-B0F81D0C4A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E8C566-07D1-48A4-8080-B0F81D0C4A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E8C566-07D1-48A4-8080-B0F81D0C4A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E8C566-07D1-48A4-8080-B0F81D0C4A8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

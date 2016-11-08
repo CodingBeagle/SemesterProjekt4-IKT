@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using DatabaseAPI;
+﻿using DatabaseAPI;
 using DatabaseAPI.Factories;
-using DatabaseAPI.TableFloorplan;
 using mainMenu.ViewModels;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace ProjectGUI.Tests
+namespace Locatiles.Test.Unit
 {
     [TestFixture]
     public class FloorplanViewModelUnitTests

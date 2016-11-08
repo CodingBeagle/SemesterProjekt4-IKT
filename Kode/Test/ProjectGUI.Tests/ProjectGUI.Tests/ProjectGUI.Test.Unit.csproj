@@ -61,9 +61,9 @@
       <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
       <Name>DatabaseAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\mainMenu.csproj">
+    <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\ProjectGUI.csproj">
       <Project>{3d158870-6781-4107-9394-8abbf9d6f31b}</Project>
-      <Name>mainMenu</Name>
+      <Name>ProjectGUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
