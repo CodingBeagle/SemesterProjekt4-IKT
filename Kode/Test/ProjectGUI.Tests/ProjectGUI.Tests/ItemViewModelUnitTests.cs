@@ -37,7 +37,7 @@ namespace ProjectGUI.Tests
         }
 
         [Test]
-        public void ItemViewModel_CreateItemCommand_CreateNewItemWithAcceptedName_ItemIsCreated()
+        public void ItemViewModel_CreateItemCommand_CreateNewItemWithAcceptedName_DBRecievedCall()
         {
             _uut.ItemName = "test";
             _db.TableItemGroup.GetAllItemGroups().Returns(new List<ItemGroup>() {new ItemGroup("test", 0 , 1)});
@@ -64,7 +64,7 @@ namespace ProjectGUI.Tests
         }
 
         [Test]
-        public void ItemViewModel_DeleteItemCommand_DeleteItemIsCalled_ItemDeletedFromDB()
+        public void ItemViewModel_DeleteItemCommand_ItemIsDeleted_DBRecievedCall()
         {
             _uut.ListOfItems = new DisplayItems();
             _uut.ListOfItems.CurrentIndex = 0;
@@ -74,7 +74,7 @@ namespace ProjectGUI.Tests
         }
 
         [Test]
-        public void ItemViewModel_DeleteItemCommand_DeleteItemWithItem_MessageBoxShowsItemDeleted()
+        public void ItemViewModel_DeleteItemCommand_ItemIsDeleted_MessageBoxShowsItemDeleted()
         {
             _uut.ListOfItems = new DisplayItems();
             _uut.ListOfItems.CurrentIndex = 0;
@@ -91,14 +91,29 @@ namespace ProjectGUI.Tests
         }
 
         [Test]
-        public void ItemViewModel_SearchItemCommand_SearchFindsCorrectItem()
+        public void ItemViewModel_SearchItemCommand_SearchReturnsItem_DBRecievedCall()
         {
-            _uut.ListOfItems = new DisplayItems();
-            _uut.ListOfItems.CurrentIndex = 0;
-            _uut.ListOfItems.Add(new DisplayItem(new Item(1, "Test",0)));
+            _uut.SearchString = "test";
             _uut.SearchItemCommand.Execute(null);
-            _db.TableItem.Received(1).SearchItems(Arg.Any<string>());
+            _db.TableItem.Received(1).SearchItems("test");
         }
-       
+
+        [Test]
+        public void ItemViewModel_SearchItemCommand_SearchReturnsNoItems_MessageIsShown()
+        {
+            _uut.SearchString = "test";
+            _db.TableItem.SearchItems(Arg.Any<string>()).Returns(new List<Item>());
+            _uut.SearchItemCommand.Execute(null);
+            _mb.Received(1).OpenMessageBox("Fandt ingen varer med navnet test");
+        }
+
+        [Test]
+        public void ItemViewModel_SearchItemCommand_SearchReturnsNull_ExceptionThrown()
+        {
+            _uut.SearchString = "test";
+            _db.TableItem.SearchItems(Arg.Any<string>()).Returns(dummy => null);
+            _uut.SearchItemCommand.Execute(null);
+            _mb.Received(1).OpenMessageBox("Noget gik galt! Check Debug for fejlmeddelelse");
+        }
     }
 }

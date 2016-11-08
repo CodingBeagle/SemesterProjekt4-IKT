@@ -8,12 +8,13 @@ using System.Windows;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using mainMenu.Models;
+using mainMenu.ViewModels;
 
 namespace mainMenu
 {
     public static class ItemUtility
     {
-        public static void SearchItem(IDatabaseService db, string searchstring, DisplayItems listofItems )
+        public static void SearchItem(IDatabaseService db, string searchstring, DisplayItems listofItems, IMessageBox messageBox )
         {
             try
             {
@@ -22,11 +23,11 @@ namespace mainMenu
                 listofItems.Populate(searchList);
 
                 if (searchList.Count == 0)
-                    MessageBox.Show($"Fandt ingen varer med navnet {searchstring}");
+                    messageBox.OpenMessageBox($"Fandt ingen varer med navnet {searchstring}");
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Noget gik galt! Check Debug for fejlmeddelelse");
+                messageBox.OpenMessageBox("Noget gik galt! Check Debug for fejlmeddelelse");
                 Debug.WriteLine(exception.Message);
             }
         }
