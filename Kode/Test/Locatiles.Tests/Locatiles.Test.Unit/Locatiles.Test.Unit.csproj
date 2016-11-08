@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D5C80FA8-85C7-4181-94B5-46112A624EF2}</ProjectGuid>
+    <ProjectGuid>{619B3082-F5F4-4B4B-8A79-E776D6CC8596}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProjectGUI.Tests</RootNamespace>
-    <AssemblyName>ProjectGUI.Tests</AssemblyName>
+    <RootNamespace>Locatiles.Test.Unit</RootNamespace>
+    <AssemblyName>Locatiles.Test.Unit</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,17 +54,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
       <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
       <Name>DatabaseAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\ProjectGUI.csproj">
-      <Project>{3d158870-6781-4107-9394-8abbf9d6f31b}</Project>
+      <Project>{e4169fe8-bdea-4152-9f02-90e80bc499b6}</Project>
       <Name>ProjectGUI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

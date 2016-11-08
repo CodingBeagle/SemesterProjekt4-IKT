@@ -48,11 +48,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ItemGroupViewModelIntegrationTest.cs" />
+    <Compile Include="Step7ItemGroupViewModelIntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
+      <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
+      <Name>DatabaseAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\ProjectGUI.csproj">
+      <Project>{3d158870-6781-4107-9394-8abbf9d6f31b}</Project>
+      <Name>ProjectGUI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,1 @@
+Vi har kun valgt at integrationsteste 2 view models, da de andre viewmodels ikke var oplagte at lave automatiserede tests på. 
