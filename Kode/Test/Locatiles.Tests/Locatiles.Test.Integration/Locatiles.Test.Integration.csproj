@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D5C80FA8-85C7-4181-94B5-46112A624EF2}</ProjectGuid>
+    <ProjectGuid>{86A9698C-A71C-4C41-A6BE-DF3BC1939B16}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProjectGUI.Tests</RootNamespace>
-    <AssemblyName>ProjectGUI.Tests</AssemblyName>
+    <RootNamespace>Locatiles.Test.Integration</RootNamespace>
+    <AssemblyName>Locatiles.Test.Integration</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -48,13 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FloorplanViewModelUnitTest.cs" />
-    <Compile Include="ItemGroupViewModelUnitTests.cs" />
-    <Compile Include="ItemViewModelUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="Step1TableItemIntegration.cs" />
+    <Compile Include="Step2TableItemGroupIntegration.cs" />
+    <Compile Include="Step3TableStoreSectionIntegration.cs" />
+    <Compile Include="Step4TableFloorplanIntegration.cs" />
+    <Compile Include="Step5TableItemSectionPlacementIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
@@ -62,9 +61,12 @@
       <Name>DatabaseAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\ProjectGUI.csproj">
-      <Project>{3d158870-6781-4107-9394-8abbf9d6f31b}</Project>
+      <Project>{e4169fe8-bdea-4152-9f02-90e80bc499b6}</Project>
       <Name>ProjectGUI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
