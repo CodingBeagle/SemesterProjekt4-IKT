@@ -145,7 +145,7 @@ namespace mainMenu.ViewModels
 
         private void searchItemHandler()
         {
-            ItemUtility.SearchItem(_db,SearchString,ListOfItems);
+            ItemUtility.SearchItem(_db,SearchString,ListOfItems,_messageBox);
         }
 
 
