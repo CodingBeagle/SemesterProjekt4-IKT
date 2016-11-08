@@ -33,7 +33,7 @@ namespace ProjectGUI.Tests
         [Test]
         public void FloorplanViewModel_Constructor_DownloadfloorplanCalled()
         {
-            _db.TableFloorplan.Received(1).DownloadFloorplan();
+            _db.TableFloorplan.Received(1).DownloadFloorplan(Arg.Any<string>());
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace ProjectGUI.Tests
         {
             _uut.UpdateFloorplanCommand.Execute(null);
 
-            _db.TableFloorplan.Received(2).DownloadFloorplan();
+            _db.TableFloorplan.Received(2).DownloadFloorplan(Arg.Any<string>());
         }
     }
 }
