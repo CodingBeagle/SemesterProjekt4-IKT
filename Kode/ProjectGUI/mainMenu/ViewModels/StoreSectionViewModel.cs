@@ -290,7 +290,7 @@ namespace mainMenu
         }
         private void searchItemsHandler()
         {
-            ItemUtility.SearchItem(_db, SearchString, ListOfItems);
+            ItemUtility.SearchItem(_db, SearchString, ListOfItems, _messageBox);
         }
 
         private void addItemToSectionHandler()
