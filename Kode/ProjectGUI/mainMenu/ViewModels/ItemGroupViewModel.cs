@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
-using DatabaseAPI.Factories;
 using mainMenu.Models;
 using MvvmFoundation.Wpf;
 

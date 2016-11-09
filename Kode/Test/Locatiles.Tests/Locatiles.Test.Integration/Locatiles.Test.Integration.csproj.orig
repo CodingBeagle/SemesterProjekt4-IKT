@@ -54,9 +54,12 @@
     <Compile Include="Step3TableStoreSectionIntegration.cs" />
     <Compile Include="Step4TableFloorplanIntegration.cs" />
     <Compile Include="Step5TableItemSectionPlacementIntegration.cs" />
-    <Compile Include="Step6ItemViewModelIntegration.cs" />
+<<<<<<< HEAD
     <Compile Include="Step7ItemGroupViewModelIntegrationTest.cs" />
-</ItemGroup>
+=======
+    <Compile Include="Step6ItemViewModelIntegration.cs" />
+>>>>>>> 1bcda29045087f7be3863ac3bd1e01783d73fb58
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
       <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
