@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
-using mainMenu.Models;
 using mainMenu.ViewModels;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace ProjectGUI.Test.Integration
+namespace Locatiles.Test.Integration
 {
     [TestFixture]
     class Step7ItemGroupViewModelIntegrationTest
