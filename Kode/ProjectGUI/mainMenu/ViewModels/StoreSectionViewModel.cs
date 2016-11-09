@@ -16,7 +16,6 @@ using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
 using mainMenu.FloorplanLogic;
 using mainMenu.Models;
-using mainMenu.RefreshLogic;
 using mainMenu.ViewModels;
 using MvvmFoundation.Wpf;
 

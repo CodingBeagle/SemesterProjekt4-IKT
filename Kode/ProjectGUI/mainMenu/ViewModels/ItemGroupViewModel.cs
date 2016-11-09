@@ -129,14 +129,14 @@ namespace mainMenu.ViewModels
 
         private void createItemGroupHandler()
         {
-            long itemGroupID;
-            long parentItemGroupID;
             try
             {
                 //Check om de indtastede tegn er gyldige. Er vigtigt i forhold til SQL-sætninger   
                 if (Regex.IsMatch(ItemGroupName, @"^[a-zA-Z0-9-øØ-æÆ-åÅ\s]+$"))
                 {
                     //Checker om der er valgt en parentItemGroup
+                    long itemGroupID;
+                    long parentItemGroupID;
                     if (ComboBoxIndex == -1)
                     {
                         itemGroupID = _db.TableItemGroup.CreateItemGroup(ItemGroupName);

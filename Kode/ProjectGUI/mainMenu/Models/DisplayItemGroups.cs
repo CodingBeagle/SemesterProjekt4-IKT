@@ -9,7 +9,6 @@ namespace mainMenu.Models
 {
     public class DisplayItemGroups : ObservableCollection<ItemGroup>
     {
-        DatabaseService db = new DatabaseService(new SqlStoreDatabaseFactory());
         private int _currentIndex;
 
         public int CurrentIndex
@@ -33,10 +32,7 @@ namespace mainMenu.Models
         protected override event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
-using mainMenu.RefreshLogic;
 
 namespace mainMenu.Models
 {

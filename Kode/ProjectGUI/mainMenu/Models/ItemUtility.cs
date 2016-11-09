@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using DatabaseAPI;
-using DatabaseAPI.DatabaseModel;
-using mainMenu.Models;
 using mainMenu.ViewModels;
 
-namespace mainMenu
+namespace mainMenu.Models
 {
     public static class ItemUtility
     {

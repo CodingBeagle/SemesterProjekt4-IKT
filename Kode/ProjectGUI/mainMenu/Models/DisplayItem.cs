@@ -28,8 +28,8 @@ namespace mainMenu.Models
                     NotifyPropertyChanged();
                 }
             }
-        }                                       //ItemID
-        public string VareNavn                                  //Name
+        }                                   
+        public string VareNavn                              
         {
             get { return _item.Name; }
             private set
@@ -41,7 +41,7 @@ namespace mainMenu.Models
                 }
             }
         }
-        public long VareGruppeID                                //ItemGroupID
+        public long VareGruppeID                               
         {
             get { return _item.ItemGroupID; }
             private set
@@ -53,7 +53,7 @@ namespace mainMenu.Models
                 }
             }
         }
-        public string VareGruppeNavn                            //ItemGroupName
+        public string VareGruppeNavn                           
         {
             get
             {
@@ -69,10 +69,7 @@ namespace mainMenu.Models
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
