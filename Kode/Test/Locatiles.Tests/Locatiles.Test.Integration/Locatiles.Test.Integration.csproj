@@ -56,7 +56,7 @@
     <Compile Include="Step5TableItemSectionPlacementIntegration.cs" />
     <Compile Include="Step6ItemViewModelIntegration.cs" />
     <Compile Include="Step7ItemGroupViewModelIntegrationTest.cs" />
-</ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
       <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
