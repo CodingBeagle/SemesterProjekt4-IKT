@@ -70,6 +70,7 @@ namespace Locatiles.Test.Integration
             Assert.That(fetchedStoreSection.Name, Is.EqualTo(newSectionName));
         }
 
+        /*
         [Test]
         public void TableStoreSection_DeleteAllStoreSections_NoStoreSectionOnDatabase()
         {
@@ -94,8 +95,7 @@ namespace Locatiles.Test.Integration
             Assert.That(fetchedStoreSections.Count,Is.EqualTo(3));
 
         }
-
-
+        */
 
         private void CleanUp()
         {
