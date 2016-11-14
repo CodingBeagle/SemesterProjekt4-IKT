@@ -66,7 +66,7 @@ namespace Locatiles.Test.Integration
 
             List<ItemGroup> fetchedItemGroups = _db.TableItemGroup.SearchItemGroups("ItemGroup");
 
-            Assert.That(fetchedItemGroups.Count, Is.EqualTo(4));
+            Assert.That(fetchedItemGroups.Count, Is.EqualTo(3));
         }
 
         [Test]
