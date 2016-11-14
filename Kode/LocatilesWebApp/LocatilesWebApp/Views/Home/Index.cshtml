@@ -1,17 +1,31 @@
 ﻿@{
     ViewBag.Title = "Locatiles";
 }
-
 <div class="row">
     <div class="col-xs-12 col-md-4 clmns">
         <h3>Column 1</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p> 
-        <div class="itemGroupBlock">ItemGroup <div class="ItemGroupStyler"></div></div>
-        <div class="itemBlock">Item</div>
+        
+        @if (ViewBag.Items != null)
+        {
+            for (int i = 0; i < ViewBag.Items.Count; i++)
+            {
+                <button id="@Html.Raw(@ViewBag.Items[i].Name.Trim().Replace(" ", "") + "ID")" class="btn btn-default" onclick="searchItems(@Html.Raw("'" + ViewBag.Items[i].Name.Trim().Replace(" ","") + "'"))" type="button">@Html.Raw(@ViewBag.Items[i].Name)</button><br/>
+
+                <div id="@Html.Raw(@ViewBag.Items[i].Name.Trim().Replace(" ", "") + "Placements")" style="display: none;">
+                    @foreach (var itemPlacement in ViewBag.ItemCoordinates[i])
+                    {
+                        <span id="@Html.Raw(@ViewBag.Items[i].Name.Trim().Replace(" ", "") + "X" + itemPlacement.Name.Trim().Replace(" ", ""))" style="display: none;">@itemPlacement.CoordinateX</span>
+                        <span id="@Html.Raw(@ViewBag.Items[i].Name.Trim().Replace(" ", "") + "Y" + itemPlacement.Name.Trim().Replace(" ", ""))" style="display: none;">@itemPlacement.CoordinateY</span>
+                    }                  
+                </div>
+            }
+        }
+
     </div>
     <div class="col-xs-12 col-md-8">
         <h3 id="floorplanHeader">Butikskort</h3>
-        <canvas id="floorplan" width="1600" height="1200"></canvas>
+        <canvas id="floorplan" width="800" height="600"></canvas>
     </div>
 
 </div>

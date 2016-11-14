@@ -139,6 +139,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
+      <Project>{3FD12E40-227D-404D-8738-BB9266ADBBED}</Project>
+      <Name>DatabaseAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BLL\BLL.csproj">
       <Project>{e18cf904-7e5d-4177-bc52-58e91752cf96}</Project>
       <Name>BLL</Name>

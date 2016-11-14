@@ -1,7 +1,7 @@
 ﻿window.onload = function onloadHandler()
 {
-    document.getElementById('searchfield').value = "hey";
-    document.getElementById("searchButton").onclick = searchItems;
+    //document.getElementById('searchfield').value = "hey";
+    //document.getElementById("searchButton").onclick = searchItems;
 }
 
 function point() {
@@ -40,15 +40,32 @@ function drawPinIcon(canvas, x,y, r) {
 }
 
 
-function searchItems() {
-    alert(document.getElementById('searchfield').value);
-    var canvas = document.getElementById('floorplan');
-    drawPinIcon(canvas, 200, 200, 70);
+function searchItems(itemName) {
+    alert(itemName);
+
+    FindAllItemPlacements(itemName);
 }
 
 function searchbarOnKeyUp(key) {
     if (key.keyCode === 13) //On enter key up
     {
         searchItems();
+    }
+}
+
+function FindAllItemPlacements(itemName) {
+    var itemPlacements = $("#" + itemName + "Placements").children("span");
+
+    var canvas = document.getElementById('floorplan');
+
+    for (var i = 0; i < itemPlacements.length; i++) {
+        var xCoordinate = document.getElementById(itemPlacements[i].id).innerHTML;
+        var yCoordinate = document.getElementById(itemPlacements[i + 1].id).innerHTML;
+
+        drawPinIcon(canvas, xCoordinate, yCoordinate, 25);
+        console.log(xCoordinate);
+        console.log(yCoordinate);
+
+        i++;
     }
 }
