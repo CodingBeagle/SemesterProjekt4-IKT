@@ -8,17 +8,21 @@ using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
 
+
 namespace LocatilesWebApp.Controllers
 {
     public class HomeController : Controller
     {
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
+        private FloorplanBLL _floorplan = new FloorplanBLL();
+        private ItemInfoBLL _itemInfoBll = new ItemInfoBLL();
 
         // GET: Home
         public ActionResult Index()
         {
             // Download floorplan
-            _db.TableFloorplan.DownloadFloorplan(Server.MapPath("/Pictures/"));
+            _floorplan.GetFloorPlan(Server.MapPath("/Pictures/"));
+
 
             return View(); 
         }
@@ -26,19 +30,12 @@ namespace LocatilesWebApp.Controllers
         [HttpGet]
         public ActionResult SearchItems(string searchtext)
         {
-            List<Item> searchResult = _db.TableItem.SearchItems(searchtext);
+
+            List<PresentationItemGroup> searchResult = _itemInfoBll.GetPresentationItemGroups(searchtext);
 
             ViewBag.Items = searchResult;
 
-            var itemCoordinates = new List<List<StoreSection>>();
-            foreach (var item in searchResult)
-            {
-                List<StoreSection> itemStoreSections = _db.TableItemSectionPlacement.FindPlacementsByItem(item.ItemID);
 
-                itemCoordinates.Add(itemStoreSections);
-            }
-
-            ViewBag.ItemCoordinates = itemCoordinates;
 
             return View("Index");
         }
