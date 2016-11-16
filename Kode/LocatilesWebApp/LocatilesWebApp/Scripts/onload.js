@@ -1,7 +1,6 @@
 ﻿window.onload = function onloadHandler()
 {
-    //document.getElementById('searchfield').value = "hey";
-    //document.getElementById("searchButton").onclick = searchItems;
+   
 }
 
 function point() {
@@ -17,10 +16,12 @@ function drawPinIcon(canvas, x,y, r) {
 
     // Outer arc
     ctx.beginPath();
-    ctx.arc(x, ycirclepos, r, 1 / 4 * Math.PI, 3 / 4 * Math.PI, true);
+    //ctx.arc(x, ycirclepos, r, 1 / 4 * Math.PI, 3 / 4 * Math.PI, true);
+    ctx.arc(x, y, r, 0, 2 * Math.PI, true);
     //Point
-    ctx.lineTo(x, y);
-    ctx.lineTo(x + Math.cos(1 / 4 * Math.PI) * r, ycirclepos + Math.cos(1 / 4 * Math.PI) * r);
+    //ctx.lineTo(x, y);
+    //ctx.lineTo(x + Math.cos(1 / 4 * Math.PI)*r, ycirclepos + Math.cos(1 / 4 * Math.PI)*r);
+    //ctx.lineTo(x+r,y+r);
     ctx.closePath();
     ctx.fillStyle = "#3a3a3a";
     ctx.fill();
@@ -29,11 +30,8 @@ function drawPinIcon(canvas, x,y, r) {
 
     // Inner circle
     ctx.beginPath();
-    //ctx.fillStyle = "#FD5F00";
     ctx.fillStyle = "#0FF";
-    ctx.arc(x, ycirclepos, r * 0.7, 0, 2 * Math.PI, true);
-    //var rectsize = r*1.4;
-    //ctx.rect(x - rectsize/2, ycirclepos - rectsize/2, rectsize, rectsize);
+    ctx.arc(x, y, r * 0.7, 0, 2 * Math.PI, true);
     ctx.closePath();  
     ctx.fill();
     ctx.stroke();
@@ -58,14 +56,12 @@ function FindAllItemPlacements(itemName) {
 
     var canvas = document.getElementById('floorplan');
 
-    for (var i = 0; i < itemPlacements.length; i++) {
+    for (var i = 0; i < itemPlacements.length; i+=2) {
         var xCoordinate = document.getElementById(itemPlacements[i].id).innerHTML;
         var yCoordinate = document.getElementById(itemPlacements[i + 1].id).innerHTML;
 
         drawPinIcon(canvas, xCoordinate, yCoordinate, 25);
         console.log(xCoordinate);
         console.log(yCoordinate);
-
-        i++;
     }
 }
