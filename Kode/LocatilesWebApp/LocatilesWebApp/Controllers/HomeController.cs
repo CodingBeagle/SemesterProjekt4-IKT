@@ -33,7 +33,7 @@ namespace LocatilesWebApp.Controllers
 
             List<PresentationItemGroup> searchResult = _itemInfoBll.GetPresentationItemGroups(searchtext);
 
-            ViewBag.Items = searchResult;
+            ViewBag.PresentationGroup = searchResult;
 
 
 

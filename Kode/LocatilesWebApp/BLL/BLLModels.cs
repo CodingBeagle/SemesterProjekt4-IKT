@@ -11,13 +11,13 @@ namespace BLL
     {
         public string Itemname { get; set; }
         public string Itemgroupname { get; set; }
-        private List<Point> Coordinates { get; set; }
+        public List<Point> ItemPlacementList { get; set; }
 
         public  PresentationItem(string itemname, string itemgroupname, List<Point> coordinates)
         {
             Itemname = itemname;
             Itemgroupname = itemgroupname;
-            Coordinates = coordinates;
+            ItemPlacementList = coordinates;
         }
 
     }
