@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+using System.Web;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
@@ -30,13 +30,13 @@ namespace BLL
                 ItemGroup searchresultItemGroup = _db.TableItemGroup.GetItemGroup(i.ItemGroupID);
                 List<StoreSection> itemStoreSections = _db.TableItemSectionPlacement.FindPlacementsByItem(i.ItemID);
 
-                List<Point> _coordinates = new List<Point>();
+                List<Point> itemPlacementList = new List<Point>();
                 foreach (var section in itemStoreSections)
                 {
-                    _coordinates.Add(new Point ((int)section.CoordinateX, (int)section.CoordinateY));
+                    itemPlacementList.Add(new Point ((int)section.CoordinateX, (int)section.CoordinateY));
                     
                 }
-                _presentationItems.Add(new PresentationItem(i.Name, searchresultItemGroup.ItemGroupName, _coordinates));
+                _presentationItems.Add(new PresentationItem(i.Name, searchresultItemGroup.ItemGroupName, itemPlacementList));
 
             }
 
