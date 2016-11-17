@@ -16,14 +16,33 @@ namespace LocatilesWebApp.Models
     {
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
 
-        public  List<PresentationItemGroup> GetPresentationItemGroups(string searchString)
+
+        public List<string> SearchOptimization(string searchString)
+        {
+            List<string> _searchList = new List<string>(); 
+            string[] sa = searchString.Split(' ');
+            for (int s = 0; s < sa.Length; s++)
+            {
+                _searchList.Add(sa[s]);
+                
+            }
+            return _searchList;
+        }
+        public  List<PresentationItemGroup> GetPresentationItemGroups(List<string> searchStringList)
         {
 
             List<PresentationItem> _presentationItems = new List<PresentationItem>();
             List<PresentationItemGroup> _presentationItemGroups = new List<PresentationItemGroup>();
 
 
-            List<Item> _searchresultItems = _db.TableItem.SearchItems(searchString);
+            List<Item> _searchresultItems = new List<Item>();
+
+            foreach (var s in searchStringList)
+            {
+                List<Item> _searchWord = _db.TableItem.SearchItems(s);
+                _searchresultItems.AddRange(_searchWord);
+
+            }
 
             foreach (var i in _searchresultItems)
             {

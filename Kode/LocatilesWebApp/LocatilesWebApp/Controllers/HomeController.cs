@@ -42,7 +42,7 @@ namespace LocatilesWebApp.Controllers
         public ActionResult SearchItems(string searchtext)
         {
             // Get Presentation Item Groups
-            _model.PresentationItemGroups = _bll.GetPresentationItemGroups(searchtext);
+            _model.PresentationItemGroups = _bll.GetPresentationItemGroups(_bll.SearchOptimization(searchtext));
 
             // Load Viewbag with Presentation Item Groups
             ViewBag.PresentationGroup = _model.PresentationItemGroups;

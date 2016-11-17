@@ -5,6 +5,7 @@ namespace LocatilesWebApp.Models
     public interface IBLL
     {
         void GetFloorPlan(string filepath);
-        List<PresentationItemGroup> GetPresentationItemGroups(string searchString);
+        List<string> SearchOptimization(string searchString);
+        List<PresentationItemGroup> GetPresentationItemGroups(List<string> searchStringList);
     }
 }
