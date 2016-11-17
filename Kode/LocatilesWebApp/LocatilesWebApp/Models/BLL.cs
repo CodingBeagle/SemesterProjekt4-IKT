@@ -14,36 +14,22 @@ namespace LocatilesWebApp.Models
 {
     public class BLL : IBLL
     {
+        private readonly ISearchOptimizer _searchOptimizer;
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
 
-
-        public List<string> SearchOptimization(string searchString)
+        public BLL(ISearchOptimizer searchOptimizer)
         {
-            List<string> _searchList = new List<string>(); 
-            string[] sa = searchString.Split(' ');
-            for (int s = 0; s < sa.Length; s++)
-            {
-                _searchList.Add(sa[s]);
-                
-            }
-            return _searchList;
+            _searchOptimizer = searchOptimizer;
         }
-        public  List<PresentationItemGroup> GetPresentationItemGroups(List<string> searchStringList)
+       
+        public  List<PresentationItemGroup> GetPresentationItemGroups(string searchString)
         {
 
             List<PresentationItem> _presentationItems = new List<PresentationItem>();
             List<PresentationItemGroup> _presentationItemGroups = new List<PresentationItemGroup>();
+            List<Item> _searchresultItems = _searchOptimizer.SearchOptimization(searchString);
 
-
-            List<Item> _searchresultItems = new List<Item>();
-
-            foreach (var s in searchStringList)
-            {
-                List<Item> _searchWord = _db.TableItem.SearchItems(s);
-                _searchresultItems.AddRange(_searchWord);
-
-            }
-
+            
             foreach (var i in _searchresultItems)
             {
                 ItemGroup searchresultItemGroup = _db.TableItemGroup.GetItemGroup(i.ItemGroupID);

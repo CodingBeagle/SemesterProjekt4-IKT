@@ -118,8 +118,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\IBLL.cs" />
+    <Compile Include="Models\ISearchOptimizer.cs" />
     <Compile Include="Models\Models.cs" />
     <Compile Include="Models\BLL.cs" />
+    <Compile Include="Models\SearchOptimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

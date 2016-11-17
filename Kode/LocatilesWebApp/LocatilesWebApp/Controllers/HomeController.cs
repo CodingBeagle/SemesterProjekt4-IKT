@@ -15,10 +15,10 @@ namespace LocatilesWebApp.Controllers
     {
         private IBLL _bll;
         private Model _model;
-
+        
         public HomeController()
         {
-            _bll = new BLL();
+            _bll = new BLL( new SearchOptimizer());
             _model = new Model();
         }
 
@@ -42,7 +42,7 @@ namespace LocatilesWebApp.Controllers
         public ActionResult SearchItems(string searchtext)
         {
             // Get Presentation Item Groups
-            _model.PresentationItemGroups = _bll.GetPresentationItemGroups(_bll.SearchOptimization(searchtext));
+            _model.PresentationItemGroups = _bll.GetPresentationItemGroups(searchtext);
 
             // Load Viewbag with Presentation Item Groups
             ViewBag.PresentationGroup = _model.PresentationItemGroups;
