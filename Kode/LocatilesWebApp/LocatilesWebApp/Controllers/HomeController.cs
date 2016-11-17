@@ -22,7 +22,7 @@ namespace LocatilesWebApp.Controllers
             _model = new Model();
         }
 
-        public HomeController(   IBLL bll)
+        public HomeController(IBLL bll)
         {
             _bll = bll;
             _model = new Model();

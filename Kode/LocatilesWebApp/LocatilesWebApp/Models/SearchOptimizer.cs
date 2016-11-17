@@ -17,11 +17,17 @@ namespace LocatilesWebApp.Models
             if (searchString.ToLower().Contains(' '))
             {
                 string[] sa = searchString.Split(' ');
-                sa = sa.Where(str => str != "").ToArray();
-                for (int s = 0; s < sa.Length; s++)
+                if(sa.Any(str => str != ""))
                 {
-                    _searchList.Add(sa[s]);
+                    sa = sa.Where(str => str != "").ToArray();
+                    for (int s = 0; s < sa.Length; s++)
+                    {
+                        _searchList.Add(sa[s]);
+                    }
+
                 }
+                else _searchList.Add("");
+
             }
             else _searchList.Add(searchString);
 
