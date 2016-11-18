@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Step10BLLIntegration.cs" />
+    <Compile Include="Step11HomeControllerIntegration.cs" />
     <Compile Include="Step1TableItemIntegration.cs" />
     <Compile Include="Step2TableItemGroupIntegration.cs" />
     <Compile Include="Step3TableStoreSectionIntegration.cs" />
@@ -56,6 +58,8 @@
     <Compile Include="Step5TableItemSectionPlacementIntegration.cs" />
     <Compile Include="Step6ItemViewModelIntegration.cs" />
     <Compile Include="Step7ItemGroupViewModelIntegrationTest.cs" />
+    <Compile Include="Step8SearcherIntegration.cs" />
+    <Compile Include="Step9BLLIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
