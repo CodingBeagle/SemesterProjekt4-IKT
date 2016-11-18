@@ -6,7 +6,7 @@ using DatabaseAPI.Factories;
 
 namespace LocatilesWebApp.Models
 {
-    public class SearchOptimizer : ISearchOptimizer
+    public class Searcher : ISearcher
     {
 
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
