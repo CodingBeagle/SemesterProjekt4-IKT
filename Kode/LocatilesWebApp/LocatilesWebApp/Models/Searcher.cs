@@ -10,7 +10,7 @@ namespace LocatilesWebApp.Models
     {
 
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
-        public List<Item> SearchOptimization(string searchString)
+        public List<Item> Search(string searchString)
         {
             List<string> _searchList = new List<string>();
             List<Item> _searchresultItems = new List<Item>();

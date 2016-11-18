@@ -31,7 +31,7 @@ namespace LocatilesWebApp.Models
 
             List<PresentationItem> _presentationItems = new List<PresentationItem>();
             List<PresentationItemGroup> _presentationItemGroups = new List<PresentationItemGroup>();
-            List<Item> _searchresultItems = _searcher.SearchOptimization(searchString);
+            List<Item> _searchresultItems = _searcher.Search(searchString);
 
             
             foreach (var i in _searchresultItems)
