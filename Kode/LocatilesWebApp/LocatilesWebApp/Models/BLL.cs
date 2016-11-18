@@ -14,12 +14,12 @@ namespace LocatilesWebApp.Models
 {
     public class BLL : IBLL
     {
-        private readonly ISearchOptimizer _searchOptimizer;
+        private readonly ISearcher _searcher;
         private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
 
-        public BLL(ISearchOptimizer searchOptimizer)
+        public BLL(ISearcher searcher)
         {
-            _searchOptimizer = searchOptimizer;
+            _searcher = searcher;
         }
        
         public  List<PresentationItemGroup> GetPresentationItemGroups(string searchString)
@@ -27,7 +27,7 @@ namespace LocatilesWebApp.Models
 
             List<PresentationItem> _presentationItems = new List<PresentationItem>();
             List<PresentationItemGroup> _presentationItemGroups = new List<PresentationItemGroup>();
-            List<Item> _searchresultItems = _searchOptimizer.SearchOptimization(searchString);
+            List<Item> _searchresultItems = _searcher.SearchOptimization(searchString);
 
             
             foreach (var i in _searchresultItems)
