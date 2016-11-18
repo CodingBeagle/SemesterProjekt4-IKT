@@ -19,11 +19,12 @@ namespace LocatilesWebApp.Models
 
         public BLL(ISearcher searcher, IDatabaseService db =null)
         {
-            if(_db == null)
+            if(db == null)
                 _db = new DatabaseService(new SqlStoreDatabaseFactory());
-
+            else
+                _db = db;
+            
             _searcher = searcher;
-            _db = db;
         }
        
         public  List<PresentationItemGroup> GetPresentationItemGroups(string searchString)
