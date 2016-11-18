@@ -34,23 +34,30 @@
 	text-align:center;
 }
 
-#searchfield{
+#searchtext{
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	padding: 0.43em;
 	width: 80%;
 	max-width: 15em;
+    height: 2em;
+    border-radius: 0;
 }
 
 #searchButton{
 	background-color: #5328ff;
 	border: none;
 	color: white;
-	padding: 0.5em;
+	padding: 0;
 	width: 20%;
 	text-align: center;
 	text-decoration: none;
 	max-width: 5em;
+    height: 2em;
+}
+
+#searchButton:hover {
+    background-color: #2808aa;
 }
 
 .rainbowline{
@@ -66,53 +73,54 @@
 
 .scrollBox {
     overflow-y: scroll;
-    height: 600px;
+    height: 40em;
     margin: 0 10%;
+    margin-top: 0.5em
 }
 
 .ItemGroupStyler {
 	width: 100%;
-	background-color: black;
+    background-color: #3a3a3a;
+    color: white;  
+    padding-left: 1em;
+    font-size: 1.4em;
 }
 
 .ItemStyler {
 	width: 100%;
-    background-color: pink;
+    background-color: white;
     text-align: left;
-    border-width: 2px;
-    border-color: black;
+    border-width: 1px;
+    border-color: darkgrey;
+    padding-left: 2em;
+    border-radius: 0;
 }
 
-.itemGroupBlock {
-	width: 100%;
-	padding: 0.8em;
-	border-radius: 0 1.4em 0 0;
-	background-color: blue;
-	color: white;
-	position: relative;
-	display: inline;
+.ItemStyler:hover {
+    background-color: #DDD;
 }
 
-#floorplanHeader {
+.columnHeader {
 	background-color: #3a3a3a;
 	color: white;
 	text-align: center;
-	border-radius: 0.3em 0.3em 0 0;
+	border-radius: 0.05em 0.05em 0 0;
 	margin: 0;
 	margin-top: 20px;
-	padding: 0.5em 0 0.2em 0;
+	padding: 0.1em 0 0.1em 0;
 }
 
 #floorplan {
 	background-color: lightgray;
 	width: 100%;
-	border-radius: 0 0 0.5em 0.5em;
+	border-radius: 0 0 0.05em 0.05em;
 	border-width: 0.3em;
 	border-style: solid;
 	border-color: #3a3a3a;
 	background: url(/Pictures/floorplan.jpg);
 	background-repeat: no-repeat;	
 	background-size: 100% 100%;
+    border-top-style: none;
 	
 }
 /*#endregion content*/
