@@ -66,6 +66,10 @@
       <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
       <Name>DatabaseAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\LocatilesWebApp\LocatilesWebApp\LocatilesWebApp.csproj">
+      <Project>{b50a9e7e-a4b4-4c0e-b01a-fddb3f3c4729}</Project>
+      <Name>LocatilesWebApp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\ProjectGUI.csproj">
       <Project>{e4169fe8-bdea-4152-9f02-90e80bc499b6}</Project>
       <Name>ProjectGUI</Name>
