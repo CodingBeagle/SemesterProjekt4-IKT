@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DatabaseAPI;
+using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
 using DatabaseAPI.TableFloorplan;
 using DatabaseAPI.TableItem;
@@ -38,7 +39,11 @@ namespace Locatiles.Test.Unit
             _tablePlacement = Substitute.For<ITableItemSectionPlacement>();
             _tableStoreSection = Substitute.For<ITableStoreSection>();
             _searcher = Substitute.For<ISearcher>();
-            
+
+            //Sets common empty returns
+            _tablePlacement.FindPlacementsByItem(Arg.Any<long>()).Returns(new List<StoreSection>());
+            _tableItemGroup.GetItemGroup(Arg.Any<long>()).Returns(new ItemGroup("",0,0));
+            LoadBLL();
         }
 
         private void LoadBLL()
@@ -57,9 +62,65 @@ namespace Locatiles.Test.Unit
         [Test]
         public void GetFloorPlan_Called_TableFloorplanDownloadFloorplanCalled()
         {
-            LoadBLL();
             _uut.GetFloorPlan("test");
             _tableFloorplan.Received().DownloadFloorplan(Arg.Any<string>());
+        }
+
+        [Test]
+        public void GetPresentationItemGroups_SearcherSearchReturnsOneItemWithPlacement_ReturnsOnePresentationItemGroup()
+        {
+            _searcher.Search(Arg.Any<string>()).Returns(new List<Item>() { new Item(0, "", 0) });
+            _tableItemGroup.GetItemGroup(Arg.Any<long>()).Returns(new ItemGroup("TestGroup", 0, 0));
+            _tablePlacement.FindPlacementsByItem(Arg.Any<long>()).Returns(new List<StoreSection>() {new StoreSection(0,"",0,0,0)});
+            List<PresentationItemGroup> list =_uut.GetPresentationItemGroups("");
+            Assert.That(list.Count, Is.EqualTo(1) );
+        }
+
+        [Test]
+        public void GetPresentationItemGroups_SearcherSearchReturnsOneItemWithNoPlacement_ReturnsZeroPresentationItemGroups()
+        {
+            _searcher.Search(Arg.Any<string>()).Returns(new List<Item>() { new Item(0, "", 0) });
+            _tableItemGroup.GetItemGroup(Arg.Any<long>()).Returns(new ItemGroup("TestGroup", 0, 0));
+            List<PresentationItemGroup> list = _uut.GetPresentationItemGroups("");
+            Assert.That(list.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetPresentationItemGroups_SearcherSearchReturnsOneItemWithPlacement_ReturnsCorrectPresentationItemGroup()
+        {
+            _searcher.Search(Arg.Any<string>()).Returns(new List<Item>() { new Item(0, "TestItem", 0) });
+            _tableItemGroup.GetItemGroup(Arg.Any<long>()).Returns(new ItemGroup("TestGroup", 0, 0));
+            _tablePlacement.FindPlacementsByItem(Arg.Any<long>()).Returns(new List<StoreSection>() { new StoreSection(0, "", 3, 5, 0) });
+            List<PresentationItemGroup> list = _uut.GetPresentationItemGroups("");
+
+            Assert.That(list[0].Name, Is.EqualTo("TestGroup"));
+            Assert.That(list[0].PresentationItems[0].Itemname, Is.EqualTo("TestItem"));
+            var location = list[0].PresentationItems[0].ItemPlacementList[0];
+            Assert.That(location.X==3 && location.Y == 5);
+        }
+
+        [Test]
+        public void GetPresentationItemGroups_SearcherSearchReturnsTwoItemsWithSameGroup_ReturnsOnePresentationItemGroupWithTwoItems()
+        {
+            _searcher.Search(Arg.Any<string>()).Returns(new List<Item>() { new Item(0, "", 0), new Item(0,"",0) });
+            _tableItemGroup.GetItemGroup(Arg.Any<long>()).Returns(new ItemGroup("TestGroup", 0, 0));
+            _tablePlacement.FindPlacementsByItem(Arg.Any<long>()).Returns(new List<StoreSection>() { new StoreSection(0, "", 0, 0, 0) });
+            List<PresentationItemGroup> list = _uut.GetPresentationItemGroups("");
+            Assert.That(list.Count, Is.EqualTo(1));
+            Assert.That(list[0].PresentationItems.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GetPresentationItemGroups_SearcherSearchReturnsTwoItemsWithDifferentGroup_ReturnsTwoPresentationItemGroupsWithOneItemEach()
+        {
+            _searcher.Search(Arg.Any<string>()).Returns(new List<Item>() { new Item(0, "", 1), new Item(0, "", 2) });
+            _tableItemGroup.GetItemGroup(1).Returns(new ItemGroup("TestGroup1", 0, 0));
+            _tableItemGroup.GetItemGroup(2).Returns(new ItemGroup("TestGroup2", 0, 0));
+            _tablePlacement.FindPlacementsByItem(Arg.Any<long>()).Returns(new List<StoreSection>() { new StoreSection(0, "", 0, 0, 0) });
+            List<PresentationItemGroup> list = _uut.GetPresentationItemGroups("");
+            Assert.That(list.Count, Is.EqualTo(2));
+            Assert.That(list[0].PresentationItems.Count, Is.EqualTo(1));
+            Assert.That(list[1].PresentationItems.Count, Is.EqualTo(1));
         }
     }
 }

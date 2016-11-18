@@ -33,7 +33,7 @@ namespace LocatilesWebApp.Models
             List<PresentationItemGroup> _presentationItemGroups = new List<PresentationItemGroup>();
             List<Item> _searchresultItems = _searcher.Search(searchString);
 
-            
+            // Creates and adds presentationsItems to list
             foreach (var i in _searchresultItems)
             {
                 ItemGroup searchresultItemGroup = _db.TableItemGroup.GetItemGroup(i.ItemGroupID);
@@ -45,19 +45,23 @@ namespace LocatilesWebApp.Models
                     itemPlacementList.Add(new Point ((int)section.CoordinateX, (int)section.CoordinateY));
                     
                 }
-                _presentationItems.Add(new PresentationItem(i.Name, searchresultItemGroup.ItemGroupName, itemPlacementList));
+                if(itemPlacementList.Any())
+                    _presentationItems.Add(new PresentationItem(i.Name, searchresultItemGroup.ItemGroupName, itemPlacementList));
 
             }
 
+            // Distributes presentationItems to PresentationItemsGroups with same itemgroup name
             foreach (var pi in _presentationItems)
             {
                 var tempPIG = _presentationItemGroups.FirstOrDefault(g => g.Name == pi.Itemgroupname);
+
+                // if there is no existing PresentationItemGroup with same Itemgroup name
                 if (tempPIG == null)
                 {
                     PresentationItemGroup PIG = new PresentationItemGroup(pi.Itemgroupname, new List<PresentationItem>() {pi});
                     _presentationItemGroups.Add(PIG);
                 }
-                else
+                else // if there already is one
                 {
                     tempPIG.PresentationItems.Add(pi);
                 }
