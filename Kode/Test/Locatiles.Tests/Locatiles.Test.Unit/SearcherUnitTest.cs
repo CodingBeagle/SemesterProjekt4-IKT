@@ -41,12 +41,31 @@ namespace Locatiles.Test.Unit
             _uut.Search(searchStr);
             _db.TableItem.ReceivedWithAnyArgs(2).SearchItems(null);
         }
+
         [Test]
-        public void Search_SearchStrContainSpaces_SearchItemsReceivedOneCallWithEmptyStr()
+        public void Search_SearchStrContainOnlySpaces_SearchItemsReceivedOneCallWithEmptyStr()
         {
             string searchStr = "    ";
             _uut.Search(searchStr);
             _db.TableItem.Received(1).SearchItems("");
+        }
+
+        [Test]
+        public void Search_SearchStrContainSameWordTwice_SearchResultDoesNotHaveDublicates()
+        {
+            _db.TableItem.SearchItems(Arg.Is("unit")).Returns(new List<Item>() {new Item(1, "unit", 1)});
+            string searchStr = "unit unit";
+            List<Item> _searchResult = _uut.Search(searchStr);
+            Assert.That(_searchResult.Count, Is.EqualTo(1));
+
+        }
+
+        [Test]
+        public void Search_SearchStrSplitInMany_EmptyStrGetsRemoved()
+        {
+            string searchStr = "unit test             result  ";
+            _uut.Search(searchStr);
+            _db.TableItem.ReceivedWithAnyArgs(3).SearchItems(null);
         }
     }
 }
