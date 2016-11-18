@@ -15,11 +15,15 @@ namespace LocatilesWebApp.Models
     public class BLL : IBLL
     {
         private readonly ISearcher _searcher;
-        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
+        private IDatabaseService _db;
 
-        public BLL(ISearcher searcher)
+        public BLL(ISearcher searcher, IDatabaseService db =null)
         {
+            if(_db == null)
+                _db = new DatabaseService(new SqlStoreDatabaseFactory());
+
             _searcher = searcher;
+            _db = db;
         }
        
         public  List<PresentationItemGroup> GetPresentationItemGroups(string searchString)
