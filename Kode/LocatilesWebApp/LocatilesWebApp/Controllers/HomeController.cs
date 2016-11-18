@@ -3,26 +3,37 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 using System.Web.Services;
-using BLL;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
+using LocatilesWebApp.Models;
 
 
 namespace LocatilesWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
-        private FloorplanBLL _floorplan = new FloorplanBLL();
-        private ItemInfoBLL _itemInfoBll = new ItemInfoBLL();
+        private IBLL _bll;
+        private Model _model;
+        
+        public HomeController()
+        {
+            _bll = new BLL( new SearchOptimizer());
+            _model = new Model();
+        }
+
+        public HomeController(IBLL bll)
+        {
+            _bll = bll;
+            _model = new Model();
+        }
+
 
         // GET: Home
         public ActionResult Index()
         {
             // Download floorplan
-            _floorplan.GetFloorPlan(Server.MapPath("/Pictures/"));
-
+            _bll.GetFloorPlan(Server.MapPath("/Pictures/"));
 
             return View(); 
         }
@@ -30,12 +41,11 @@ namespace LocatilesWebApp.Controllers
         [HttpGet]
         public ActionResult SearchItems(string searchtext)
         {
+            // Get Presentation Item Groups
+            _model.PresentationItemGroups = _bll.GetPresentationItemGroups(searchtext);
 
-            List<PresentationItemGroup> searchResult = _itemInfoBll.GetPresentationItemGroups(searchtext);
-
-            ViewBag.PresentationGroup = searchResult;
-
-
+            // Load Viewbag with Presentation Item Groups
+            ViewBag.PresentationGroup = _model.PresentationItemGroups;
 
             return View("Index");
         }

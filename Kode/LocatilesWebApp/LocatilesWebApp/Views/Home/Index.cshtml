@@ -3,36 +3,38 @@
 }
 <div class="row">
     <div class="col-xs-12 col-md-4 clmns">
-        <h3>Column 1</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p> 
-        
-                @if (ViewBag.PresentationGroup != null)
+        <h3 class="columnHeader">Varer</h3>
+        <div class="scrollBox">
+            @if (ViewBag.PresentationGroup != null)
+            {
+                foreach (var pig in ViewBag.PresentationGroup)
                 {
-                    foreach (var pig in ViewBag.PresentationGroup)
+                    <div id="@Html.Raw(pig.Name.Trim().Replace(" ", "") + "ID")" class="ItemGroupStyler">@Html.Raw(pig.Name)</div>
+
+                    foreach (var presentationItem in pig.PresentationItems)
                     {
-                        <div id="@Html.Raw(pig.Name.Trim().Replace(" ", "") + "ID")" class="ItemGroupStyler">@Html.Raw(pig.Name)</div><br/>
+                        <button id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "ID")" class="btn ItemStyler" onclick="searchItems(@Html.Raw("'" + presentationItem.Itemname.Trim().Replace(" ", "") + "'"))" type="button">@Html.Raw(presentationItem.Itemname)</button>
 
-                foreach (var presentationItem in pig.PresentationItems)
-                {
-                    <button id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "ID")" class="btn ItemStyler" onclick="searchItems(@Html.Raw("'" + presentationItem.Itemname.Trim().Replace(" ","") + "'"))" type="button">@Html.Raw(presentationItem.Itemname)</button><br />
 
-                    <div id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Placements")" style="display: none;">
-                        @foreach (var itemPlacement in presentationItem.ItemPlacementList)
-                        {
-                            <span id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "X" ))" style="display: none;">@itemPlacement.X</span>
-                            <span id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Y" )" style="display: none;">@itemPlacement.Y</span>
-                        }
-                    </div>
+                            <div id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Placements")" style="display: none;">
+                                @{int i = 0;}
+                                @foreach (var itemPlacement in presentationItem.ItemPlacementList)
+                                {
+                                    <span id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "X" + @i))" style="display: none;">@itemPlacement.X</span>
+                                    <span id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Y" + @i )" style="display: none;">@itemPlacement.Y</span>
+                                    i++;
+                                }
+                            </div>
 
                     }
 
-
+                }
             }
-        }
+        </div>
 
     </div>
     <div class="col-xs-12 col-md-8">
-        <h3 id="floorplanHeader">Butikskort</h3>
+        <h3 class="columnHeader">Butikskort</h3>
         <canvas id="floorplan" width="800" height="600"></canvas>
     </div>
 
