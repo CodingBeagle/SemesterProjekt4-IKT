@@ -40,7 +40,7 @@
         <Label Content="Nyt Sektionnavn:" Grid.Row="3" Grid.Column="1"></Label>
         <TextBox x:Name="NewSectionNameTextBox" Text="{Binding NewSectionName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Grid.Row="3" Grid.Column="2"></TextBox>
 
-        <Button x:Name="EditButton" Content="_Rediger Sektionsnavn" Command="{Binding EditStoreSectionDialogOKCommand}" Grid.Row="5" Grid.Column="2" Click="EditButton_Click"></Button>
+        <Button x:Name="EditButton" Content="_Rediger Sektionnavn" Command="{Binding EditStoreSectionDialogOKCommand}" Grid.Row="5" Grid.Column="2" Click="EditButton_Click"></Button>
         <Button x:Name="CancelButton" Content="_Annuller" Grid.Row="6" Grid.Column="2" Click="CancelButton_Click" ></Button>
     </Grid>
 </Window>
