@@ -31,7 +31,7 @@ namespace Locatiles.Test.Unit
         [SetUp]
         public void setup()
         {         
-            //Creates Substitutes
+            // Creates Substitutes
             _db = Substitute.For<IDatabaseService>();
             _tableItem = Substitute.For<ITableItem>();
             _tableFloorplan = Substitute.For<ITableFloorplan>();
@@ -40,7 +40,7 @@ namespace Locatiles.Test.Unit
             _tableStoreSection = Substitute.For<ITableStoreSection>();
             _searcher = Substitute.For<ISearcher>();
 
-            //Sets common empty returns
+            // Sets common empty returns
             _tablePlacement.FindPlacementsByItem(Arg.Any<long>()).Returns(new List<StoreSection>());
             _tableItemGroup.GetItemGroup(Arg.Any<long>()).Returns(new ItemGroup("",0,0));
             LoadBLL();
@@ -48,14 +48,14 @@ namespace Locatiles.Test.Unit
 
         private void LoadBLL()
         {
-            // Database substitute returns substitutes 
+            // Database substitute returns table substitutes 
             _db.TableItem.Returns(_tableItem);
             _db.TableFloorplan.Returns(_tableFloorplan);
             _db.TableItemGroup.Returns(_tableItemGroup);
             _db.TableItemSectionPlacement.Returns(_tablePlacement);
             _db.TableStoreSection.Returns(_tableStoreSection);
 
-            //Creates uut
+            // Creates uut
             _uut = new BLL(_searcher, _db);
         }
 
