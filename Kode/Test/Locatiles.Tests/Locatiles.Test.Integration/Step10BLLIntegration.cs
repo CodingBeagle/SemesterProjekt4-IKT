@@ -36,7 +36,7 @@ namespace Locatiles.Test.Integration
             itemGroupName = "Step10ItemGroup";
             itemName = "Step10Item";
             storesectionID = (int)_db.TableStoreSection.CreateStoreSection("Step10StoreSection", 100, 100, 1);
-            _db.TableItemSectionPlacement.PlaceItem(_db.TableItem.CreateItem(itemGroupName, _db.TableItemGroup.CreateItemGroup("Step10ItemGroup")), storesectionID);
+            _db.TableItemSectionPlacement.PlaceItem(_db.TableItem.CreateItem(itemName, _db.TableItemGroup.CreateItemGroup(itemGroupName)), storesectionID);
         }
 
         [TearDown]
