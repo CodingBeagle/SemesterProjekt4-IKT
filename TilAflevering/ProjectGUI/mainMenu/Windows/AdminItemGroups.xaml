@@ -1,0 +1,48 @@
+﻿<Window x:Class="mainMenu.AdminItemGroups"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mainMenu"
+        mc:Ignorable="d"
+        Title="Administrer Varegrupper" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="../images/favicon.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="158*"/>
+            <RowDefinition Height="48*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="52*"/>
+            <RowDefinition Height="57*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="53*"/>
+            <RowDefinition Height="55*"/>
+            <RowDefinition Height="111*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="119*"/>
+            <ColumnDefinition Width="254*"/>
+            <ColumnDefinition Width="180*"/>
+            <ColumnDefinition Width="212*"/>
+            <ColumnDefinition Width="386*"/>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="58*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="AddItemGroup" Content="Opret Varegruppe" FontSize="26" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="AddItems_Click"/>
+        <Button x:Name="EditItemGroup" Content="Rediger Varegruppe" FontSize="26" Grid.Column="1" Grid.Row="3" Click="EditItems_Click"></Button>
+        <Button x:Name="DeleteItemGroup" Content="Slet Varegruppe" Command="{Binding DeleteItemGroupCommand}"  FontSize="26" Grid.Column="1" Grid.Row="5"/>
+
+        <Label x:Name="SearchLabel" Content="Søg varegrupper:" Grid.Column="3" Grid.Row="1" FontSize="26"></Label>
+        <TextBox x:Name="SearchBox" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" FontSize="26" Grid.Column="4" Grid.Row="1"/>
+        <Button x:Name="SearchButton" Content="Søg" Command="{Binding SearchCommand}" FontSize="26" Grid.Column="5" Grid.Row="1"></Button>
+        <Button x:Name="backBtn" Content="Tilbage" HorizontalAlignment="Left" Margin="319,41,0,0" VerticalAlignment="Top" Width="180" Height="60" FontSize="28" Grid.Column="4" Grid.Row="9" Grid.ColumnSpan="3" Click="backBtn_Click"/>
+        <Label x:Name="windowTitle" Content="Administrer Varegrupper" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="76" Width="537" FontSize="48" Grid.Column="2" Grid.ColumnSpan="3"/>
+
+
+        <DataGrid x:Name="SearchResultGrid" 
+                  Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="6" 
+                  IsReadOnly="True" IsSynchronizedWithCurrentItem="True" 
+                  SelectedIndex="{Binding Path=ListOfItemGroups.CurrentIndex, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding Path=ListOfItemGroups, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DataGrid>
+    </Grid>
+</Window>

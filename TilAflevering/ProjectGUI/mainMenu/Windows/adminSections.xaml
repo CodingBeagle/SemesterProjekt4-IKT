@@ -1,0 +1,114 @@
+﻿<Window x:Class="mainMenu.adminSections"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mainMenu"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactions"
+        xmlns:core="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:data="clr-namespace:System.Data;assembly=System.Data"
+        mc:Ignorable="d"
+        Title="Administrer Sektioner" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="../images/favicon.ico"
+        Name="win">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="28"></Setter>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="28"></Setter>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="28"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="59"/>
+            <RowDefinition Height="200.684"/>
+            <RowDefinition Height="62.211"/>
+            <RowDefinition Height="201"/>
+            <RowDefinition Height="69"/>
+            <RowDefinition/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition/>
+
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="85*"/>
+            <ColumnDefinition Width="91*"/>
+            <ColumnDefinition Width="134*"/>
+            <ColumnDefinition Width="89*"/>
+            <ColumnDefinition Width="88"></ColumnDefinition>
+            <ColumnDefinition Width="221"/>
+            <ColumnDefinition Width="207"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="227"/>
+            <ColumnDefinition Width="17"/>
+
+        </Grid.ColumnDefinitions>
+
+        <ItemsControl ItemsSource="{Binding Path=ShapeCollection, UpdateSourceTrigger=PropertyChanged}" Grid.Column="6" Grid.ColumnSpan="6" Grid.RowSpan="6" MouseDown="ItemsControl_MouseDown">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas x:Name="canvas" Background="{Binding FloorplanImage, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <core:CallMethodAction TargetObject="{Binding}" MethodName="CreateStoreSection"></core:CallMethodAction>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Path=Left}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Top}"></Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:SectionShape}">
+                    <Button Content="{Binding Path=Shape}" Background="Transparent" BorderBrush="Transparent" Command="{Binding ElementName=win, Path=DataContext.SelectCurrentStoreSectionCommand}" CommandParameter="{Binding}"></Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Button x:Name="backBtn" Content="_Tilbage" Grid.Column="10" Grid.Row="7" Click="backBtn_Click"/>
+        <Button x:Name="deleteSectionBtn" Content="_Slet Sektion" Command="{Binding DeleteStoreSectionCommand}" Grid.Column="8" Grid.Row="7"/>
+        <Button x:Name="editSectionBtn" FontSize="21" Content="_Rediger Sektion" Command="{Binding EditStoreSectionCommand}" Grid.Column="7" Grid.Row="7" PreviewMouseDown="editSectionBtn_MouseDown"/>
+        <Button Content="Sø_g" Grid.Column="5" Grid.Row="1" Command="{Binding SearchItemsCommand}"></Button>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=SearchString, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="4"></TextBox>
+        <Button Content="_V" Grid.Row="3" Grid.Column="3" Command="{Binding AddItemToSectionCommand}"></Button>
+        <Button Content="_Fjern vare fra sektion" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="3" Command="{Binding RemoveItemFromSectionCommand}"></Button>
+        <Label Content="Valgt sektion:" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="7"></Label>
+        <Label Content="{Binding Path=SelectedStoreSectionName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="7"></Label>
+        <local:ItemDataGrid x:Name="SearchResultGrid" 
+                  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                  IsReadOnly="True" IsSynchronizedWithCurrentItem="True" 
+                  SelectedIndex="{Binding Path=ListOfItems.CurrentIndex, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding Path=ListOfItems, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItemsList="{Binding Path=SelectedItemsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></local:ItemDataGrid>
+        <DataGrid x:Name="SectionContent"
+                  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding ItemsInSectionList}"
+                  SelectedItem="{Binding Path=SelectedSectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DataGrid>
+
+
+    </Grid>
+</Window>
