@@ -18,7 +18,7 @@ namespace LocatilesWebApp.Controllers
         
         public HomeController()
         {
-            _bll = new BLL( new SearchOptimizer());
+            _bll = new BLL( new Searcher());
             _model = new Model();
         }
 

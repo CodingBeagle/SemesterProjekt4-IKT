@@ -40,6 +40,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\LocatilesWebApp\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,12 +59,16 @@
     <Compile Include="ItemGroupViewModelUnitTests.cs" />
     <Compile Include="ItemViewModelUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchOptimizer.cs" />
+    <Compile Include="SearcherUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DatabaseAPI\DatabaseAPI\DatabaseAPI.csproj">
       <Project>{3fd12e40-227d-404d-8738-bb9266adbbed}</Project>
       <Name>DatabaseAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\LocatilesWebApp\LocatilesWebApp\LocatilesWebApp.csproj">
+      <Project>{b50a9e7e-a4b4-4c0e-b01a-fddb3f3c4729}</Project>
+      <Name>LocatilesWebApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\ProjectGUI\mainMenu\ProjectGUI.csproj">
       <Project>{e4169fe8-bdea-4152-9f02-90e80bc499b6}</Project>

@@ -5,6 +5,6 @@ namespace LocatilesWebApp.Models
 {
     public interface ISearcher
     {
-        List<Item> SearchOptimization(string searchString);
+        List<Item> Search(string searchString);
     }
 }

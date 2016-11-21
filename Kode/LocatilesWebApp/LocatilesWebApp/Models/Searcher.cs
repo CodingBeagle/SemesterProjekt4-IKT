@@ -9,8 +9,15 @@ namespace LocatilesWebApp.Models
     public class Searcher : ISearcher
     {
 
-        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
-        public List<Item> SearchOptimization(string searchString)
+        private IDatabaseService _db;
+
+        public Searcher(IDatabaseService databaseService = null)
+        {
+            _db = databaseService == null ? new DatabaseService(new SqlStoreDatabaseFactory()) : databaseService;
+        }
+
+
+        public List<Item> Search(string searchString)
         {
             List<string> _searchList = new List<string>();
             List<Item> _searchresultItems = new List<Item>();
