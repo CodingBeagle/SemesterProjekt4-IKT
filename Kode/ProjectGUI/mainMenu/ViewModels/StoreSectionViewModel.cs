@@ -53,7 +53,6 @@ namespace mainMenu
         #endregion
 
         #region Properties
-
         public string PreviousSectionName { get; set; }
         public string NewSectionName { get; set; }
 
