@@ -1,6 +1,11 @@
-﻿window.onload = function onloadHandler()
-{
-   
+﻿window.onload = function() {
+    console.log("onload called!");
+    ResizeItemCol();
+}
+
+window.onresize = function onResizeHandler() {
+    console.log("onresize called");
+    ResizeItemCol();
 }
 
 function point() {
@@ -67,4 +72,10 @@ function FindAllItemPlacements(itemName) {
         console.log(xCoordinate);
         console.log(yCoordinate);
     }
+}
+
+function ResizeItemCol() {
+    var floorplanHeight = $("#floorplan").height() + 'px';
+    console.log("floorplan height=" + floorplanHeight);
+    $(".scrollBox").css({ 'max-height':  floorplanHeight});
 }

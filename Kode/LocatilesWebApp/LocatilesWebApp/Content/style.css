@@ -71,11 +71,14 @@
 
 /*#region content*/
 
+
+
 .scrollBox {
     overflow-y: scroll;
-    height: 40em;
     margin: 0 10%;
-    margin-top: 0.5em
+    margin-top: 0.5em;
+    height: auto;
+    max-height: 600px; /* start value - changed by js to match floorplan height*/
 }
 
 .ItemGroupStyler {

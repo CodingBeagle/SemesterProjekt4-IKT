@@ -28,7 +28,6 @@ namespace Locatiles.Test.Integration
         [SetUp]
         public void SetUp()
         {
-            
             _searcher = new Searcher();
             _db = new DatabaseService(new SqlStoreDatabaseFactory());
             _bll = new BLL(_searcher, _db);
@@ -40,12 +39,17 @@ namespace Locatiles.Test.Integration
             _db.TableItemSectionPlacement.PlaceItem(_db.TableItem.CreateItem(itemName, _db.TableItemGroup.CreateItemGroup(itemGroupName)), storesectionID);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            CleanUp();
+        }
+
         [Test]
         public void SearchItems_GetPresentationItemGroupsReturnList_ViewBagContainCorrectList()
         {
 
             string searchStr = "Step11TestItem";
-            //_bll.GetPresentationItemGroups(Arg.Any<string>()).Returns(new List<PresentationItemGroup>() { new PresentationItemGroup("Name", new List<PresentationItem>()) });
             var result = _homeController.SearchItems(searchStr) as ViewResult;
             var data = (List<PresentationItemGroup>)result.ViewData["PresentationGroup"];
             Assert.AreEqual(itemGroupName, data[0].Name);
