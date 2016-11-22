@@ -15,14 +15,14 @@ namespace LocatilesWebApp.Controllers
     {
         private IBLL _bll;
         private Model _model;
-
+        
         public HomeController()
         {
-            _bll = new BLL();
+            _bll = new BLL( new Searcher());
             _model = new Model();
         }
 
-        public HomeController(   IBLL bll)
+        public HomeController(IBLL bll)
         {
             _bll = bll;
             _model = new Model();
