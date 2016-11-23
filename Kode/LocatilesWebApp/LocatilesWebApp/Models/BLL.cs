@@ -59,10 +59,11 @@ namespace LocatilesWebApp.Models
                 // if there is no existing PresentationItemGroup with same Itemgroup name
                 if (tempPIG == null)
                 {
+                    //Create new PresentationItemGroup
                     PresentationItemGroup PIG = new PresentationItemGroup(pi.Itemgroupname, new List<PresentationItem>() {pi});
                     _presentationItemGroups.Add(PIG);
                 }
-                else // if there already is one
+                else // if there is a PresentationItemGroup with same Itemgroup name
                 {
                     tempPIG.PresentationItems.Add(pi);
                 }
