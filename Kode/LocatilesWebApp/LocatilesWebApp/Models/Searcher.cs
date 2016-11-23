@@ -21,6 +21,7 @@ namespace LocatilesWebApp.Models
         {
             List<string> _searchList = new List<string>();
             List<Item> _searchresultItems = new List<Item>();
+            // if searchstring contain space(s): split searchstring, keep all non-empty strings, add them to searchList
             if (searchString.ToLower().Contains(' '))
             {
                 string[] sa = searchString.Split(' ');
@@ -31,20 +32,19 @@ namespace LocatilesWebApp.Models
                     {
                         _searchList.Add(sa[s]);
                     }
-
                 }
-                else _searchList.Add("");
+                else _searchList.Add(""); // if searchstring contain only spaces: add one empty string to searchList to return all Items in db
 
             }
             else _searchList.Add(searchString);
 
-            foreach (var s in _searchList)
+            // search db with each word in searchstring/searchList
+            foreach (var s in _searchList) 
             {
                 List<Item> _itemSearchWordResults = _db.TableItem.SearchItems(s);
-                _searchresultItems.AddRange(_itemSearchWordResults.FindAll(i => !_searchresultItems.Any(x => x.ItemID == i.ItemID)));
-
+                // add every item returned by search to final searchresult only once(searchresult will have no duplicates)
+                _searchresultItems.AddRange(_itemSearchWordResults.FindAll(i => _searchresultItems.All(x => x.ItemID != i.ItemID)));  
             }
-
             return _searchresultItems;
         }
     }

@@ -17,16 +17,10 @@ function drawPinIcon(canvas, x,y, r) {
     var ctx = canvas.getContext('2d');
     ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = r*0.1 ;
-    var ycirclepos = y - Math.sqrt(r * r + r * r);
 
     // Outer arc
     ctx.beginPath();
-    //ctx.arc(x, ycirclepos, r, 1 / 4 * Math.PI, 3 / 4 * Math.PI, true);
     ctx.arc(x, y, r, 0, 2 * Math.PI, true);
-    //Point
-    //ctx.lineTo(x, y);
-    //ctx.lineTo(x + Math.cos(1 / 4 * Math.PI)*r, ycirclepos + Math.cos(1 / 4 * Math.PI)*r);
-    //ctx.lineTo(x+r,y+r);
     ctx.closePath();
     ctx.fillStyle = "#3a3a3a";
     ctx.fill();

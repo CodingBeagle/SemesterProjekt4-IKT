@@ -9,10 +9,10 @@
 
     <div id="itemCol" class="col-md-4 col-md-pull-8">
         <h3 class="columnHeader">Varer</h3>
-        <div class="scrollBox">
-            @if (ViewBag.PresentationGroup != null)
+        <div class="scrollBox">  @*Contain and creates the search result list from PresentationItemGroups*@
+            @if (ViewBag.PresentationItemGroups != null)
             {
-                foreach (var pig in ViewBag.PresentationGroup)
+                foreach (var pig in ViewBag.PresentationItemGroups)
                 {
                     <div id="@Html.Raw(pig.Name.Trim().Replace(" ", "") + "ID")" class="ItemGroupStyler">@Html.Raw(pig.Name)</div>
 
@@ -20,7 +20,7 @@
                     {
                         <button id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "ID")" class="btn ItemStyler" onclick="searchItems(@Html.Raw("'" + presentationItem.Itemname.Trim().Replace(" ", "") + "'"))" type="button">@Html.Raw(presentationItem.Itemname)</button>
 
-
+                        @*Stores item coordinates for all items in search result, used in ja(not displayed on UI) *@
                         <div id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Placements")" style="display: none;">
                             @{int i = 0;}
                             @foreach (var itemPlacement in presentationItem.ItemPlacementList)

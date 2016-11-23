@@ -41,11 +41,11 @@ namespace LocatilesWebApp.Controllers
         [HttpGet]
         public ActionResult SearchItems(string searchtext)
         {
-            // Get Presentation Item Groups
+            // Get Presentation Item Groups place in class Model
             _model.PresentationItemGroups = _bll.GetPresentationItemGroups(searchtext);
 
-            // Load Viewbag with Presentation Item Groups
-            ViewBag.PresentationGroup = _model.PresentationItemGroups;
+            // Load Viewbag with Presentation Item Groups from class Model
+            ViewBag.PresentationItemGroups = _model.PresentationItemGroups;
 
             return View("Index");
         }
