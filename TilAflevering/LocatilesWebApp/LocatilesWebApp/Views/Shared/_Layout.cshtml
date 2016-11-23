@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Locatiles</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/style.css">
+    <script src="~/Scripts/utility.js"></script>
+
+    <!-- 
+    
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+        
+        <input type="text" id="searchfield" value="test" onkeyup="return searchbarOnKeyUp(event)" autofocus>
+    -->
+
+</head>
+<body>
+
+    <asp:ScriptManager ID="ScriptManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+
+<div class="container">
+    <div class="row" id="navbar">
+
+        <div class="col-xs-12 col-md-4 logoText">Locatiles</div>
+
+        <div class="col-xs-12 col-md-4">
+            <div id="searchBar">                
+                @using (Html.BeginForm("SearchItems", "Home", FormMethod.Get))
+                {
+                    <input type="text" id="searchtext" name="searchtext" autofocus>
+                    <button type="submit" id="searchButton"><span class="glyphicon glyphicon-search"></span></button>
+                }
+            </div>
+        </div>
+
+        <div class="hidden-xs col-md-4"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 rainbowline"></div>
+    </div>
+
+    @RenderBody()
+
+    <div class="row" id="footer">
+        <div class="col-md-12">
+            <p id="footerCopyRightText">
+                Locatiles<span class="glyphicon glyphicon-copyright-mark"></span> *
+            </p>
+            <p id="footerDate">
+                NOV 2016
+            </p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

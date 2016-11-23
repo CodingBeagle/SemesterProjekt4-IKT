@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Locatiles";
+}
+<div class="row">
+    <div id="floorplanCol" class="col-md-8 col-md-push-4">
+        <h3 class="columnHeader">Butikskort</h3>
+        <canvas id="floorplan" width="800" height="600"></canvas>
+    </div>
+
+    <div id="itemCol" class="col-md-4 col-md-pull-8">
+        <h3 class="columnHeader">Varer</h3>
+        <div class="scrollBox">  @*Contain and creates the search result list from PresentationItemGroups*@
+            @if (ViewBag.PresentationItemGroups != null)
+            {
+                foreach (var pig in ViewBag.PresentationItemGroups)
+                {
+                    <div id="@Html.Raw(pig.Name.Trim().Replace(" ", "") + "ID")" class="ItemGroupStyler">@Html.Raw(pig.Name)</div>
+
+                    foreach (var presentationItem in pig.PresentationItems)
+                    {
+                        <button id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "ID")" class="btn ItemStyler" onclick="searchItems(@Html.Raw("'" + presentationItem.Itemname.Trim().Replace(" ", "") + "'"))" type="button">@Html.Raw(presentationItem.Itemname)</button>
+
+                        @*Stores item coordinates for all items in search result, used in ja(not displayed on UI) *@
+                        <div id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Placements")" style="display: none;">
+                            @{int i = 0;}
+                            @foreach (var itemPlacement in presentationItem.ItemPlacementList)
+                            {
+                                <span id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "X" + @i))" style="display: none;">@itemPlacement.X</span>
+                                <span id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Y" + @i)" style="display: none;">@itemPlacement.Y</span>
+                                i++;
+                            }
+                        </div>
+
+                    }
+
+                }
+            }
+        </div>
+
+    </div>
+
+
+</div>
