@@ -8,32 +8,23 @@ using System.Web;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
+using DatabaseAPI.TableItem;
 
-namespace LocatilesWebApp.Models
+namespace BLL
 {
-    public class BLL : IBLL
+    public class ItemInfoBLL
     {
-        private readonly ISearcher _searcher;
-        private IDatabaseService _db;
+        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
 
-        public BLL(ISearcher searcher, IDatabaseService db =null)
-        {
-            if(db == null)
-                _db = new DatabaseService(new SqlStoreDatabaseFactory());
-            else
-                _db = db;
-            
-            _searcher = searcher;
-        }
-       
         public  List<PresentationItemGroup> GetPresentationItemGroups(string searchString)
         {
 
             List<PresentationItem> _presentationItems = new List<PresentationItem>();
             List<PresentationItemGroup> _presentationItemGroups = new List<PresentationItemGroup>();
-            List<Item> _searchresultItems = _searcher.Search(searchString);
 
-            // Creates and adds presentationsItems to list
+
+            List<Item> _searchresultItems = _db.TableItem.SearchItems(searchString);
+
             foreach (var i in _searchresultItems)
             {
                 ItemGroup searchresultItemGroup = _db.TableItemGroup.GetItemGroup(i.ItemGroupID);
@@ -45,24 +36,19 @@ namespace LocatilesWebApp.Models
                     itemPlacementList.Add(new Point ((int)section.CoordinateX, (int)section.CoordinateY));
                     
                 }
-                if(itemPlacementList.Any())
-                    _presentationItems.Add(new PresentationItem(i.Name, searchresultItemGroup.ItemGroupName, itemPlacementList));
+                _presentationItems.Add(new PresentationItem(i.Name, searchresultItemGroup.ItemGroupName, itemPlacementList));
 
             }
 
-            // Distributes presentationItems to PresentationItemsGroups with same itemgroup name
             foreach (var pi in _presentationItems)
             {
                 var tempPIG = _presentationItemGroups.FirstOrDefault(g => g.Name == pi.Itemgroupname);
-
-                // if there is no existing PresentationItemGroup with same Itemgroup name
                 if (tempPIG == null)
                 {
-                    //Create new PresentationItemGroup
                     PresentationItemGroup PIG = new PresentationItemGroup(pi.Itemgroupname, new List<PresentationItem>() {pi});
                     _presentationItemGroups.Add(PIG);
                 }
-                else // if there is a PresentationItemGroup with same Itemgroup name
+                else
                 {
                     tempPIG.PresentationItems.Add(pi);
                 }
@@ -70,6 +56,11 @@ namespace LocatilesWebApp.Models
 
             return _presentationItemGroups;
         }
+    }
+
+    public class FloorplanBLL
+    {
+        private DatabaseService _db = new DatabaseService(new SqlStoreDatabaseFactory());
 
         public void GetFloorPlan(string filepath)
         {
