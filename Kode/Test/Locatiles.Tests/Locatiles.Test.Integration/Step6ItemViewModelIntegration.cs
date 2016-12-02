@@ -114,6 +114,14 @@ namespace Locatiles.Test.Integration
 
         private void CleanUp()
         {
+            List<Item> itemsToDelete = _db.TableItem.SearchItems("Step6IntegrationTest");
+
+            foreach (Item item in itemsToDelete)
+            {
+                _db.TableItem.DeleteItem(item.ItemID);
+            }
+
+
             List<ItemGroup> itemGroupsToDelete = _db.TableItemGroup.SearchItemGroups("Step6IntegrationTest_ItemGroup");
 
             foreach (ItemGroup itemGroup in itemGroupsToDelete)
@@ -121,12 +129,7 @@ namespace Locatiles.Test.Integration
                 _db.TableItemGroup.DeleteItemGroup(itemGroup.ItemGroupID);
             }
 
-            List<Item> itemsToDelete = _db.TableItem.SearchItems("Step6IntegrationTest");
 
-            foreach (Item item in  itemsToDelete)
-            {
-                _db.TableItem.DeleteItem(item.ItemID);
-            }
         }
 
         private void InitialSetup()
