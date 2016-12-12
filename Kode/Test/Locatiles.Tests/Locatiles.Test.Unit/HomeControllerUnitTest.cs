@@ -39,7 +39,7 @@ namespace Locatiles.Test.Unit
             string searchStr = "unittest";
             _bll.GetPresentationItemGroups(Arg.Any<string>()).Returns(new List<PresentationItemGroup>() { new PresentationItemGroup("Name", new List<PresentationItem>()) });
             var result = _uut.SearchItems(searchStr) as ViewResult;
-            var data = (List<PresentationItemGroup>)result.ViewData["PresentationGroup"];
+            var data = (List<PresentationItemGroup>)(result.ViewData["PresentationItemGroups"]);
             Assert.AreEqual("Name", data[0].Name);
         }
     }
