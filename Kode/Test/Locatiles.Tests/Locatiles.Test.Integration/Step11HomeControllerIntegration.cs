@@ -48,7 +48,7 @@ namespace Locatiles.Test.Integration
         [Test]
         public void SearchItems_GetPresentationItemGroupsReturnList_ViewBagContainCorrectList()
         {
-            var result = _homeController.SearchItems(itemGroupName) as ViewResult;
+            var result = _homeController.SearchItems(itemName) as ViewResult;
             var data = (List<PresentationItemGroup>)result.ViewData["PresentationItemGroups"];
             Assert.That(itemGroupName, Is.EqualTo(data[0].Name));
         }
