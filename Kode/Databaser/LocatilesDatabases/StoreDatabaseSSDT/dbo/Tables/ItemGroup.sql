@@ -1,9 +1,10 @@
 ﻿CREATE TABLE [dbo].[ItemGroup] (
-    [ItemGroupID]  BIGINT NOT NULL IDENTITY(1,1),
-    [Name]         NVARCHAR(450)   NOT NULL UNIQUE,
-    [ParentItemGroupID] BIGINT NULL,
+    [ItemGroupID]       BIGINT         IDENTITY (1, 1) NOT NULL,
+    [Name]              NVARCHAR (450) NOT NULL,
+    [ParentItemGroupID] BIGINT         NULL,
+    UNIQUE NONCLUSTERED ([ItemGroupID] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC),
     CONSTRAINT [pk_ItemGroup] PRIMARY KEY CLUSTERED ([ItemGroupID] ASC),
-    CONSTRAINT [fk_ItemGroup] FOREIGN KEY ([ParentItemGroupID]) REFERENCES [dbo].[ItemGroup] ([ItemGroupID]),
-    UNIQUE NONCLUSTERED ([ItemGroupID] ASC)
+    CONSTRAINT [fk_ItemGroup] FOREIGN KEY ([ParentItemGroupID]) REFERENCES [dbo].[ItemGroup] ([ItemGroupID])
 );
 
