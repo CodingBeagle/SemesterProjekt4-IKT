@@ -1,19 +1,12 @@
 ﻿window.onload = function() {
-    console.log("onload called!");
     ResizeItemCol();
 }
 
 window.onresize = function onResizeHandler() {
-    console.log("onresize called");
     ResizeItemCol();
 }
 
-function point() {
-    this.coordx = 0;
-    this.coordy = 0;
-}
-
-function drawPinIcon(canvas, x,y, r) {
+function DrawPinIcon(canvas, x,y, r) {
     var ctx = canvas.getContext('2d');
     ctx.strokeStyle = "#FF0000";
     ctx.lineWidth = r*0.1 ;
@@ -36,33 +29,21 @@ function drawPinIcon(canvas, x,y, r) {
     ctx.stroke();
 }
 
-function clearCanvas(canvas) {
+function ClearCanvas(canvas) {
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0,0,canvas.width,canvas.height);
 }
 
-function searchItems(itemName) {
-
-    FindAllItemPlacements(itemName);
-}
-
-function searchbarOnKeyUp(key) {
-    if (key.keyCode === 13) //On enter key up
-    {
-        searchItems();
-    }
-}
-
-function FindAllItemPlacements(itemName) {
+function DrawAllItemPlacements(itemName) {
     var itemPlacements = $("#" + itemName + "Placements").children("span");
 
     var canvas = document.getElementById('floorplan');
-    clearCanvas(canvas);
+    ClearCanvas(canvas);
     for (var i = 0; i < itemPlacements.length; i+=2) {
         var xCoordinate = document.getElementById(itemPlacements[i].id).innerHTML;
         var yCoordinate = document.getElementById(itemPlacements[i + 1].id).innerHTML;
         
-        drawPinIcon(canvas, xCoordinate, yCoordinate, 18);
+        DrawPinIcon(canvas, xCoordinate, yCoordinate, 18);
         console.log(xCoordinate);
         console.log(yCoordinate);
     }

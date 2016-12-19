@@ -18,7 +18,7 @@
 
                     foreach (var presentationItem in pig.PresentationItems)
                     {
-                        <button id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "ID")" class="btn ItemStyler" onclick="searchItems(@Html.Raw("'" + presentationItem.Itemname.Trim().Replace(" ", "") + "'"))" type="button">@Html.Raw(presentationItem.Itemname)</button>
+                        <button id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "ID")" class="btn ItemStyler" onclick="DrawAllItemPlacements(@Html.Raw("'" + presentationItem.Itemname.Trim().Replace(" ", "") + "'"))" type="button">@Html.Raw(presentationItem.Itemname)</button>
 
                         @*Stores item coordinates for all items in search result, used in ja(not displayed on UI) *@
                         <div id="@Html.Raw(presentationItem.Itemname.Trim().Replace(" ", "") + "Placements")" style="display: none;">

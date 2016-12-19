@@ -8,7 +8,6 @@ using System.Web;
 using DatabaseAPI;
 using DatabaseAPI.DatabaseModel;
 using DatabaseAPI.Factories;
-using DatabaseAPI.TableItem;
 
 namespace LocatilesWebApp.Models
 {
